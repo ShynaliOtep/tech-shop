@@ -1,0 +1,81 @@
+version: "3.8"
+
+services:
+    nginx:
+        image: nginx:1.23
+        restart: always
+        tty: true
+        environment:
+            APP_DIR: "${COMPOSE_CONTAINER_DIR}"
+        ports:
+            - "${COMPOSE_GATEWAY}:80:80"
+        volumes:
+            - ".development/docker/nginx/templates:/etc/nginx/templates"
+            - "${COMPOSE_APP_DIR}:${COMPOSE_CONTAINER_DIR}"
+        links:
+            - php
+        depends_on:
+            - php
+        networks:
+            app-network:
+                aliases:
+                    - "${APP_DOMAIN}"
+
+    mysql:
+        image: mysql:8.0.36
+        restart: always
+        tty: true
+        command:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+            - --skip-character-set-client-handshake
+            - --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_DATABASE: "${DB_DATABASE}"
+            MYSQL_USER: "${DB_USERNAME}"
+            MYSQL_PASSWORD: "${DB_PASSWORD}"
+        ports:
+            - "${COMPOSE_GATEWAY}:3306:3306"
+        volumes:
+            - "${COMPOSE_STORAGE_DIR}/mysql:/var/lib/mysql"
+        networks:
+            - app-network
+
+    php:
+        restart: always
+        tty: true
+        build:
+            context: .
+            dockerfile: .development/.docker/php/source/Dockerfile
+        command: "/docker-entrypoint.sh"
+        environment:
+            XDEBUG_CONFIG: client_host=host.docker.internal
+            PHP_IDE_CONFIG: "serverName=${COMPOSE_PROJECT_NAME}"
+            APP_DOMAIN: ${APP_DOMAIN}
+        ports:
+            - "${COMPOSE_GATEWAY}:9000:9000"
+        volumes:
+            - "${COMPOSE_APP_DIR}:${COMPOSE_CONTAINER_DIR}"
+            - "${COMPOSE_APP_DIR}/../database.sqlite:${COMPOSE_CONTAINER_DIR}/database/database.sqlite"
+            - "${COMPOSE_APP_DIR}/.development/docker/php/php.ini:/usr/local/etc/php/php.ini"
+            - "${COMPOSE_APP_DIR}/.development/docker/php/docker-entrypoint.sh:/docker-entrypoint.sh"
+        depends_on:
+            - mysql
+        links:
+            - mysql
+        networks:
+            - app-network
+        dns:
+            - 8.8.8.8
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+
+networks:
+    app-network:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: "${COMPOSE_SUBNET}/24"
+                  gateway: "${COMPOSE_GATEWAY}"

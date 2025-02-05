@@ -1,0 +1,25 @@
+name: prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script:
+              cd tech-shop
+            && git reset --hard HEAD && git clean -fd && git pull origin main -f
+            && sudo docker exec pixelrental-php-1 php artisan orchid:publish
+            && sudo docker exec pixelrental-php-1 php artisan migrate
+            && sudo docker exec pixelrental-php-1 chmod -R 777 database/
+            && cd ./storage/app/public
+            && sudo chmod -R ugo+rwx .

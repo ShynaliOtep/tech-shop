@@ -1,0 +1,26 @@
+name: fresh
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fresh database
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script:
+              cd tech-shop
+            && sudo rm -rf storage/app/public/2024
+            && sudo docker exec pixelrental-php-1 php artisan migrate:fresh
+            && sudo docker exec pixelrental-php-1 php artisan db:seed
+            && sudo docker exec pixelrental-php-1 chmod -R 777 ./storage/app/public/
+            && sudo docker exec pixelrental-php-1 chmod -R 777 database/
+            && cd ./storage/app/public
+            && sudo chmod -R ugo+rwx .

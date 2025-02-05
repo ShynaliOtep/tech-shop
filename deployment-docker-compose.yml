@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  php:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 768Mb
+    tty: true
+    build:
+      context: .
+      dockerfile: .development/.docker/php/source/Dockerfile
+    command: "/docker-entrypoint.sh"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+    volumes:
+      - "${COMPOSE_APP_DIR}:${COMPOSE_CONTAINER_DIR}"
+      - "${COMPOSE_APP_DIR}/../database.sqlite:${COMPOSE_CONTAINER_DIR}/database/database.sqlite"
+      - "${COMPOSE_APP_DIR}/.development/docker/php/php.ini:/usr/local/etc/php/php.ini"
+      - "${COMPOSE_APP_DIR}/.development/docker/php/docker-entrypoint.sh:/docker-entrypoint.sh"
+
+
+  nginx:
+    image: nginx:1.23
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 256Mb
+    tty: true
+    environment:
+      APP_DIR: "${COMPOSE_CONTAINER_DIR}"
+    ports:
+      - "${COMPOSE_GATEWAY}:443:443"
+      - "${COMPOSE_GATEWAY}:80:80"
+    volumes:
+      - ".development/docker/nginx/templates/.deployment:/etc/nginx/templates"
+      - "${COMPOSE_APP_DIR}:${COMPOSE_CONTAINER_DIR}"
+      - ".development/docker/nginx/ssl:/etc/nginx/ssl"
+    links:
+      - php
+    depends_on:
+      - php

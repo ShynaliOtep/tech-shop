@@ -1,0 +1,355 @@
+[2025-02-02 19:23:54] local.ERROR: Please provide a valid cache path. {"exception":"[object] (InvalidArgumentException(code: 0): Please provide a valid cache path. at /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:67)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/View/ViewServiceProvider.php(96): Illuminate\\View\\Compilers\\Compiler->__construct(Object(Illuminate\\Filesystem\\Filesystem), false, '', true, 'php')
+#1 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(908): Illuminate\\View\\ViewServiceProvider->Illuminate\\View\\{closure}(Object(Illuminate\\Foundation\\Application), Array)
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(795): Illuminate\\Container\\Container->build(Object(Closure))
+#3 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(957): Illuminate\\Container\\Container->resolve('blade.compiler', Array, true)
+#4 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(731): Illuminate\\Foundation\\Application->resolve('blade.compiler', Array)
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(942): Illuminate\\Container\\Container->make('blade.compiler', Array)
+#6 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(1454): Illuminate\\Foundation\\Application->make('blade.compiler')
+#7 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(237): Illuminate\\Container\\Container->offsetGet('blade.compiler')
+#8 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(208): Illuminate\\Support\\Facades\\Facade::resolveFacadeInstance('blade.compiler')
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(349): Illuminate\\Support\\Facades\\Facade::getFacadeRoot()
+#10 /Users/shynaliotep/works/tech-shop/vendor/orchid/blade-icons/src/IconServiceProvider.php(22): Illuminate\\Support\\Facades\\Facade::__callStatic('component', Array)
+#11 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(788): Orchid\\Icons\\IconServiceProvider->register()
+#12 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/ProviderRepository.php(75): Illuminate\\Foundation\\Application->register(Object(Orchid\\Icons\\IconServiceProvider))
+#13 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(765): Illuminate\\Foundation\\ProviderRepository->load(Array)
+#14 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/RegisterProviders.php(17): Illuminate\\Foundation\\Application->registerConfiguredProviders()
+#15 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(263): Illuminate\\Foundation\\Bootstrap\\RegisterProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#16 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(447): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#17 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#18 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#19 {main}
+"} 
+[2025-02-02 19:23:57] local.ERROR: Please provide a valid cache path. {"exception":"[object] (InvalidArgumentException(code: 0): Please provide a valid cache path. at /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/View/Compilers/Compiler.php:67)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/View/ViewServiceProvider.php(96): Illuminate\\View\\Compilers\\Compiler->__construct(Object(Illuminate\\Filesystem\\Filesystem), false, '', true, 'php')
+#1 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(908): Illuminate\\View\\ViewServiceProvider->Illuminate\\View\\{closure}(Object(Illuminate\\Foundation\\Application), Array)
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(795): Illuminate\\Container\\Container->build(Object(Closure))
+#3 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(957): Illuminate\\Container\\Container->resolve('blade.compiler', Array, true)
+#4 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(731): Illuminate\\Foundation\\Application->resolve('blade.compiler', Array)
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(942): Illuminate\\Container\\Container->make('blade.compiler', Array)
+#6 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(1454): Illuminate\\Foundation\\Application->make('blade.compiler')
+#7 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(237): Illuminate\\Container\\Container->offsetGet('blade.compiler')
+#8 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(208): Illuminate\\Support\\Facades\\Facade::resolveFacadeInstance('blade.compiler')
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(349): Illuminate\\Support\\Facades\\Facade::getFacadeRoot()
+#10 /Users/shynaliotep/works/tech-shop/vendor/orchid/blade-icons/src/IconServiceProvider.php(22): Illuminate\\Support\\Facades\\Facade::__callStatic('component', Array)
+#11 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(788): Orchid\\Icons\\IconServiceProvider->register()
+#12 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/ProviderRepository.php(75): Illuminate\\Foundation\\Application->register(Object(Orchid\\Icons\\IconServiceProvider))
+#13 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(765): Illuminate\\Foundation\\ProviderRepository->load(Array)
+#14 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/RegisterProviders.php(17): Illuminate\\Foundation\\Application->registerConfiguredProviders()
+#15 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(263): Illuminate\\Foundation\\Bootstrap\\RegisterProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#16 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(447): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#17 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#18 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#19 {main}
+"} 
+[2025-02-02 19:25:55] local.ERROR: Database file at path [/app/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: PRAGMA foreign_keys = ON;) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [/app/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: PRAGMA foreign_keys = ON;) at /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php:829)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('PRAGMA foreign_...', Array, Object(Closure))
+#1 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(576): Illuminate\\Database\\Connection->run('PRAGMA foreign_...', Array, Object(Closure))
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(560): Illuminate\\Database\\Connection->statement('PRAGMA foreign_...')
+#3 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/SQLiteConnection.php(36): Illuminate\\Database\\Schema\\Builder->enableForeignKeyConstraints()
+#4 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(272): Illuminate\\Database\\SQLiteConnection->__construct(Object(Closure), '/app/database/d...', '', Array)
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(75): Illuminate\\Database\\Connectors\\ConnectionFactory->createConnection('sqlite', Object(Closure), '/app/database/d...', '', Array)
+#6 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(50): Illuminate\\Database\\Connectors\\ConnectionFactory->createSingleConnection(Array)
+#7 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(175): Illuminate\\Database\\Connectors\\ConnectionFactory->make(Array, 'sqlite')
+#8 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(101): Illuminate\\Database\\DatabaseManager->makeConnection('sqlite')
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(355): Illuminate\\Database\\DatabaseManager->connection()
+#10 /Users/shynaliotep/works/tech-shop/vendor/sethphat/eloquent-docs/src/EloquentDocsServiceProvider.php(29): Illuminate\\Support\\Facades\\Facade::__callStatic('connection', Array)
+#11 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): SethPhat\\EloquentDocs\\EloquentDocsServiceProvider->boot()
+#12 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#13 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#14 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#15 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(662): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#16 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1030): Illuminate\\Container\\Container->call(Array)
+#17 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1011): Illuminate\\Foundation\\Application->bootProvider(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider))
+#18 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider), 30)
+#19 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1010): array_walk(Array, Object(Closure))
+#20 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#21 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(263): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#22 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(447): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#23 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#24 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 {main}
+
+[previous exception] [object] (Illuminate\\Database\\SQLiteDatabaseDoesNotExistException(code: 0): Database file at path [/app/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. at /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/SQLiteConnector.php:34)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(221): Illuminate\\Database\\Connectors\\SQLiteConnector->connect(Array)
+#1 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1339): call_user_func(Object(Closure))
+#3 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(581): Illuminate\\Database\\Connection->getPdo()
+#4 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(816): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('PRAGMA foreign_...', Array)
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('PRAGMA foreign_...', Array, Object(Closure))
+#6 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(576): Illuminate\\Database\\Connection->run('PRAGMA foreign_...', Array, Object(Closure))
+#7 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(560): Illuminate\\Database\\Connection->statement('PRAGMA foreign_...')
+#8 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/SQLiteConnection.php(36): Illuminate\\Database\\Schema\\Builder->enableForeignKeyConstraints()
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(272): Illuminate\\Database\\SQLiteConnection->__construct(Object(Closure), '/app/database/d...', '', Array)
+#10 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(75): Illuminate\\Database\\Connectors\\ConnectionFactory->createConnection('sqlite', Object(Closure), '/app/database/d...', '', Array)
+#11 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(50): Illuminate\\Database\\Connectors\\ConnectionFactory->createSingleConnection(Array)
+#12 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(175): Illuminate\\Database\\Connectors\\ConnectionFactory->make(Array, 'sqlite')
+#13 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(101): Illuminate\\Database\\DatabaseManager->makeConnection('sqlite')
+#14 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(355): Illuminate\\Database\\DatabaseManager->connection()
+#15 /Users/shynaliotep/works/tech-shop/vendor/sethphat/eloquent-docs/src/EloquentDocsServiceProvider.php(29): Illuminate\\Support\\Facades\\Facade::__callStatic('connection', Array)
+#16 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): SethPhat\\EloquentDocs\\EloquentDocsServiceProvider->boot()
+#17 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#18 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#19 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#20 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(662): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#21 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1030): Illuminate\\Container\\Container->call(Array)
+#22 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1011): Illuminate\\Foundation\\Application->bootProvider(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider))
+#23 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider), 30)
+#24 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1010): array_walk(Array, Object(Closure))
+#25 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#26 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(263): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#27 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(447): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#28 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#29 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#30 {main}
+"} 
+[2025-02-02 19:25:55] local.ERROR: Database file at path [/app/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: PRAGMA foreign_keys = ON;) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [/app/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: PRAGMA foreign_keys = ON;) at /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php:829)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('PRAGMA foreign_...', Array, Object(Closure))
+#1 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(576): Illuminate\\Database\\Connection->run('PRAGMA foreign_...', Array, Object(Closure))
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(560): Illuminate\\Database\\Connection->statement('PRAGMA foreign_...')
+#3 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/SQLiteConnection.php(36): Illuminate\\Database\\Schema\\Builder->enableForeignKeyConstraints()
+#4 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(272): Illuminate\\Database\\SQLiteConnection->__construct(Object(Closure), '/app/database/d...', '', Array)
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(75): Illuminate\\Database\\Connectors\\ConnectionFactory->createConnection('sqlite', Object(Closure), '/app/database/d...', '', Array)
+#6 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(50): Illuminate\\Database\\Connectors\\ConnectionFactory->createSingleConnection(Array)
+#7 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(175): Illuminate\\Database\\Connectors\\ConnectionFactory->make(Array, 'sqlite')
+#8 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(101): Illuminate\\Database\\DatabaseManager->makeConnection('sqlite')
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(355): Illuminate\\Database\\DatabaseManager->connection()
+#10 /Users/shynaliotep/works/tech-shop/vendor/sethphat/eloquent-docs/src/EloquentDocsServiceProvider.php(29): Illuminate\\Support\\Facades\\Facade::__callStatic('connection', Array)
+#11 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): SethPhat\\EloquentDocs\\EloquentDocsServiceProvider->boot()
+#12 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#13 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#14 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#15 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(662): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#16 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1030): Illuminate\\Container\\Container->call(Array)
+#17 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1011): Illuminate\\Foundation\\Application->bootProvider(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider))
+#18 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider), 30)
+#19 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1010): array_walk(Array, Object(Closure))
+#20 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#21 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(263): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#22 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(447): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#23 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#24 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 {main}
+
+[previous exception] [object] (Illuminate\\Database\\SQLiteDatabaseDoesNotExistException(code: 0): Database file at path [/app/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. at /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/SQLiteConnector.php:34)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(221): Illuminate\\Database\\Connectors\\SQLiteConnector->connect(Array)
+#1 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1339): call_user_func(Object(Closure))
+#3 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(581): Illuminate\\Database\\Connection->getPdo()
+#4 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(816): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('PRAGMA foreign_...', Array)
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('PRAGMA foreign_...', Array, Object(Closure))
+#6 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(576): Illuminate\\Database\\Connection->run('PRAGMA foreign_...', Array, Object(Closure))
+#7 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(560): Illuminate\\Database\\Connection->statement('PRAGMA foreign_...')
+#8 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/SQLiteConnection.php(36): Illuminate\\Database\\Schema\\Builder->enableForeignKeyConstraints()
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(272): Illuminate\\Database\\SQLiteConnection->__construct(Object(Closure), '/app/database/d...', '', Array)
+#10 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(75): Illuminate\\Database\\Connectors\\ConnectionFactory->createConnection('sqlite', Object(Closure), '/app/database/d...', '', Array)
+#11 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(50): Illuminate\\Database\\Connectors\\ConnectionFactory->createSingleConnection(Array)
+#12 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(175): Illuminate\\Database\\Connectors\\ConnectionFactory->make(Array, 'sqlite')
+#13 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(101): Illuminate\\Database\\DatabaseManager->makeConnection('sqlite')
+#14 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(355): Illuminate\\Database\\DatabaseManager->connection()
+#15 /Users/shynaliotep/works/tech-shop/vendor/sethphat/eloquent-docs/src/EloquentDocsServiceProvider.php(29): Illuminate\\Support\\Facades\\Facade::__callStatic('connection', Array)
+#16 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): SethPhat\\EloquentDocs\\EloquentDocsServiceProvider->boot()
+#17 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#18 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#19 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#20 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(662): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#21 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1030): Illuminate\\Container\\Container->call(Array)
+#22 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1011): Illuminate\\Foundation\\Application->bootProvider(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider))
+#23 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider), 30)
+#24 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1010): array_walk(Array, Object(Closure))
+#25 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#26 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(263): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#27 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(447): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#28 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#29 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#30 {main}
+"} 
+[2025-02-02 19:25:55] local.ERROR: Database file at path [/app/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: PRAGMA foreign_keys = ON;) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 0): Database file at path [/app/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. (Connection: sqlite, SQL: PRAGMA foreign_keys = ON;) at /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php:829)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('PRAGMA foreign_...', Array, Object(Closure))
+#1 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(576): Illuminate\\Database\\Connection->run('PRAGMA foreign_...', Array, Object(Closure))
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(560): Illuminate\\Database\\Connection->statement('PRAGMA foreign_...')
+#3 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/SQLiteConnection.php(36): Illuminate\\Database\\Schema\\Builder->enableForeignKeyConstraints()
+#4 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(272): Illuminate\\Database\\SQLiteConnection->__construct(Object(Closure), '/app/database/d...', '', Array)
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(75): Illuminate\\Database\\Connectors\\ConnectionFactory->createConnection('sqlite', Object(Closure), '/app/database/d...', '', Array)
+#6 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(50): Illuminate\\Database\\Connectors\\ConnectionFactory->createSingleConnection(Array)
+#7 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(175): Illuminate\\Database\\Connectors\\ConnectionFactory->make(Array, 'sqlite')
+#8 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(101): Illuminate\\Database\\DatabaseManager->makeConnection('sqlite')
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(355): Illuminate\\Database\\DatabaseManager->connection()
+#10 /Users/shynaliotep/works/tech-shop/vendor/sethphat/eloquent-docs/src/EloquentDocsServiceProvider.php(29): Illuminate\\Support\\Facades\\Facade::__callStatic('connection', Array)
+#11 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): SethPhat\\EloquentDocs\\EloquentDocsServiceProvider->boot()
+#12 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#13 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#14 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#15 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(662): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#16 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1030): Illuminate\\Container\\Container->call(Array)
+#17 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1011): Illuminate\\Foundation\\Application->bootProvider(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider))
+#18 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider), 30)
+#19 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1010): array_walk(Array, Object(Closure))
+#20 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#21 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(263): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#22 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(447): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#23 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#24 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 {main}
+
+[previous exception] [object] (Illuminate\\Database\\SQLiteDatabaseDoesNotExistException(code: 0): Database file at path [/app/database/database.sqlite] does not exist. Ensure this is an absolute path to the database. at /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/SQLiteConnector.php:34)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(221): Illuminate\\Database\\Connectors\\SQLiteConnector->connect(Array)
+#1 [internal function]: Illuminate\\Database\\Connectors\\ConnectionFactory->Illuminate\\Database\\Connectors\\{closure}()
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(1339): call_user_func(Object(Closure))
+#3 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(581): Illuminate\\Database\\Connection->getPdo()
+#4 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(816): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('PRAGMA foreign_...', Array)
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('PRAGMA foreign_...', Array, Object(Closure))
+#6 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connection.php(576): Illuminate\\Database\\Connection->run('PRAGMA foreign_...', Array, Object(Closure))
+#7 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(560): Illuminate\\Database\\Connection->statement('PRAGMA foreign_...')
+#8 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/SQLiteConnection.php(36): Illuminate\\Database\\Schema\\Builder->enableForeignKeyConstraints()
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(272): Illuminate\\Database\\SQLiteConnection->__construct(Object(Closure), '/app/database/d...', '', Array)
+#10 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(75): Illuminate\\Database\\Connectors\\ConnectionFactory->createConnection('sqlite', Object(Closure), '/app/database/d...', '', Array)
+#11 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/Connectors/ConnectionFactory.php(50): Illuminate\\Database\\Connectors\\ConnectionFactory->createSingleConnection(Array)
+#12 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(175): Illuminate\\Database\\Connectors\\ConnectionFactory->make(Array, 'sqlite')
+#13 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(101): Illuminate\\Database\\DatabaseManager->makeConnection('sqlite')
+#14 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(355): Illuminate\\Database\\DatabaseManager->connection()
+#15 /Users/shynaliotep/works/tech-shop/vendor/sethphat/eloquent-docs/src/EloquentDocsServiceProvider.php(29): Illuminate\\Support\\Facades\\Facade::__callStatic('connection', Array)
+#16 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): SethPhat\\EloquentDocs\\EloquentDocsServiceProvider->boot()
+#17 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#18 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#19 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#20 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php(662): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#21 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1030): Illuminate\\Container\\Container->call(Array)
+#22 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1011): Illuminate\\Foundation\\Application->bootProvider(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider))
+#23 [internal function]: Illuminate\\Foundation\\Application->Illuminate\\Foundation\\{closure}(Object(SethPhat\\EloquentDocs\\EloquentDocsServiceProvider), 30)
+#24 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1010): array_walk(Array, Object(Closure))
+#25 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#26 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(263): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#27 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(447): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#28 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(199): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#29 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#30 {main}
+"} 
+[2025-02-03 20:13:23] local.ERROR: The "-p" option does not exist. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): The \"-p\" option does not exist. at /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Input/ArgvInput.php:125)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Input/ArgvInput.php(107): Symfony\\Component\\Console\\Input\\ArgvInput->parseShortOptionSet('port=8045')
+#1 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Input/ArgvInput.php(87): Symfony\\Component\\Console\\Input\\ArgvInput->parseShortOption('-port=8045')
+#2 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Input/ArgvInput.php(74): Symfony\\Component\\Console\\Input\\ArgvInput->parseToken('-port=8045', true)
+#3 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Input/Input.php(56): Symfony\\Component\\Console\\Input\\ArgvInput->parse()
+#4 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Command/Command.php(285): Symfony\\Component\\Console\\Input\\Input->bind(Object(Symfony\\Component\\Console\\Input\\InputDefinition))
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Console/Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#6 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Application.php(1096): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Application.php(324): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\ServeCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 {main}
+"} 
+[2025-02-03 20:42:00] local.ERROR: file_put_contents(/Users/shynaliotep/works/tech-shop/storage/framework/sessions/BHJrFWjUwlIHDaBDnPbwiTCUmOMb2ZXomJ0AF07K): Failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): file_put_contents(/Users/shynaliotep/works/tech-shop/storage/framework/sessions/BHJrFWjUwlIHDaBDnPbwiTCUmOMb2ZXomJ0AF07K): Failed to open stream: No such file or directory at /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php:204)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(255): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'file_put_conten...', '/Users/shynalio...', 204)
+#1 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, 'file_put_conten...', '/Users/shynalio...', 204)
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(204): file_put_contents('/Users/shynalio...', 'a:4:{s:6:\"_toke...', 2)
+#3 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Session/FileSessionHandler.php(90): Illuminate\\Filesystem\\Filesystem->put('/Users/shynalio...', 'a:4:{s:6:\"_toke...', true)
+#4 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Session/Store.php(172): Illuminate\\Session\\FileSessionHandler->write('BHJrFWjUwlIHDaB...', 'a:4:{s:6:\"_toke...')
+#5 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(245): Illuminate\\Session\\Store->save()
+#6 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(130): Illuminate\\Session\\Middleware\\StartSession->saveSession(Object(Illuminate\\Http\\Request))
+#7 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#8 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#9 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#10 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#11 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#12 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#13 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#14 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Routing/Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#15 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Routing/Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#16 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Routing/Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#17 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Routing/Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#18 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#19 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#20 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#23 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#24 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#25 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#26 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#27 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#28 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(99): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#29 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#30 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#31 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#32 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#33 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#34 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#35 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#36 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#37 /Users/shynaliotep/works/tech-shop/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#38 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(16): require_once('/Users/shynalio...')
+#39 {main}
+"} 
+[2025-02-05 11:57:05] local.ERROR: Command "make:micration" is not defined.
+
+Did you mean one of these?
+    make:cast
+    make:channel
+    make:command
+    make:component
+    make:controller
+    make:event
+    make:exception
+    make:factory
+    make:job
+    make:listener
+    make:mail
+    make:middleware
+    make:migration
+    make:model
+    make:notification
+    make:observer
+    make:policy
+    make:provider
+    make:request
+    make:resource
+    make:rule
+    make:scope
+    make:seeder
+    make:test
+    make:view {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"make:micration\" is not defined.
+
+Did you mean one of these?
+    make:cast
+    make:channel
+    make:command
+    make:component
+    make:controller
+    make:event
+    make:exception
+    make:factory
+    make:job
+    make:listener
+    make:mail
+    make:middleware
+    make:migration
+    make:model
+    make:notification
+    make:observer
+    make:policy
+    make:provider
+    make:request
+    make:resource
+    make:rule
+    make:scope
+    make:seeder
+    make:test
+    make:view at /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Application.php:737)
+[stacktrace]
+#0 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Application.php(266): Symfony\\Component\\Console\\Application->find('make:micration')
+#1 /Users/shynaliotep/works/tech-shop/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /Users/shynaliotep/works/tech-shop/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/shynaliotep/works/tech-shop/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 
