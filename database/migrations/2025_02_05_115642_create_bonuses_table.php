@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->decimal('balance', 10, 2)->default(0); // Баланс бонусов
+            $table->decimal('total_earned', 10, 2)->default(0);
             $table->integer('level')->default(1); // Уровень пользователя в бонусной системе
             $table->timestamps();
         });
