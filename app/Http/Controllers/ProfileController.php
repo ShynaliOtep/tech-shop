@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BonusWithdrawRequest;
 use App\Models\Client;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -124,5 +125,23 @@ return redirect(route('logout'));
         $client->attachment()->syncWithoutDetaching($attachmentIds);
 
         return redirect(route('viewProfile'));
+    }
+
+    public function requestWithdraw(Request $request)
+    {
+        $user = Client::query()->find(Auth::guard('clients')->id());
+        $amount = (int) $request->input('amount');
+
+        if ($amount <= 0 || $amount > $user->getAvailableBalance()) {
+            return back()->with('error', 'Недостаточно средств.');
+        }
+
+        BonusWithdrawRequest::create([
+            'user_id' => $user->id,
+            'amount' => $amount,
+            'status' => 'pending',
+        ]);
+
+        return back()->with('success', 'Заявка на вывод отправлена.');
     }
 }

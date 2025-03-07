@@ -58,6 +58,10 @@ class OrderListLayout extends Table
                 ->filter(
                     NumberRange::make()
                 ),
+            TD::make('amount_unpaid', __('translations.amountUnpaid'))
+                ->filter(
+                    NumberRange::make()
+                ),
             TD::make('agreement_id', __('translations.Agreement id'))
                 ->filter(Input::make()),
 
@@ -78,6 +82,22 @@ class OrderListLayout extends Table
                 )
                 ->render(function (Order $order) {
                     return __('translations.'.$order->status);
+                }),
+
+            TD::make('paid_status', __('Статус оплаты'))
+                ->sort()
+                ->filter(
+                    Select::make('paid_status')
+                        ->options([
+                            null => __('translations.not chosen'),
+                            'pending' => __('translations.pending'),
+                            'paid' => __('translations.paid'),
+                            'unpaid' => __('translations.unpaid'),
+                        ])
+                        ->title('paid_status')
+                )
+                ->render(function (Order $order) {
+                    return __('translations.'.$order->paid_status);
                 }),
 
             TD::make('created_at', __('translations.Created'))

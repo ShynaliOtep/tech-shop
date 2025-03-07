@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers as HttpControllers;
+use App\Http\Controllers\CityController;
+use App\Models\City;
 use App\Models\GoodType;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +23,8 @@ Route::prefix('/')->group(function () {
         ->whereIn('goodType', GoodType::all()->pluck('code')->toArray())
         ->name('goodList');
     Route::get('/change-lang/{lang}', [HttpControllers\LocalizationController::class, 'changeLang'])->name('changeLang');
+
+    Route::post('/cart/sync', [HttpControllers\CartController::class, 'syncCart']);
 
     Route::post('/add-to-cart', [HttpControllers\CartController::class, 'addToCart']);
     Route::post('/remove-from-cart', [HttpControllers\CartController::class, 'removeFromCart']);
@@ -79,8 +83,47 @@ Route::prefix('/profile')->group(function () {
         Route::get('/{order}', [HttpControllers\MyOrderController::class, 'viewOrder'])->name('viewOrder');
         Route::get('/{order}/cancel', [HttpControllers\MyOrderController::class, 'cancelOrder'])->name('cancelOrder');
     });
+    Route::post('/withdraw', [HttpControllers\ProfileController::class, 'requestWithdraw'])->name('withdraw.request');
+
 });
+//
+//Route::get('/set-city', function (Request $request) {
+//    $city = $request->city;
+//    if (City::where('id', $city)->exists()) {
+//        session(['city_id' => $city]);
+//    }
+//    return back();
+//})->name('select.city');
+
+use Illuminate\Http\Request;
+use App\Models\CartItem;
+
+Route::post('/cart/update-quantity', function (Request $request) {
+    $item = CartItem::where('id', $request->product_id)->first();
+
+    if (!$item) {
+        return response()->json(['success' => false]);
+    }
+
+    if ($request->action === 'increase') {
+        $item->quantity++;
+    } elseif ($request->action === 'decrease' && $item->quantity > 1) {
+        $item->quantity--;
+    }
+
+    $item->save();
+
+    return response()->json(['success' => true, 'quantity' => $item->quantity]);
+});
+
+
+Route::get('categories', [HttpControllers\GoodController::class, 'categories'])->name('view.Categories');
+Route::post('/select-city', [CityController::class, 'selectCity'])->name('select.city');
+
 
 Route::get('{good}', [HttpControllers\GoodController::class, 'view'])->name('viewGood');
 Route::get('autofill/{goodName}', [HttpControllers\GoodController::class, 'autofill'])->name('autofill');
 Route::post('good/{id}/get-items', [HttpControllers\GoodController::class, 'getAvailableItems'])->name('getAvailableItems');
+
+Route::post('/select-city', [\App\Http\Controllers\AdminController::class, 'selectCity'])->name('platform.select.city');
+

@@ -102,6 +102,20 @@ class OrderEditScreen extends Screen
                     ->help(__('translations.Order agreement id help'))
                     ->type('number'),
 
+                Select::make('order.paid_status')
+                    ->options([
+                        'pending' => __('Ожидается'),
+                        'paid' => __('Оплачен'),
+                        'unpaid' => __('Не оплачен'),
+                    ])
+                    ->title(__('Статус оплаты')),
+                  //  ->help(__('translations.Order status help')),
+
+                Input::make('order.unpaid_amount')
+                    ->title(__('Не оплаченная сумма'))
+                  //  ->help(__('translations.Order agreement id help')),
+                    ->type('number'),
+
                 Upload::make('order.attachment')
                     ->help(__('translations.Order Agreement help'))
                     ->title(__('translations.Agreement'))

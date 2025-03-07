@@ -95,4 +95,30 @@ class Client extends Authenticatable
 
         return $this->attachment()->where('group', '=', 'idCards')->get();
     }
+
+    public function getReferralLink(): string
+    {
+        $secret = env('REFERRAL_SECRET', 'mysecretkey'); // Используем секретный ключ
+        $refCode = base64_encode($this->id . '|' . $secret);
+        return url('/auth/register?ref=' . urlencode($refCode));
+    }
+
+    public function transactions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(BonusTransaction::class,   'user_id', 'id');
+    }
+
+    public function withdrawRequests(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(BonusWithdrawRequest::class,   'user_id', 'id');
+    }
+
+    public function getAvailableBalance()
+    {
+        $totalDeposits = $this->transactions()->where('type', 'deposit')->sum('amount');
+        $totalWithdrawals = $this->transactions()->where('type', 'withdraw')->sum('amount');
+        $pendingWithdrawals = $this->withdrawRequests()->where('status', 'pending')->sum('amount');
+
+        return $totalDeposits - ($totalWithdrawals + $pendingWithdrawals);
+    }
 }

@@ -62,9 +62,9 @@ class AuthController extends Controller
         return redirect()->back()->withErrors(['phone' => 'Неверно введены данные']);
     }
 
-    public function register(): View|\Illuminate\Foundation\Application|Factory|Application
+    public function register(Request $request): View|\Illuminate\Foundation\Application|Factory|Application
     {
-        return view('auth.register');
+        return view('auth.register', ['ref' => $request->query('ref')]);
     }
 
     public function needConfirmation()
@@ -84,6 +84,17 @@ class AuthController extends Controller
             'files' => 'required|array|min:1|max:2',
         ]);
 
+        $referrerId = null;
+        if ($request->has('ref')) {
+            $secret = env('REFERRAL_SECRET', 'mysecretkey');
+            $decoded = base64_decode($request->input('ref'));
+            [$refId, $refSecret] = explode('|', $decoded) + [null, null];
+
+            if ($refSecret === $secret) {
+                $referrerId = Client::where('id', $refId)->exists() ? $refId : null;
+            }
+        }
+
         $client = Client::query()->make([
             'name' => $request->input('name'),
             'phone' => $request->input('phone'),
@@ -92,6 +103,7 @@ class AuthController extends Controller
             'instagram' => $request->input('instagram'),
             'password' => Hash::make($request->input('password')),
             'confirmation_code' => Str::random(10),
+            'referrer_id' => $referrerId,
         ]);
 
         $wanted = Wanted::query()

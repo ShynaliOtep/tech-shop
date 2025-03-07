@@ -6,7 +6,7 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Orchid\Layouts\Order\OrderListLayout;
 use Illuminate\Http\Request;
-use Orchid\Platform\Models\User;
+use App\Models\User;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;

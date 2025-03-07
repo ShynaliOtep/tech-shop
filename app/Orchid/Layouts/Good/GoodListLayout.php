@@ -6,6 +6,7 @@ use App\Models\Good;
 use App\Models\GoodType;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Components\Cells\DateTimeSplit;
+use Orchid\Screen\Fields\CheckBox;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\NumberRange;
 use Orchid\Screen\Fields\Relation;
@@ -87,7 +88,7 @@ class GoodListLayout extends Table
                     NumberRange::make()
                 )
                 ->render(function (Good $good) {
-                    return $good->cost;
+                    return $good->discount_cost;
                 }),
 
             TD::make('damage_cost', __('translations.Damage cost'))
@@ -96,10 +97,11 @@ class GoodListLayout extends Table
                     NumberRange::make()
                 )
                 ->render(function (Good $good) {
-                    return $good->cost;
+                    return $good->damage_cost;
                 }),
 
             TD::make('good_type_id', __('translations.GoodType'))
+                ->sort()
                 ->filter(
                     Relation::make()
                         ->fromModel(GoodType::class, 'name')
@@ -123,6 +125,13 @@ class GoodListLayout extends Table
                 ->align(TD::ALIGN_RIGHT)
                 ->defaultHidden()
                 ->sort(),
+//            TD::make('select')
+//                ->align(TD::ALIGN_CENTER)
+//                ->render(fn ($product) => CheckBox::make('selected[]')
+//                    ->value($product->id)
+//                    ->class('select-checkbox')
+//                    ->sendTrueOrFalse()
+//                ),
         ];
     }
 }

@@ -82,6 +82,9 @@ class Good extends Model
         'additionals' => 'json',
     ];
 
+    const STATUS_AVAILABLE = 'available';
+    const STATUS_REPAIR = 'repair';
+
     public function goodType(): BelongsTo
     {
         return $this->belongsTo(GoodType::class);

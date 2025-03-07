@@ -2,30 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Orchid\Filters\Types\Like;
 use Orchid\Filters\Types\Where;
 use Orchid\Filters\Types\WhereDateStartEnd;
 use Orchid\Platform\Models\User as Authenticatable;
 
-/**
- * Table: users
- *
- * === Columns ===
- *
- * @property int $id
- * @property string $name
- * @property string $email
- * @property \Carbon\Carbon|null $email_verified_at
- * @property string $password
- * @property string|null $remember_token
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property array|null $permissions
- *
- * === Relationships ===
- * @property-read Good[]|\Illuminate\Database\Eloquent\Collection $goods
- */
 class User extends Authenticatable
 {
     /**
@@ -56,10 +37,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'permissions' => 'array',
-        'email_verified_at' => 'datetime',
-        'created_at' => 'datetime:Y-m-d h:m:s',
-        'updated_at' => 'datetime:Y-m-d h:m:s',
+        'permissions'          => 'array',
+        'email_verified_at'    => 'datetime',
     ];
 
     /**
@@ -68,11 +47,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $allowedFilters = [
-        'id' => Where::class,
-        'name' => Like::class,
-        'email' => Like::class,
-        'updated_at' => WhereDateStartEnd::class,
-        'created_at' => WhereDateStartEnd::class,
+           'id'         => Where::class,
+           'name'       => Like::class,
+           'email'      => Like::class,
+           'updated_at' => WhereDateStartEnd::class,
+           'created_at' => WhereDateStartEnd::class,
     ];
 
     /**
@@ -87,9 +66,4 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
-
-    public function goods(): HasMany
-    {
-        return $this->hasMany(Good::class);
-    }
 }

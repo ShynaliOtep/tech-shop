@@ -2,12 +2,14 @@
 
 namespace App\Orchid\Screens\Item;
 
+use App\Models\City;
 use App\Models\Good;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
+use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Alert;
 use Orchid\Support\Facades\Layout;
@@ -84,6 +86,16 @@ class ItemEditScreen extends Screen
                     ->title(__('translations.ItemSerial'))
                     ->help(__('translations.ItemSerialHelp'))
                     ->type('string'),
+                Select::make('item.city_id')
+                    ->fromModel(City::class, 'name')
+                    ->title('Город')
+                    ->empty('Выберите город'),
+                Select::make('item.status')
+                    ->options([
+                        'available' => 'Доступен',
+                        'repair' => 'В ремонте',
+                    ])
+                    ->title('Статус товара'),
             ]),
         ];
     }

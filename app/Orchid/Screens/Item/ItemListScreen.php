@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\Item;
 
+use App\Models\City;
 use App\Models\Item;
 use App\Orchid\Layouts\Item\ItemListLayout;
 use Orchid\Screen\Actions\Link;
@@ -16,7 +17,7 @@ class ItemListScreen extends Screen
     public function query(): array
     {
         return [
-            'items' => Item::filters()->defaultSort('id')->paginate(),
+            'items' => Item::where('city_id', City::getPlatformCity())->filters()->defaultSort('id')->paginate(),
         ];
     }
 

@@ -28,6 +28,7 @@
                         <div class="col s12">
                             <span class="orange-text">*{{__('translations.Full name surname patronymic')}}</span>
                         </div>
+                        <input type="hidden" name="ref" value="{{ request('ref') }}">
                         <div class="input-field col s12 auth-form-element">
                             <i class="material-icons prefix white-text">phone</i>
                             <input name="phone" id="phone" type="tel" maxlength="12"

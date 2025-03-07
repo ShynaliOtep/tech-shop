@@ -16,7 +16,7 @@
 </head>
 <body>
 @include('navigation.sidemenu')
-<div class="main grey darken-4">
+<div class="main grey darken-4 ">
     <div class="row no-padding main-row">
         <div class="col s12 no-padding">
             @include('navigation.navbar')
@@ -32,6 +32,7 @@
         <div class="col s12 no-padding">
             @include('navigation.footer')
         </div>
+        @include('navigation.bottom-navbar')
     </div>
 </div>
 <script src="{{asset('js/script.js')}}"></script>

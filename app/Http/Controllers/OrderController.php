@@ -8,6 +8,7 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Wanted;
+use App\Services\Bonus\BonusSystem;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -380,6 +381,9 @@ class OrderController extends Controller
 
 Список товаров слишком большой для отображения в боте.");
         }
+
+        $bonusSystem = new BonusSystem();
+        $bonusSystem->applyBonus($client, $order);
 
         return redirect(route('confirmOrder'));
     }

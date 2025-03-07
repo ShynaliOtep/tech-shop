@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid;
 
+use App\Models\City;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
@@ -26,7 +27,12 @@ class PlatformProvider extends OrchidServiceProvider
      */
     public function menu(): array
     {
+        $cityId = session('selected_city', City::DEFAULT); // Получаем выбранный город
+        $city = City::query()->find($cityId);
         return [
+            Menu::make("Город: $city->name")
+                ->icon('globe')
+                ->route('platform.city'),
             Menu::make(__('translations.Get Started'))
                 ->icon('bs.book')
                 ->title(__('translations.Navigation'))
@@ -76,6 +82,13 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('bs.bag-plus')
                 ->route('platform.orderItems.list')
                 ->permission('platform.orderItems.list'),
+            Menu::make('Аналитика')
+                ->icon('bar-chart')
+                ->route('platform.analytics'),
+            Menu::make('Заявки на вывод')
+                ->icon('wallet')
+                ->route('platform.withdraw.requests')
+
 
         ];
     }

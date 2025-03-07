@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\CitySelectorScreen;
 use App\Orchid\Screens\Client\ClientEditScreen;
 use App\Orchid\Screens\Client\ClientListScreen;
+use App\Orchid\Screens\DashboardScreen;
 use App\Orchid\Screens\Good\GoodEditScreen;
 use App\Orchid\Screens\Good\GoodListScreen;
 use App\Orchid\Screens\GoodType\GoodTypeEditScreen;
@@ -22,6 +24,8 @@ use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
 use App\Orchid\Screens\Wanted\WantedEditScreen;
 use App\Orchid\Screens\Wanted\WantedListScreen;
+use App\Orchid\Screens\WithdrawRequestScreen;
+use App\Orchid\Screens\WithdrawRequestViewScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
@@ -35,6 +39,7 @@ use Tabuna\Breadcrumbs\Trail;
 | contains the need "dashboard" middleware group. Now create something great!
 |
 */
+
 
 // Main
 Route::screen('/main', PlatformScreen::class)
@@ -235,3 +240,13 @@ Route::screen('orderItems', OrderItemListScreen::class)
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('orderItems'), route('platform.orderItems.list')));
+Route::screen('analytics', DashboardScreen::class)->name('platform.analytics');
+
+Route::screen('/withdraw-requests', WithdrawRequestScreen::class)
+    ->name('platform.withdraw.requests');
+
+Route::screen('/withdraw-request/{id}', WithdrawRequestViewScreen::class)
+    ->name('platform.withdraw.view');
+
+Route::screen('city', CitySelectorScreen::class)->name('platform.city');
+
