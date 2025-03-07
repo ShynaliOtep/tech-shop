@@ -8,13 +8,13 @@
             @endif
             @auth('clients')
                 @if (in_array($good->id, App\Models\Client::query()->find(Auth::guard('clients')->id())->favorites()->pluck('good_id')->toArray()))
-                    <a class="btn-floating remove-from-favorites-btn btn-large halfway-fab waves-effect waves-light orange darken-4" data-product-id="{{$good->id}}">
+                    <a class="btn-floating remove-from-favorites-btn btn-large halfway-fab waves-effect waves-light darken-4" data-product-id="{{$good->id}}">
                         <i class="large material-icons">
                             favorite
                         </i>
                     </a>
                 @else
-                    <a class="btn-floating add-to-favorites-btn btn-large halfway-fab waves-effect waves-light orange darken-4" data-product-id="{{$good->id}}">
+                    <a class="btn-floating add-to-favorites-btn btn-large halfway-fab waves-effect waves-light darken-4" data-product-id="{{$good->id}}">
                         <i class="large material-icons">
                             favorite_border
                         </i>
@@ -22,17 +22,13 @@
                 @endif
             @endauth
             @guest('clients')
-                <a class="btn-floating add-to-favorites-btn btn-large halfway-fab waves-effect waves-light orange darken-4 modal-trigger"
+                <a class="btn-floating add-to-favorites-btn btn-large halfway-fab waves-effect waves-light darken-4 modal-trigger"
                    href="#auth-modal">
                     <i class="large material-icons">
                         favorite_border
                     </i>
                 </a>
             @endguest
-            <a class="btn-floating add-to-cart-btn btn-large halfway-fab waves-effect waves-light orange darken-4"
-               data-product-id="{{ $good->id }}">
-                <i class="large material-icons">add_shopping_cart</i>
-            </a>
         </div>
         <a href="{{route('viewGood', $good)}}">
         <div class="card-content">
@@ -64,5 +60,16 @@
             @endif
         </div>
         </a>
+        <a class="add-to-cart-btn waves-effect waves-light orange darken-4 good-add-to-card"
+           data-product-id="{{ $good->id }}">
+            <span class="default-text">Добавить в корзину</span>
+            <span class="cart-controls" style="display: none;">
+                <i class="add-to-cart-btn-delete tiny material-icons">delete</i>
+                <span class="add-to-cart-btn-minus tiny material-icons">-</span>
+                <span class="add-to-cart-btn-count">0</span>
+                <span class="add-to-cart-btn-plus tiny material-icons">+</span>
+            </span>
+        </a>
+
     </div>
 </a>

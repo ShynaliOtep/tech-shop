@@ -1,22 +1,10 @@
 @extends('app')
 @section('content')
+    <div>
+        <cart-page></cart-page>
+    </div>
+    <script type="module" src="{{ mix('resources/js/app.js') }}"></script>
     @if (count($items) > 0)
-        <h5 class="white-text">{{__('translations.Cart')}}</h5>
-        <div class="main-loader center">
-            <div class="col s12 center big loader-holder">
-                <div class="preloader-wrapper active">
-                    <div class="spinner-layer spinner-orange-only">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div><div class="gap-patch">
-                            <div class="circle"></div>
-                        </div><div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col s12 m6">
                 <h5 class="white-text">Укажите время аренды</h5>
@@ -99,7 +87,7 @@
                 <p>{{__('translations.Please note: For late payment of payments specified in the agreement, the Lessor has the right require the Tenant to pay a penalty in the amount of 5% of the unpaid payment for each day delays')}}</p>
                 <hr>
             </div>
-            <div class="col s12 m9 goods-list hide">
+            <div class="col s12 m9 goods-list">
                 <form action="{{route('settleOrder')}}" method="POST" id="order-placement-form">
                     {{csrf_field()}}
                     @foreach($items as $item)
@@ -125,6 +113,11 @@
                                 @else
                                     <p>{{__('translations.Cost for day')}}: <b class="orange-text text-darken-4">{{$item->good->cost}}</b></p>
                                 @endif
+                                <td>
+                                    <button class="quantity-btn minus" data-product-id="{{ $item->id }}">-</button>
+                                    <span class="quantity" id="quantity-{{ $item->id }}">{{ $item->quantity }}</span>
+                                    <button class="quantity-btn plus" data-product-id="{{ $item->id }}">+</button>
+                                </td>
                                 <p class="info-for-items-label">У каждого варианта свое свободное время!</p>
                                 <div class="col s12 input-field white-text hide {{$loop->index}}">
                                     <select
@@ -290,14 +283,11 @@
             'btnCaption' => __('translations.Place order'),
         ])
     @else
-        <h4 class="white-text center">{{__('translations.There is nothing here yet')}} :(</h4>
-        <h5 class="white-text center">{{__('translations.Get back to')}} <a href="/"
-                                                                            class="orange-text"><b><u>{{__('translations.to main page')}}</u></b></a>,
-            {{__('translations.and')}}
-            {{__('translations.add anything you like to your cart')}}</h5>
+
     @endif
     @push('scripts')
-        <script src="{{asset('js/cartActions.js')}}"></script>
+{{--        <script src="{{asset('js/cartActions.js')}}"></script>--}}
         <script src="{{asset('js/select.js')}}"></script>
+        <script src="{{asset('js/cart.js')}}"></script>
     @endpush
 @endsection

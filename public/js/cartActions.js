@@ -103,7 +103,7 @@ let isOrderAvailable = ORDER_NOT_AVAILABLE;
 let selectedItems = [];
 const modalTriggerButton = document.querySelector('.btn.orange.darken-4.auth-link.valign-wrapper.next-step-btn.modal-trigger')
 const itemTotalCostTextElement = document.querySelectorAll('h5[class="inline"]');
-const mainFormElement = document.querySelector('.col.s12.m9.goods-list.hide')
+const mainFormElement = document.querySelector('.col.s12.m9.goods-list')
 const informationalTextElement = document.querySelector('.col.s12.m3.additional-info.white-text.hide-on-med-and-down')
 const formRentTypeAll = document.querySelector('.col.s12.m9.goods-list-rent-type-all.hide')
 let rentStartDateV2 = ''
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.classList.add('hide')
                     changeStateIndividualCost('add')
                 })
-                mainFormElement.classList.add('hide');
+               // mainFormElement.classList.add('hide');
                 informationalTextElement.classList.remove('hide');
                 selectedItems = [];
                 itemIdPickers = document.querySelectorAll('.item-id-selector')
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     changeStateIndividualCost('remove')
                 })
                 selectedItems = [];
-                mainFormElement.classList.remove('hide');
+              //  mainFormElement.classList.remove('hide');
                 informationalTextElement.classList.remove('hide');
                 formRentTypeAll.classList.add('hide');
                 itemIdPickers = document.querySelectorAll('.item-id-selector')
@@ -272,7 +272,7 @@ const fillTimepickers = async ()=> {
         autoClose: true
     });
     instance.options.onSelect = async (e) => {
-        mainFormElement.classList.add('hide')
+       // mainFormElement.classList.add('hide')
         startTimePickerDiv.classList.remove('hide')
         startTimePicker.classList.remove('hide')
         startTimePicker.value = null
@@ -314,7 +314,7 @@ const fillTimepickers = async ()=> {
         })
         M.FormSelect.init(startTimePicker, {});
         startTimePicker.onchange = async (e) => {
-            mainFormElement.classList.add('hide')
+         //   mainFormElement.classList.add('hide')
             endDatePickerDiv.classList.remove('hide')
             endDatePicker.classList.remove('hide')
             endDatePicker.value = null
@@ -399,7 +399,7 @@ const fillTimepickers = async ()=> {
                 defaultDate: new Date(),
                 autoClose: true,
                 onSelect: async (e) => {
-                    mainFormElement.classList.add('hide')
+                //    mainFormElement.classList.add('hide')
                     endTimePickerDiv.classList.remove('hide')
                     endTimePicker.classList.remove('hide')
                     endTimePicker.value = null
@@ -437,7 +437,7 @@ const fillTimepickers = async ()=> {
                         }
 
                         rentEndTimeV2 = e.target.value
-                        mainFormElement.classList.remove('hide');
+                       // mainFormElement.classList.remove('hide');
                         let itemIdPickers = document.querySelectorAll('.item-id-selector')
                         itemIdPickers.forEach(async item => {
                             if (item.parentNode.parentNode.classList.contains('select-wrapper')){
@@ -662,6 +662,7 @@ document.querySelectorAll('.start_date').forEach(el => {
 
 
 function fillIndividualRentType() {
+    console.log("GGG");
     itemIdPickers.forEach(async item => {
         item.parentNode.insertAdjacentHTML('afterend', loaderElement)
         const availableItems = await fetch('/good/' + item.parentNode.parentNode.parentNode.dataset.goodId + '/get-items', {
@@ -1236,4 +1237,31 @@ async function changeCartKey(goodId, itemId, oldItemId){
         }),
     })
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".quantity-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const productId = this.dataset.productId;
+            const action = this.classList.contains("plus") ? "increase" : "decrease";
+
+            fetch(`/cart/update-quantity`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: JSON.stringify({ product_id: productId, action: action }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`quantity-${productId}`).innerText = data.quantity;
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        });
+    });
+});
+
 

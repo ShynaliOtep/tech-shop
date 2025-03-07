@@ -77,24 +77,22 @@ class CartController extends Controller
     {
         $cartData = json_decode($request->cookie('cart', '{}'), true);
 
-        foreach ($cartData as $key => $value) {
-            $cartData[$key] = [];
-        }
-
-        if (Auth::guard('clients')->check()) {
-            $client = Client::query()->find(Auth::guard('clients')->id())->toArray();
-        } else {
-            $client = null;
-        }
-
         $itemIds = [];
+        $counts = [];
 
-        forEach($cartData as $key => $value){
-            $itemIds[] = explode('pixelrental', $key)[1];
+        foreach ($cartData as $key => $value) {
+           $itemIds[] = $key;
+           $counts[$key] = $value['quantity'];
         }
 
         $items = Item::query()->whereIn('id', $itemIds)->get();
-        return response(view('cart', compact('items', 'cartData', 'client')))->cookie('cart', json_encode($cartData), 60 * 24 * 30);
+
+        $client = Auth::guard('clients')->check()
+            ? Client::query()->find(Auth::guard('clients')->id())->toArray()
+            : null;
+
+        return response(view('cart', compact('items', 'cartData', 'client', 'counts')))
+            ->cookie('cart', json_encode($cartData), 60 * 24 * 30);
     }
 
     public function countDistinctKeys($array)
@@ -252,4 +250,26 @@ class CartController extends Controller
 
         return $cost;
     }
+
+    public function syncCart(Request $request): JsonResponse
+    {
+        $cartData = json_decode($request->getContent(), true) ?? json_decode($request->cookie('cart', '{}'), true);
+        $updatedCart = [];
+
+        foreach ($cartData as $goodId => $data) {
+            if (!isset($data['quantity']) || !is_numeric($data['quantity'])) {
+                continue; // Пропускаем некорректные данные
+            }
+
+            $good = Good::query()->find($goodId);
+            if ($good) {
+                $updatedCart[$goodId] = ['quantity' => min($data['quantity'], $good->items()->count())];
+            }
+        }
+
+        return response()
+            ->json(['success' => true, 'cart' => $updatedCart])
+            ->cookie('cart', json_encode($updatedCart), 60 * 24 * 30);
+    }
+
 }
