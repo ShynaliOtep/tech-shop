@@ -52,6 +52,11 @@ class Item extends Model
         'deleted_at',
     ];
 
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
     public function good(): BelongsTo
     {
         return $this->belongsTo(Good::class);
