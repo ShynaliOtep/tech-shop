@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens;
 
 use App\Models\BonusWithdrawRequest;
+use App\Models\Order;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
@@ -16,7 +17,7 @@ class WithdrawRequestScreen extends Screen
     public function query(): iterable
     {
         return [
-            'withdrawRequests' => BonusWithdrawRequest::latest()->paginate(10),
+            'withdrawRequests' => BonusWithdrawRequest::filters()->defaultSort('id', 'DESC')->paginate(),
         ];
     }
 
@@ -26,8 +27,10 @@ class WithdrawRequestScreen extends Screen
             Layout::table('withdrawRequests', [
                 TD::make('id', 'ID')->sort(),
                 TD::make('user_id', 'Пользователь'),
-                TD::make('amount', 'Сумма')->render(fn ($request) => number_format($request->amount, 2) . ' ₸'),
-                TD::make('status', 'Статус'),
+                TD::make('amount', 'Сумма')
+                    ->render(fn ($request) => number_format($request->amount, 2) . ' ₸'),
+                TD::make('status', 'Статус')
+                    ->render(fn ($request) => ucfirst($request->status)),
                 TD::make('created_at', 'Дата')->sort(),
                 TD::make('actions', 'Действия')
                     ->align(TD::ALIGN_CENTER)

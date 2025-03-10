@@ -21,7 +21,7 @@ class WithdrawRequestViewScreen extends Screen
         $this->request = BonusWithdrawRequest::findOrFail($id);
 
         return [
-            'transactions' => BonusTransaction::where('order_id', $this->request->orders)->get(),
+            'transactions' => $this->request->getTransactionsForWithdraw()
         ];
     }
 
@@ -54,6 +54,11 @@ class WithdrawRequestViewScreen extends Screen
     public function approve()
     {
         $this->request->update(['status' => 'approved']);
+        BonusTransaction::create([
+            'user_id'  => $this->request->user_id,
+            'type'     => 'withdraw',
+            'amount'   => $this->request->amount,
+        ]);
         Alert::info('Заявка подтверждена.');
     }
 

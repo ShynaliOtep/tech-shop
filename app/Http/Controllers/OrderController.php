@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\Client;
 use App\Models\Good;
 use App\Models\Item;
@@ -169,9 +170,19 @@ class OrderController extends Controller
         $order->rent_end_date = $order->orderItems()->max('rent_end_date');
         $order->rent_start_date = $order->orderItems()->min('rent_start_date');
 
+        $cityId = session()->get('select_city');
+        $cityId = $cityId ?: City::DEFAULT;
+        $order->city_id = $cityId;
+
         $order->save();
 
         $aggreementUrl = $aggreementFile->url();
+
+        Log::info('settleOrder', [$client, $order]);
+
+        $bonusSystem = new BonusSystem();
+        $bonusSystem->applyBonus($client, $order);
+
 
         $response = sendTelegramMessage(
             "*НОВЫЙ ЗАКАЗ* $order->id
@@ -339,6 +350,11 @@ class OrderController extends Controller
         }
 
         $order->amount_paid = $totalSum;
+
+        $cityId = session()->get('select_city');
+        $cityId = $cityId ?: City::DEFAULT;
+        $order->city_id = $cityId;
+
         $order->save();
 
         $aggreementFile = makeOrderAgreement($order->fresh(['orderItems', 'owner']));
@@ -350,6 +366,10 @@ class OrderController extends Controller
         $order->rent_start_date = $order->orderItems()->min('rent_start_date');
 
         $order->save();
+
+        Log::info('settleOrder', [$client, $order]);
+        $bonusSystem = new BonusSystem();
+        $bonusSystem->applyBonus($client, $order);
 
         $aggreementUrl = $aggreementFile->url();
 
@@ -382,8 +402,6 @@ class OrderController extends Controller
 Список товаров слишком большой для отображения в боте.");
         }
 
-        $bonusSystem = new BonusSystem();
-        $bonusSystem->applyBonus($client, $order);
 
         return redirect(route('confirmOrder'));
     }

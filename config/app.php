@@ -85,6 +85,9 @@ return [
 
     'locale' => 'en',
 
+    'select_city' => 1,
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -159,7 +162,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Orchid\Platform\Providers\FoundationServiceProvider::class,
         /*
          * Application Service Providers...
          */

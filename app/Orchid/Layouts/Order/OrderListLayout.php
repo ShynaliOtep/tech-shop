@@ -40,7 +40,7 @@ class OrderListLayout extends Table
         return [
             TD::make('id', __('translations.OrderID'))
                 ->filter(Input::make())
-
+                ->sort()
                 ->render(function (Order $order) {
                     return Link::make($order->id)
                         ->route('platform.orders.edit', $order->id);

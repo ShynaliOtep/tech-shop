@@ -23,7 +23,7 @@ Route::prefix('/')->group(function () {
         ->whereIn('goodType', GoodType::all()->pluck('code')->toArray())
         ->name('goodList');
     Route::get('/change-lang/{lang}', [HttpControllers\LocalizationController::class, 'changeLang'])->name('changeLang');
-
+    Route::get('/select-city/{city}', [CityController::class, 'selectCity'])->name('selectCity');
     Route::post('/cart/sync', [HttpControllers\CartController::class, 'syncCart']);
 
     Route::post('/add-to-cart', [HttpControllers\CartController::class, 'addToCart']);
@@ -118,12 +118,10 @@ Route::post('/cart/update-quantity', function (Request $request) {
 
 
 Route::get('categories', [HttpControllers\GoodController::class, 'categories'])->name('view.Categories');
-Route::post('/select-city', [CityController::class, 'selectCity'])->name('select.city');
 
 
 Route::get('{good}', [HttpControllers\GoodController::class, 'view'])->name('viewGood');
 Route::get('autofill/{goodName}', [HttpControllers\GoodController::class, 'autofill'])->name('autofill');
 Route::post('good/{id}/get-items', [HttpControllers\GoodController::class, 'getAvailableItems'])->name('getAvailableItems');
 
-Route::post('/select-city', [\App\Http\Controllers\AdminController::class, 'selectCity'])->name('platform.select.city');
 

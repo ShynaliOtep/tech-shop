@@ -214,7 +214,7 @@
                         </div>
                     @endforeach
                 </form>
-            </div>
+            </div>÷
             <div class="col s12 m3 additional-info white-text hide-on-med-and-down hide">
                 <span class="grey-text"><u>{{__('translations.Select rental periods for goods')}}</u></span>
                 <p>{{__('translations.All items that you have added to your cart are listed here.')}}</p>
@@ -230,6 +230,8 @@
         </div>
         <div class="col s12 right-align hide" id="total-sum-of-items" >
             <h5 class="white-text">Итого: <span class="total-cost-holder">0</span> {{__('translations.KZT')}}</h5>
+            <span id="client_bonus_level" class="hide">{{ $client ? \App\Models\Client::getBonusLevelPercent($client['id']) : 5}}</span>
+            <p class="white-text">Бонус после покупки: <span class="bonus-holder">0</span> {{__('translations.KZT')}}</p>
         </div>
         @auth('clients')
             <div class="col s12 right-align">
@@ -241,12 +243,18 @@
         @endauth
         @guest('clients')
             <div class="col s12 right-align">
-                <a href="#auth-modal"
+                <a href="#order-placement-modal-guest"
                    class="btn orange darken-4 auth-link valign-wrapper next-step-btn modal-trigger">
                     {{__('translations.Place order')}}
                 </a>
-                @include('auth.modal', ['icon' => 'favorite_border', 'title' => __('translations.Authorization required'), 'content' => __('translations.Please enter to your account to continue order settlement')])
             </div>
+{{--            <div class="col s12 right-align">--}}
+{{--                <a href="#auth-modal"--}}
+{{--                   class="btn orange darken-4 auth-link valign-wrapper next-step-btn modal-trigger">--}}
+{{--                    {{__('translations.Place order')}}--}}
+{{--                </a>--}}
+{{--                @include('auth.modal', ['icon' => 'favorite_border', 'title' => __('translations.Authorization required'), 'content' => __('translations.Please enter to your account to continue order settlement')])--}}
+{{--            </div>--}}
         @endguest
         <div id="myModal" class="modal-rent">
             <div class="modalcontent">
@@ -289,6 +297,16 @@
             'btnAction' => 'placeOrder',
             'btnCaption' => __('translations.Place order'),
         ])
+        @include('cartGuest', [
+           'modalClass' => 'order-placement-modal-guest',
+           'title' => __('translations.Are you sure you are ready to place an order?'),
+           'subTitle' => __('translations.After confirming your order, your order will be transferred to the manager and you will be able to receive your goods at the pick-up point at') . ":",
+           'link' => 'https://2gis.kz/almaty/firm/70000001069136996',
+           'linkCaption' => __('translations.Tole BI street, 176'). '.',
+           'downTitle' => __('translations.The manager will double-check your contact details and photographs of your ID, after which an equipment rental agreement will be signed').'.',
+           'btnAction' => 'placeOrder',
+           'btnCaption' => __('translations.Place order'),
+       ])
     @else
         <h4 class="white-text center">{{__('translations.There is nothing here yet')}} :(</h4>
         <h5 class="white-text center">{{__('translations.Get back to')}} <a href="/"

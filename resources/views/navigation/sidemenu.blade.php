@@ -4,6 +4,14 @@
     </div>
     <div class="container">
         <hr>
+        <li class="menu-item">
+            <div class="select-city">
+                <div class="language-wrapper">
+                    <a href="{{route('selectCity', 1)}}" class="btn language-btn white-text @if(session()->get('select_city') === 1) orange darken-4 @else grey darken-2 @endif">{{__('translations.Almaty')}}</a>
+                    <a href="{{route('selectCity', 2)}}" class="btn language-btn white-text @if(session()->get('select_city') === 2) orange darken-4 @else grey darken-2 @endif">{{__('translations.Astana')}}</a>
+                </div>
+            </div>
+        </li>
         <li class="menu-item center">
             <div class="language-wrapper">
                 <a href="{{route('changeLang', 'en')}}" class="btn language-btn white-text @if(session()->get('locale') === 'en') orange darken-4 @else grey darken-2 @endif">{{__('translations.EN')}}</a>
@@ -20,22 +28,6 @@
             </div>
             <hr class="hide-on-med-and-up">
         </li>
-        <div class="select-city">
-            <form action="#" method="GET">
-                @php
-                    $selectedCity = session('city_id', null);
-                      $cities = \App\Models\City::all();
-                @endphp
-
-                <select onchange="location.href='/set-city/' + this.value">
-                    @foreach($cities as $city)
-                        <option value="{{ $city->id }}" {{ session('city_id') == $city->id ? 'selected' : '' }}>
-                            {{ $city->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </form>
-        </div>
         @foreach($goodTypes as $goodType)
             <li class="menu-item">
                 <a href="{{route('goodList', $goodType->code, false)}}"

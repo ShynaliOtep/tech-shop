@@ -327,4 +327,6 @@ return [
     'user not found' => 'User not found',
     'ItemSerial' => 'item serial',
     'ItemSerialHelp' => 'unique item serial',
+    'Almaty' => 'Almaty',
+    'Astana' => 'Astana',
 ];
