@@ -52,5 +52,6 @@
         </div>
     </div>
 </div>
+@include('navigation.bottom-navbar')
 </body>
 </html>

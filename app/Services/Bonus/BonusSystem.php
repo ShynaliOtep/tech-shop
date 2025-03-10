@@ -17,12 +17,13 @@ class BonusSystem
             3 => 10, // 10% на 3 уровне
         };
 
-        $bonusAmount = $order->total * ($bonusPercentage / 100); // Получаем сумму заказа
+        $bonusAmount = $order->amount_paid * ($bonusPercentage / 100); // Получаем сумму заказа
 
         // Записываем бонусную транзакцию
         BonusTransaction::create([
             'user_id'  => $user->id,
             'order_id' => $order->id, // Теперь ID заказа доступен
+            'type' => 'deposit',
             'amount'   => $bonusAmount,
         ]);
 
@@ -52,17 +53,18 @@ class BonusSystem
 
     private function applyReferralBonus(int $referrerId, Order $order)
     {
-        $referrer = User::find($referrerId);
+        $referrer = Client::find($referrerId);
 
         if (!$referrer) {
             return;
         }
 
-        $referralBonus = $order->total * 0.03;
+        $referralBonus = $order->amount_paid * 0.03;
 
         BonusTransaction::create([
             'user_id'  => $referrer->id,
             'order_id' => $order->id,
+            'type' => 'deposit',
             'amount'   => $referralBonus,
         ]);
 

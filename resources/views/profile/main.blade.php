@@ -2,10 +2,14 @@
 @extends('app')
 @section('content')
     <h5 class="white-text">Ваш профиль:</h5>
+
+    <div class="profile-bonus-block">
+        <p class="white-text">Ваш бонус: <span>{{$client->getBonus()->balance}}</span> тенге</p>
+    </div>
     <div class="referral-block">
         <label class="white-text">Ваша реферальная ссылка:</label>
         <input style="color: #FFFFFF" type="text" id="referralLink" value="{{ $client->getReferralLink() }}" readonly>
-        <button class="orange" onclick="copyReferral()">Скопировать</button>
+        <button class="orange white-text darken-4 " style="border-radius: 16px; border: none; padding: 5px 10px; cursor: pointer" onclick="copyReferral()">Скопировать</button>
     </div>
     <br>
     <ul class="collection basic-info grey z-depth-5">
@@ -54,15 +58,15 @@
     @endphp
 
     <div>
-        <h4>Транзакций бонусов</h4>
-        <table class="bonus-transactions-profile">
-            <tr>
+        <h5 class="white-text">Транзакций бонусов</h5>
+        <table class="bonus-transactions-profile collection basic-info grey z-depth-5">
+            <tr style="border-color: #fff">
                 <th>Сумма</th>
                 <th>Тип</th>
                 <th>Дата</th>
             </tr>
             @foreach ($transactions as $transaction)
-                <tr>
+                <tr style="border-color: #fff">
                     <td>{{ number_format($transaction->amount, 2) }} ₸</td>
                     <td>{{ $transaction->type == 'deposit' ? 'Поступление' : 'Снятие' }}</td>
                     <td>{{ $transaction->created_at->format('d.m.Y H:i') }}</td>
@@ -75,10 +79,10 @@
         <form action="{{ route('withdraw.request') }}" method="POST">
             @csrf
             <input type="hidden" name="amount" value="{{ $availableBalance }}">
-            <button type="submit">Снять {{ number_format($availableBalance, 2) }} ₸</button>
+            <button class="orange white-text darken-4 " style="border-radius: 16px; border: none; padding: 5px 10px; cursor: pointer" type="submit">Снять {{ number_format($availableBalance, 2) }} ₸</button>
         </form>
     @else
-        <p>Недостаточно средств для вывода</p>
+        <p style="color: red">Недостаточно средств для вывода</p>
     @endif
 
     <script>

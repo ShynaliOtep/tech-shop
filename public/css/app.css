@@ -18,6 +18,10 @@ body {
 }
 
 
+.hide-desktop {
+    display: none;
+}
+
 .collapsible {
     border: none;
     box-shadow: none;
@@ -969,6 +973,9 @@ input[type="radio"][name="rent-type"]:disabled + span {
 
 
 @media (max-width: 600px) {
+    .hide-desktop {
+        display: block;
+    }
     .sidenav {
         width: 100% !important;
         z-index: 100;
@@ -985,5 +992,26 @@ input[type="radio"][name="rent-type"]:disabled + span {
     }
     .breadcrumbs-section{
         display: none;
+    }
+    .menu-item::marker{
+        display: none;
+    }
+    .menu-item {
+        list-style: none !important; /* Убирает маркеры */
+        padding-left: 0 !important;
+    }
+    ul {
+        list-style: none !important; /* Убирает маркеры */
+        padding-left: 0 !important;
+    }
+    .language-wrapper {
+        margin: 0;
+    }
+    .hide-mobile {
+        display: none !important;
+    }
+    .logo-mobile {
+        display: none;
+        width: 70px;
     }
 }

@@ -20,7 +20,7 @@ class OrderListScreen extends Screen
     public function query(): array
     {
         return [
-            'orders' => Order::filters()->defaultSort('id')->paginate(),
+            'orders' => Order::filters()->defaultSort('id', 'DESC')->paginate(),
         ];
     }
 

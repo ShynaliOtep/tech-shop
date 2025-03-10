@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Mail\Attachment;
@@ -120,5 +121,56 @@ class Client extends Authenticatable
         $pendingWithdrawals = $this->withdrawRequests()->where('status', 'pending')->sum('amount');
 
         return $totalDeposits - ($totalWithdrawals + $pendingWithdrawals);
+    }
+
+    public function bonus(): HasOne
+    {
+        return $this->hasOne(Bonus::class, 'user_id', 'id');
+    }
+
+
+    public function getBonus()
+    {
+        $bonus = $this->bonus;
+        if ($bonus) {
+            return $bonus;
+        }
+
+        $bonus = new Bonus();
+        $bonus->user_id = $this->id;
+        $bonus->balance = 0;
+        $bonus->level = 1;
+        $bonus->save();
+        return $bonus;
+
+    }
+
+    public static function getBonusLevel($clientId)
+    {
+        $client = Client::find($clientId);
+        $model = $client->bonus;
+        if ($model) {
+            return $model->level;
+        }
+
+        $model = new Bonus();
+        $model->user_id = $client->id;
+        $model->balance = 0;
+        $model->level = 1;
+        $model->save();
+        return $model->level;
+    }
+
+    public static function getBonusLevelPercent($clientId)
+    {
+        $level = self::getBonusLevel($clientId);
+        $bonusPercentage = match ($level) {
+            1 => 5, // 5% на 1 уровне
+            2 => 7, // 7% на 2 уровне
+            3 => 10, // 10% на 3 уровне
+        };
+
+        return $bonusPercentage;
+
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 
 class City extends Model
 {
@@ -23,8 +24,13 @@ class City extends Model
         return session('selected_city', 'Алматы');
     }
 
+    public static function setSiteCity($city)
+    {
+        session()->put('select_city', $city);
+    }
+
     public static function getSiteCity()
     {
-
+        return session()->get('select_city');
     }
 }

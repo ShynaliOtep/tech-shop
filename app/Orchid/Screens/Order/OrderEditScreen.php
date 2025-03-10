@@ -111,7 +111,7 @@ class OrderEditScreen extends Screen
                     ->title(__('Статус оплаты')),
                   //  ->help(__('translations.Order status help')),
 
-                Input::make('order.unpaid_amount')
+                Input::make('order.amount_unpaid')
                     ->title(__('Не оплаченная сумма'))
                   //  ->help(__('translations.Order agreement id help')),
                     ->type('number'),

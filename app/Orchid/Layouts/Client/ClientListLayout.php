@@ -105,6 +105,19 @@ class ClientListLayout extends Table
                 ->defaultHidden()
                 ->sort(),
 
+            TD::make('referrer_id', 'Реферал')
+                ->sort()
+                ->filter(
+                    Input::make()
+                )
+                ->render(function (Client $client) {
+                    if ($client->referrer_id) {
+                        $referrer = Client::find($client->referrer_id);
+                        return Link::make($referrer->name)
+                            ->route('platform.clients.edit', $referrer);
+                    }
+                }),
+
             TD::make(__('Actions'))
                 ->align(TD::ALIGN_CENTER)
                 ->width('100px')

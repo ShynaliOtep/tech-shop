@@ -90,8 +90,10 @@ function changeTotalCost(value, mode) {
     } else {
         currentValue -= value
     }
-
+    console.log(currentValue, bonusHolderLevelPercent)
+    let bonusNumber = parseInt(currentValue * bonusHolderLevelPercent / 100);
     totalCostHolderNumber.innerHTML = currentValue.toString()
+    bonusHolderNumber.innerHTML = bonusNumber.toString()
 }
 
 const RENT_TIME_TYPE_ALL = 'all';
@@ -602,6 +604,8 @@ const fillTimepickers = async ()=> {
 }
 let totalCostHolder = document.querySelector('#total-sum-of-items')
 let totalCostHolderNumber = document.querySelector('.total-cost-holder')
+let bonusHolderNumber = document.querySelector('.bonus-holder')
+let bonusHolderLevelPercent = parseInt(document.querySelector('#client_bonus_level').innerHTML)
 const changeStateIndividualCost = (action) => {
     if (action === 'add') {
         itemTotalCostTextElement.forEach(item => {
@@ -620,6 +624,7 @@ const updateButtonState = () => {
         modalTriggerButton.classList.remove('disabled');
 
         totalCostHolder.classList.remove('hide')
+        bonusHolderNumber.classList.remove('hide')
     } else {
         modalTriggerButton.disabled = ORDER_NOT_AVAILABLE;
         modalTriggerButton.classList.add('disabled');

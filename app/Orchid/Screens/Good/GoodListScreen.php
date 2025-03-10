@@ -54,14 +54,26 @@ class GoodListScreen extends Screen
             Link::make(__('translations.Create'))
                 ->icon('pencil')
                 ->route('platform.goods.create'),
+
             ModalToggle::make('Применить скидку')
                 ->modal('applyDiscountModal')
                 ->icon('discount')
                 ->method('applyDiscount')
                 ->async('asyncGetSelectedProducts'),
 
+            ModalToggle::make('Применить скидку на все')
+                ->icon('percent')
+                ->modal('applyDiscountToAllModal')
+                ->method('applyDiscountToAll'),
+
+
+            Button::make('Удалить скидку на все') // ✅ Кнопка для сброса скидок
+            ->icon('x-circle')
+                ->confirm('Вы уверены, что хотите удалить скидки у всех товаров?')
+                ->method('removeAllDiscounts'),
         ];
     }
+
 
     /**
      * Views.
@@ -89,6 +101,17 @@ class GoodListScreen extends Screen
                         ->required(),
                 ]),
             ])->title('Применить скидку')->applyButton('Применить'),
+            Layout::modal('applyDiscountToAllModal', [
+                Layout::rows([
+                    Input::make('discount')
+                        ->type('number')
+                        ->title('Размер скидки (%)')
+                        ->required()
+                        ->min(0)
+                        ->max(100),
+                ]),
+            ])->title('Применить скидку на все товары')->applyButton('Применить'),
+
         ];
     }
 
@@ -114,6 +137,32 @@ class GoodListScreen extends Screen
 
         Toast::success("Скидка {$discount}% успешно применена!");
     }
+
+    public function applyDiscountToAll(Request $request)
+    {
+        $discount = (int) $request->input('discount', 10); // Можно сделать ввод скидки через модалку
+
+        if ($discount <= 0 || $discount > 100) {
+            Toast::error('Введите корректный процент скидки.');
+            return;
+        }
+
+        Good::query()->each(function ($good) use ($discount) {
+            $discountCost = $good->cost - ($good->cost * ($discount / 100));
+            $good->discount_cost = round($discountCost, 2);
+            $good->save();
+        });
+
+        Toast::success("Скидка {$discount}% успешно применена ко всем товарам!");
+    }
+
+    public function removeAllDiscounts()
+    {
+        Good::query()->update(['discount_cost' => null]); // Сбрасываем скидку
+
+        Toast::success('Все скидки успешно удалены!');
+    }
+
 
 
 

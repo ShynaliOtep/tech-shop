@@ -9,21 +9,20 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Session;
 
 class GoodController extends Controller
 {
     private $cityId;
     public function __construct()
     {
-        $cityId = Session::get('selected_city', Cookie::get('selected_city'));
-        $this->cityId = $cityId ?: City::DEFAULT;
+        $this->cityId = City::getSiteCity();
+
     }
 
     public function index(Request $request): \Illuminate\Contracts\Foundation\Application|Factory|View|Application
     {
-        $cityId = $this->cityId;
+        $cityId = session()->get('select_city');
+        $cityId = $cityId ?: City::DEFAULT;
         $viewedGoodTypes = GoodType::query()
             ->with([
                 'goods' => function ($query) use ($cityId) {
@@ -48,7 +47,8 @@ class GoodController extends Controller
 
     public function goodList(string $goodTypeCode, Request $request): \Illuminate\Contracts\Foundation\Application|Factory|View|Application
     {
-        $cityId = $this->cityId;
+        $cityId = session()->get('select_city');
+        $cityId = $cityId ?: City::DEFAULT;
         $viewedGoodTypes = GoodType::query()->where('code', '=', $goodTypeCode)
             ->with([
                 'goods' => function ($query) use ($cityId) {

@@ -9,16 +9,14 @@ use App\Models\City;
 
 class CityController extends Controller
 {
-    public function selectCity(Request $request)
+    public function selectCity(Request $request, string $city)
     {
-        $cityId = $request->input('city_id');
-        $city = City::findOrFail($cityId);
-
         // Сохраняем город в сессию и куки
-        Session::put('selected_city', $city->id);
-        Cookie::queue('selected_city', $city->id, 60 * 24 * 30); // 30 дней
+        session()->put('select_city', (int) $city);
+        session()->save();
+        cookie()->queue(cookie('select_city', (int)$city, 60 * 24 * 30));
 
-        return redirect()->back()->with('success', "Город установлен: {$city->name}");
+        return redirect()->back();
     }
 }
 
