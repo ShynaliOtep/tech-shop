@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bonus_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('clients')->cascadeOnDelete();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2); // Сумма начисленных бонусов
             $table->timestamps();
