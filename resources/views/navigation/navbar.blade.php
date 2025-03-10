@@ -2,9 +2,12 @@
     <nav>
         <div class="nav-wrapper grey darken-3">
             <div class="nav-inner-wrapper">
-                <a href="#" data-target="slide-out" class="sidenav-trigger hide-on-med-and-up"><i
+                <div class="logo-mobile hide-desktop">
+                    <a href="/"><img src="http://127.0.0.1:8000/img/logo.jpg" class="logo"></a>
+                </div>
+                <a href="#" data-target="slide-out" class="sidenav-trigger hide-on-med-and-up hide-mobile"><i
                         class="material-icons">menu</i></a>
-                <div class="brand-logo">
+                <div class="brand-logo hide-mobile">
                     <div class="search-wrapper valign-wrapper hide-on-small-only input-field">
                         <input id="search" type="text"
                                class="validate browser-default text-white center-align autocomplete"
@@ -14,7 +17,7 @@
                         </i>
                     </div>
                 </div>
-                <ul class="right nav-buttons">
+                <ul class="right nav-buttons hide-mobile">
                     <li class="nav-element center">
                         <a href="{{route('cart')}}" class="nav-link cart-link">
                             <i class="material-icons left navbar-icon">
