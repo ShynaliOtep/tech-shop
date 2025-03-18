@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import CartPage from './components/CartPage.vue';
+import CartPage from './pages/CartPage.vue';
 import i18n from './i18n.js'
 
 const components = {

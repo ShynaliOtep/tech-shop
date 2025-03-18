@@ -35,6 +35,11 @@ Route::prefix('/')->group(function () {
     Route::get('/get-cart-count', [HttpControllers\CartController::class, 'getCartCount']);
     Route::get('/cart3', [HttpControllers\CartController::class, 'cart'])->name('cart');
     Route::post('/get-available-additions', [HttpControllers\CartController::class, 'getAvailableAdditionals']);
+
+
+    Route::get('/cart', [HttpControllers\Vue\CartController::class, 'index'])->name('vue.cart');
+
+
 });
 
 Route::prefix('/auth')->group(function () {
@@ -123,5 +128,6 @@ Route::get('categories', [HttpControllers\GoodController::class, 'categories'])-
 Route::get('{good}', [HttpControllers\GoodController::class, 'view'])->name('viewGood');
 Route::get('autofill/{goodName}', [HttpControllers\GoodController::class, 'autofill'])->name('autofill');
 Route::post('good/{id}/get-items', [HttpControllers\GoodController::class, 'getAvailableItems'])->name('getAvailableItems');
+
 
 
