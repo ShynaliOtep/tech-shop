@@ -11,6 +11,7 @@ use App\Services\Bonus\GoodService;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Select;
@@ -395,6 +396,7 @@ class QuickOrderScreen extends Screen
         $cityId = session()->get('selected_city');
         $cityId = $cityId ?: City::DEFAULT;
         $order->city_id = $cityId;
+        $order->manager_id = Auth::user()->id;
         $order->save();
 
         session()->forget('quick_order_items');

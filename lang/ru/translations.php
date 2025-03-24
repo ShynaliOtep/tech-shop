@@ -338,4 +338,7 @@ return [
     'amountUnpaid' => 'Не оплаченная сумма',
     'Almaty' => 'Алматы',
     'Astana' => 'Астана',
+    'approved' => 'Подтвержден',
+    'deposit' => 'Поступление',
+    'withdraw' => 'Снятие'
 ];

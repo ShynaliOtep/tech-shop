@@ -30,7 +30,9 @@ class WithdrawRequestScreen extends Screen
                 TD::make('amount', 'Сумма')
                     ->render(fn ($request) => number_format($request->amount, 2) . ' ₸'),
                 TD::make('status', 'Статус')
-                    ->render(fn ($request) => ucfirst($request->status)),
+                    ->render(function (BonusWithdrawRequest $transaction) {
+                        return __('translations.'.$transaction->status);
+                    }),
                 TD::make('created_at', 'Дата')->sort(),
                 TD::make('actions', 'Действия')
                     ->align(TD::ALIGN_CENTER)

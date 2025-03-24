@@ -4,7 +4,11 @@ namespace App\Orchid\Screens;
 
 use App\Models\BonusWithdrawRequest;
 use App\Models\BonusTransaction;
+use App\Models\Client;
+use App\Models\Order;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Alert;
@@ -44,8 +48,31 @@ class WithdrawRequestViewScreen extends Screen
             Layout::table('transactions', [
                 TD::make('id', 'ID')->sort(),
                 TD::make('user_id', 'Пользователь'),
+                TD::make('order_id', 'Заказ')
+//                    ->filter(
+//                        Relation::make()
+//                            ->fromModel(Order::class, 'id')
+//                    )
+                    ->render(function (BonusTransaction $transaction) {
+                        if ($transaction->order_id) {
+                            return Link::make($transaction->order->id)
+                                ->route('platform.orders.edit', $transaction->order_id);
+                        } else {
+                            return null;
+                        }
+                    }),
                 TD::make('amount', 'Сумма')->render(fn ($t) => number_format($t->amount, 2) . ' ₸'),
-                TD::make('type', 'Тип'),
+                TD::make('type', 'Тип')
+                    ->render(function (BonusTransaction $transaction) {
+                        return __('translations.'.$transaction->type);
+                    }),
+                TD::make('source', 'Источник')
+                    ->render(function (BonusTransaction $transaction) {
+                        if ($transaction->source) {
+                            return __('translations.'.$transaction->source);
+                        }
+                        return null;
+                    }),
                 TD::make('created_at', 'Дата')->sort(),
             ]),
         ];

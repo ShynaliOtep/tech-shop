@@ -2,9 +2,11 @@
 
 namespace App\Orchid\Screens\Order;
 
+use App\Models\Client;
 use App\Models\Item;
 use App\Models\Order;
 use App\Orchid\Layouts\Order\OrderListLayout;
+use App\Services\Bonus\BonusSystem;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Orchid\Screen\Actions\Link;
@@ -89,6 +91,10 @@ class OrderListScreen extends Screen
             $item->status = 'returned';
             $item->save();
         }
+
+        $bonusSystem = new BonusSystem();
+        $client = Client::find($order->client_id);
+        $bonusSystem->applyBonus($client, $order);
 
         Toast::info(__('Order was returned'));
     }

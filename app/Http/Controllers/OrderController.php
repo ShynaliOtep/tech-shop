@@ -9,7 +9,6 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Wanted;
-use App\Services\Bonus\BonusSystem;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -179,10 +178,6 @@ class OrderController extends Controller
         $aggreementUrl = $aggreementFile->url();
 
         Log::info('settleOrder', [$client, $order]);
-
-        $bonusSystem = new BonusSystem();
-        $bonusSystem->applyBonus($client, $order);
-
 
         $response = sendTelegramMessage(
             "*НОВЫЙ ЗАКАЗ* $order->id
@@ -368,8 +363,6 @@ class OrderController extends Controller
         $order->save();
 
         Log::info('settleOrder', [$client, $order]);
-        $bonusSystem = new BonusSystem();
-        $bonusSystem->applyBonus($client, $order);
 
         $aggreementUrl = $aggreementFile->url();
 

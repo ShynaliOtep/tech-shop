@@ -63,12 +63,14 @@
             <tr style="border-color: #fff">
                 <th>Сумма</th>
                 <th>Тип</th>
+                <th>Источник</th>
                 <th>Дата</th>
             </tr>
             @foreach ($transactions as $transaction)
                 <tr style="border-color: #fff">
                     <td>{{ number_format($transaction->amount, 2) }} ₸</td>
                     <td>{{ $transaction->type == 'deposit' ? 'Поступление' : 'Снятие' }}</td>
+                    <td>{{ $transaction->type == 'order' ? 'Заказ' : 'Рефералная ссылка' }}</td>
                     <td>{{ $transaction->created_at->format('d.m.Y H:i') }}</td>
                 </tr>
             @endforeach

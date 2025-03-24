@@ -230,8 +230,13 @@
         </div>
         <div class="col s12 right-align hide" id="total-sum-of-items" >
             <h5 class="white-text">Итого: <span class="total-cost-holder">0</span> {{__('translations.KZT')}}</h5>
-            <span id="client_bonus_level" class="hide">{{ $client ? \App\Models\Client::getBonusLevelPercent($client['id']) : 5}}</span>
-            <p class="white-text">Бонус после покупки: <span class="bonus-holder">0</span> {{__('translations.KZT')}}</p>
+            @php
+            $bonusPercent = $client ? \App\Models\Client::getBonusLevelPercent($client['id']) : 0
+             @endphp
+            @if($bonusPercent > 0)
+                <span id="client_bonus_level" class="hide">{{ $bonusPercent}}</span>
+                <p class="white-text">Бонус после покупки: <span class="bonus-holder">0</span> {{__('translations.KZT')}}</p>
+            @endif
         </div>
         @auth('clients')
             <div class="col s12 right-align">

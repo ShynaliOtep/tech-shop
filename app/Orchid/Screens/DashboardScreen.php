@@ -5,10 +5,11 @@ namespace App\Orchid\Screens;
 use App\Models\City;
 use App\Models\Order;
 use Illuminate\Support\Carbon;
-use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Fields\DateRange;
 use Orchid\Screen\Screen;
+use Orchid\Support\Color;
 use Orchid\Support\Facades\Layout;
-use Orchid\Screen\TD;
 
 class DashboardScreen extends Screen
 {
@@ -16,44 +17,77 @@ class DashboardScreen extends Screen
 
     public function query(): array
     {
-        $todaySales = Order::where('city_id', City::getPlatformCity())->whereBetween('created_at',[Carbon::today()->startOfDay(), Carbon::today()->endOfDay()])->sum('amount_paid');
-        $unpaidSales = Order::where('city_id', City::getPlatformCity())->whereBetween('created_at',[Carbon::today()->startOfDay(), Carbon::today()->endOfDay()])->where('paid_status', 'unpaid')->sum('amount_unpaid');
-        $totalSales = $todaySales + $unpaidSales;
-        $unpaidOrders = Order::where('city_id', City::getPlatformCity())->whereBetween('created_at',[Carbon::today()->startOfDay(), Carbon::today()->endOfDay()])->where('paid_status', 'unpaid')->get();
+        $cityId = City::getPlatformCity();
+
+        $from = request()->get('date_from', Carbon::today()->toDateString());
+        $to = request()->get('date_to', Carbon::today()->toDateString());
+
+        $start = Carbon::parse($from)->startOfDay();
+        $end = Carbon::parse($to)->endOfDay();
+
+        $daysDiff = $start->diffInDays($end);
+
+        if ($daysDiff === 0) {
+            $groupBy = '%Y-%m-%d %H'; // По часам
+        } elseif ($daysDiff <= 90) {
+            $groupBy = '%Y-%m-%d'; // По дням
+        } else {
+            $groupBy = '%Y-%m'; // По месяцам
+        }
+
+        $salesData = Order::where('city_id', $cityId)
+            ->whereBetween('created_at', [$start, $end])
+            ->selectRaw("strftime(?, created_at) as period, SUM(amount_paid) as total_sales", [$groupBy])
+            ->groupBy('period')
+            ->orderBy('period')
+            ->get()
+            ->pluck('total_sales', 'period')
+            ->toArray();
+        dd($salesData);
 
         return [
-            'todaySales' => $todaySales,
-            'unpaidSales' => $unpaidSales,
-            'totalSales' => $totalSales,
-            'unpaidOrders' => $unpaidOrders,
+            'salesChart' => [
+                'labels' => array_keys($salesData),
+                'data' => array_values($salesData),
+            ],
+            'totalSales' => array_sum($salesData),
+            'date_from' => $start->toDateString(),
+            'date_to' => $end->toDateString(),
         ];
     }
 
-    public function name(): ?string
-    {
-        return "Продажи за сегодня: {$this->query()['todaySales']} тенге (Неоплаченные: {$this->query()['unpaidSales']} тенге)";
-    }
 
     public function layout(): array
     {
         return [
-            Layout::metrics([
-                'Сегодняшняя касса' => 'todaySales',
-                'Неоплаченные заказы' => 'unpaidSales',
-                'Итого' => 'totalSales',
+            Layout::rows([
+                DateRange::make('date_range')
+                    ->title('Выберите диапазон дат')
+                    ->value([
+                        'start' => $this->query()['date_from'],
+                        'end' => $this->query()['date_to'],
+                    ]),
+
+                Button::make('Применить')
+                    ->method('applyFilter')
+                    ->type(Color::PRIMARY),
             ]),
 
-            Layout::table('unpaidOrders', [
-                TD::make('id', 'ID')
-                    ->render(function ($order) {
-                        return Link::make($order->id)
-                            ->route('platform.orders.edit', $order->id);
-                    }),
-                TD::make('customer_name', 'Клиент')->render(fn ($order) => $order->owner->name),
-                TD::make('amount_paid', 'Сумма к оплате')->render(fn ($order) => number_format($order->amount_paid, 0, ',', ' ') . ' ₸'),
-                TD::make('amount_unpaid', 'Не оплаченная сумма')->render(fn ($order) => number_format($order->amount_unpaid, 0, ',', ' ') . ' ₸'),
-                TD::make('created_at', 'Дата')->render(fn ($order) => $order->created_at->format('d.m.Y H:i')),
-            ])->title('Неоплаченные заказы'),
+            Layout::metrics([
+                'Итого за выбранный период' => 'totalSales',
+            ]),
+
+            Layout::chart('salesChart')
+                ->title('График продаж')
+                ->type('line'),
         ];
+    }
+
+    public function applyFilter()
+    {
+        return redirect()->route('platform.analytics', [
+            'date_from' => request('date_range.start'),
+            'date_to' => request('date_range.end'),
+        ]);
     }
 }
