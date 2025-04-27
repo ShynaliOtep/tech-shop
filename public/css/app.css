@@ -1024,8 +1024,18 @@ input[type="radio"][name="rent-type"]:disabled + span {
 
 .bottom-navbar-item .material-icons {
    font-size: 2.6rem;
-    color: #E37509;
+    color: #d79b6c;
+    margin: 0 auto;
+    display: block;
 }
+
+.bottom-navbar-item span{
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    color: #d79b6c;
+}
+
 
 .bonus-transactions-profile {
     color: #fff;
