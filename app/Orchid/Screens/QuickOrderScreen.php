@@ -4,14 +4,15 @@ namespace App\Orchid\Screens;
 
 use App\Models\City;
 use App\Models\Client;
+use App\Models\Good;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Services\Bonus\GoodService;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Select;
@@ -27,6 +28,11 @@ use Orchid\Support\Facades\Toast;
 class QuickOrderScreen extends Screen
 {
     public $name = 'Быстрое оформление заказа';
+
+    public $rentStartDate;
+    public $requestStartTime;
+    public $requstEntDate;
+    public $requestEndTime;
 
     public $showPhoneField = false;
 
@@ -50,19 +56,30 @@ class QuickOrderScreen extends Screen
     public function layout(): iterable
     {
         $itemOptions = Item::all()->pluck('name', 'id')->toArray();
+
+       // dd(session()->get('quick_order_items', ));
+
+        if ($this->query()['client_type'] == 'client') {
+            $forms[] =  Relation::make('order.client_id')
+                ->fromModel(Client::class, 'name')
+                ->help(__('translations.Order client help'))
+                ->required()
+                ->title(__('translations.Client'))
+                ->ajax('asyncUpdateFields');
+        } else {
+            $forms[] = Input::make('order.phone')
+                ->title('Номер телефона')
+                ->mask('+7 (999) 999-99-99') // Формат маски номера
+                ->required();
+            $forms[] = Input::make('order.instagram')
+                ->title('Инстаграм')
+                ->required();
+        }
+        $forms[] = Input::make('order.client_type')
+                        ->value($this->query()['client_type'])
+                        ->hidden();
         return [
-            Layout::rows([
-                Relation::make('order.client_id')
-                    ->fromModel(Client::class, 'name')
-                    ->help(__('translations.Order client help'))
-                    ->required()
-                    ->title(__('translations.Client'))
-                    ->update('dynamicFields', 'asyncUpdateFields'),
-                Input::make('order.phone')
-                    ->title('Номер телефона')
-                    ->mask('+7 (999) 999-99-99') // Формат маски номера
-                    ->required()
-                    ->canSee($this->showPhoneField),
+            Layout::rows(array_merge( $forms ,[
                 Select::make('order.status')
                     ->options([
                         'returned' => __('translations.returned'),
@@ -87,7 +104,8 @@ class QuickOrderScreen extends Screen
                     ->title(__('Не оплаченная сумма'))
                     //  ->help(__('translations.Order agreement id help')),
                     ->type('number'),
-            ]),
+                    ])
+            ),
 
             Layout::legend('order_info', [
                 Sight::make('total_cost', 'Итого')->render(fn () =>session()->get('total_cost', 0)),
@@ -117,6 +135,7 @@ class QuickOrderScreen extends Screen
                         ->placeholder(__('translations.OrderItem rent_start help'))
                         ->required()
                         ->help(__('translations.OrderItem rent_start help'))
+                        ->async()
                         ->format('Y-m-d'),
 
                     Select::make('orderItem.rent_start_time')
@@ -138,14 +157,13 @@ class QuickOrderScreen extends Screen
                         ->title(__('translations.Rent end time'))
                         ->help(__('translations.OrderItem rent_end_time help')),
                     Select::make('orderItem.item_id')
-                        ->options($itemOptions)
+                        ->options($this->getOptions())
                         ->help(__('translations.OrderItem item help'))
                         ->required()
-                        ->title(__('translations.Item')),
+                        ->title(__('translations.Item'))
+                        ->async('loadOptions'),
                     Select::make('orderItem.additionals')
-                        ->options(
-                            $itemOptions
-                        )
+                        ->options($this->getOptions())
                         ->multiple()
                         ->help(__('translations.OrderItem additional help'))
                         ->title(__('translations.Additionals')),
@@ -158,6 +176,7 @@ class QuickOrderScreen extends Screen
                         ->required()
                         ->help(__('translations.OrderItem is_additional help')),
                 ]),
+              //  ItemSelectListener::class
             ])->title('Добавить товар')
                 ->applyButton('Добавить')
                 ->closeButton('Отмена')
@@ -169,13 +188,40 @@ class QuickOrderScreen extends Screen
     public function query(): array
     {
         return [
-            'selectedItems' => session()->get('quick_order_items', [])
+            'client_type' => request()->get('client_type'),
+            'selectedItems' => session()->get('quick_order_items', []),
+        ];
+    }
+
+    public function asyncGetOptions($rent_start_date, $rent_start_time, $rent_end_date, $rent_end_time)
+    {
+        return [
+            'rent_start_date' => $rent_start_date,
+            'rent_start_time' => $rent_start_time,
+            'rent_end_date' => $rent_end_date,
+            'rent_end_time' => $rent_end_time,
+        ];
+    }
+
+    public function getOptions(): array
+    {
+        $itemOptions = Good::all()->pluck('name_ru', 'id')->toArray();
+        return $itemOptions;
+    }
+
+    public function asyncData(Request $request): array
+    {
+        return [
+            'rentStartDate' => $request->input('rent_start_date'),
+            'rentStartTime' => $request->input('rent_start_time'),
+            'rentEndDate' => $request->input('rent_end_date'),
+            'rentEndTime' => $request->input('rent_end_time'),
         ];
     }
 
     public function asyncUpdateFields(Request $request): array
     {
-        $clientId = $request->get('order.client_id');
+        $clientId = $request->get('clint_type');
 
         return [
             'showPhoneField' => $clientId === 1065, // Показываем поле, если выбран "Гость"
@@ -186,26 +232,6 @@ class QuickOrderScreen extends Screen
     {
         session(['showPhoneField' => $request->input('client') === 'guest']);
     }
-
-
-
-//    public function query(Request $request): array
-//    {
-//        $startDate = $request->input('orderItem.rent_start_date');
-//        $startTime = $request->input('orderItem.rent_start_time');
-//        $endDate = $request->input('orderItem.rent_end_date');
-//        $endTime = $request->input('orderItem.rent_end_time');
-//        //dd($startDate, $startTime, $endDate, $endTime);
-//        $items = [];
-//        if ($startDate && $startTime && $endDate && $endTime) {
-//            $items = (new GoodService())->getAllAvailableItems($startDate, $startTime, $endDate, $endTime);
-//        }
-//
-//        return [
-//            'rent_start_date' => $startDate,
-//            'items' => $items,
-//        ];
-//    }
 
     public function getAvailableItems()
     {
@@ -229,19 +255,27 @@ class QuickOrderScreen extends Screen
         return [];
     }
 
-//    public function query(): iterable
-//    {
-//        return [
-//            'selectedItems' => session()->get('quick_order_items', []),
-//        ];
-//    }
-
     // ✅ Добавление товара в список
     public function addItem(Request $request)
     {
         $data = $request->all();
 
-        $item = Item::where('id', $data['orderItem']['item_id'])->first();
+        $good = Good::query()->find($data['orderItem']['item_id']);
+
+        $itemId = $this->getAvailableItemsByTime(
+            $data['orderItem']['item_id'],
+            $data['orderItem']['rent_start_date'],
+            $data['orderItem']['rent_start_time'],
+            $data['orderItem']['rent_end_date'],
+            $data['orderItem']['rent_end_time'],
+        );
+
+        if (!$itemId) {
+            Toast::error('Товар недоступен на это время!');
+            return;
+        }
+
+        $item = Item::where('id', $itemId)->first();
 
 
 
@@ -272,7 +306,7 @@ class QuickOrderScreen extends Screen
             'rent_start_time' => $data['orderItem']['rent_start_time'],
             'rent_end_date' => $data['orderItem']['rent_end_date'],
             'rent_end_time' => $data['orderItem']['rent_end_time'],
-            'item_id' => $data['orderItem']['item_id'],
+            'item_id' => $itemId,
             'additionals' => $data['orderItem']['additionals'] ?? null,
             'is_additional' => $data['orderItem']['is_additional'],
             'name' => $item->good->name_ru,
@@ -315,7 +349,35 @@ class QuickOrderScreen extends Screen
 
     public function saveOrder(Request $request)
     {
-        $order = Order::create($request->input('order'));
+      //  $order = Order::create($request->input('order'));
+
+        $requestOrderData = $request->input('order');
+        if ($requestOrderData['client_type'] == 'client') {
+            $clientId = $requestOrderData['client_id'];
+        } else {
+            $id = rand(1000000, 10000000);
+            $client = Client::query()->create([
+                'name' => 'Guest' . $id,
+                'phone' => $requestOrderData['phone'],
+                'instagram' => $requestOrderData['instagram'],
+                'discount' => 0,
+                'email' => 'guest' . $id . '@mail.com',
+                'iin' => $id,
+                'confirmation_code' => '1111',
+                'email_confirmed' => 1,
+                'blocked' => 0,
+                'password' => bcrypt($id),
+            ]);
+            $clientId = $client->id;
+        }
+
+        $order = Order::create([
+            'status' => $requestOrderData['status'],
+            'paid_status' => $requestOrderData['paid_status'],
+            'amount_unpaid' => $requestOrderData['amount_unpaid'],
+            'client_id' => $clientId,
+        ]);
+
         $items1 = session()->get('quick_order_items', []);
         $totalSum = 0;
 
@@ -355,29 +417,30 @@ class QuickOrderScreen extends Screen
                 'rent_end_date' => $dateObj2->format('Y-m-d'),
                 'rent_end_time' => $dateObj2->format('H:i:s'),
             ]);
+            if ($item['additionals']) {
+                foreach ($item['additionals'] as $additionalId) {
+                    $additional = Item::query()->find($additionalId)->load('good');
 
-//            foreach ($item['additionals'] as $additionalId) {
-//                $additional = Item::query()->find($additionalId)->load('good');
-//
-//                $additionalCost = (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) * $diffInDays;
-//
-//                $totalSum += $additionalCost;
-//
-//                OrderItem::query()->create([
-//                    'item_id' => $additionalId,
-//                    'order_id' => $order->id,
-//                    'parent_order_item_id' => $parentOrderItem->id,
-//                    'status' => 'waiting',
-//                    'amount_of_days' => $diffInDays,
-//                    'is_additional' => true,
-//                    'additionals' => [],
-//                    'amount_paid' => $additionalCost,
-//                    'rent_start_date' => $item['rent_start_date'],
-//                    'rent_start_time' =>  $item['rent_start_date'],
-//                    'rent_end_date' =>  $item['rent_start_date'],
-//                    'rent_end_time' =>  $item['rent_start_date'],
-//                ]);
-//            }
+                    $additionalCost = (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) * $diffInDays;
+
+                    $totalSum += $additionalCost;
+
+                    OrderItem::query()->create([
+                        'item_id' => $additionalId,
+                        'order_id' => $order->id,
+                        'parent_order_item_id' => $parentOrderItem->id,
+                        'status' => 'waiting',
+                        'amount_of_days' => $diffInDays,
+                        'is_additional' => true,
+                        'additionals' => [],
+                        'amount_paid' => $additionalCost,
+                        'rent_start_date' => $item['rent_start_date'],
+                        'rent_start_time' =>  $item['rent_start_date'],
+                        'rent_end_date' =>  $item['rent_start_date'],
+                        'rent_end_time' =>  $item['rent_start_date'],
+                    ]);
+                }
+            }
 
             $totalSum += $currentItemCost;
         }
@@ -385,10 +448,12 @@ class QuickOrderScreen extends Screen
         $order->amount_paid = $totalSum;
         $order->save();
 
-        $aggreementFile = makeOrderAgreement($order->fresh(['orderItems', 'owner']));
+        if ($requestOrderData['client_type'] == 'client') {
+            $aggreementFile = makeOrderAgreement($order->fresh(['orderItems', 'owner']));
 
-        $order->attachment()->syncWithoutDetaching($aggreementFile->id);
-        $order->agreement_id = $order->id;
+            $order->attachment()->syncWithoutDetaching($aggreementFile->id);
+            $order->agreement_id = $order->id;
+        }
 
         $order->rent_end_date = $order->orderItems()->max('rent_end_date');
         $order->rent_start_date = $order->orderItems()->min('rent_start_date');
@@ -417,5 +482,54 @@ class QuickOrderScreen extends Screen
         }
 
         return $arr;
+    }
+
+    public function getAvailableItemsByTime(
+        int $id,
+            $startDate,
+            $startTime,
+            $endDate,
+            $endTime,
+    )
+    {
+        $good = Good::query()->find($id);
+
+        $conflictingItemIds = DB::select("
+    SELECT order_items.item_id
+    FROM order_items
+    JOIN items ON order_items.item_id = items.id
+    WHERE items.good_id = :good_id
+    AND order_items.status IN ('in_rent', 'waiting', 'confirmed')
+    AND (
+        (order_items.rent_start_date < :end_date OR (order_items.rent_start_date = :end_date_v2 AND order_items.rent_start_time <= :end_time))
+        AND
+        (order_items.rent_end_date > :start_date OR (order_items.rent_end_date = :start_date_v2 AND order_items.rent_end_time >= :start_time))
+    )
+", [
+            'good_id' => $good->id,
+            'start_date' => $startDate,
+            'start_date_v2' => $startDate,
+            'start_time' => $startTime,
+            'end_date' => $endDate,
+            'end_date_v2' => $endDate,
+            'end_time' => $endTime,
+        ]);
+        $conflictingItemIds = array_map(function ($item) {
+            return $item->item_id;
+        }, $conflictingItemIds);
+
+        $items = $good->items()->whereNotIn('id', $conflictingItemIds)->with('good')->get();
+
+        foreach ($items as $item){
+            $item->good->name = $item->good['name_'.session()->get('locale', 'ru')];
+        }
+
+        if ($items) {
+            foreach ($items as $item){
+                return $item->id;
+            }
+        }
+
+        return null;
     }
 }

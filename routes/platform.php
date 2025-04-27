@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\Carousel\CarouselEditScreen;
+use App\Orchid\Screens\Carousel\CarouselListScreen;
 use App\Orchid\Screens\CitySelectorScreen;
 use App\Orchid\Screens\Client\ClientEditScreen;
 use App\Orchid\Screens\Client\ClientListScreen;
@@ -17,6 +19,7 @@ use App\Orchid\Screens\Order\OrderListScreen;
 use App\Orchid\Screens\OrderItem\OrderItemEditScreen;
 use App\Orchid\Screens\OrderItem\OrderItemListScreen;
 use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\QuickOrderClientScreen;
 use App\Orchid\Screens\QuickOrderScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
@@ -251,7 +254,15 @@ Route::screen('/withdraw-request/{id}', WithdrawRequestViewScreen::class)
 
 Route::screen('city', CitySelectorScreen::class)->name('platform.city');
 
+Route::screen('carousel', CarouselListScreen::class)->name('platform.carousel.list');
+Route::screen('carousel/{carousel?}/edit', CarouselEditScreen::class)->name('platform.carousel.edit');
+Route::screen('carousel/create', CarouselEditScreen::class)->name('platform.carousel.create');
+
+
 Route::screen('quick-order', QuickOrderScreen::class)
     ->name('platform.quick-order');
+
+Route::screen('quick-order-client', QuickOrderClientScreen::class)
+    ->name('platform.quick-order-client');
 //    ->breadcrumbs(fn ($trail) => $trail->parent('platform.main')->push('Быстрое оформление заказа'));
 

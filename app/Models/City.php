@@ -21,7 +21,8 @@ class City extends Model
 
     public static function getPlatformCity()
     {
-        return session('selected_city', 'Алматы');
+
+        return session('selected_city', self::DEFAULT);
     }
 
     public static function setSiteCity($city)

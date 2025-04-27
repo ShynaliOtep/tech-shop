@@ -329,4 +329,5 @@ return [
     'ItemSerialHelp' => 'unique item serial',
     'Almaty' => 'Almaty',
     'Astana' => 'Astana',
+    'news block' => 'News'
 ];

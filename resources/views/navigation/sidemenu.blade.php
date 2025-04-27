@@ -1,6 +1,6 @@
 <ul id="slide-out" class="sidenav sidenav-fixed main-color">
     <div class="logo-wrapper center">
-        <a href="/"><img src="{{asset('img/logo.jpg')}}" class="logo"/></a>
+        <a href="/"><img src="{{asset('img/pixellogo.png')}}" class="logo"/></a>
     </div>
     <div class="container">
         <hr>
@@ -31,7 +31,7 @@
         @foreach($goodTypes as $goodType)
             <li class="menu-item">
                 <a href="{{route('goodList', $goodType->code, false)}}"
-                   class="white-text waves-effect waves-light menu-item-link waves-ripple">
+                   class="white-orange-text waves-effect waves-light menu-item-link waves-ripple">
                     <span class="menu-item-content">
                         @if(Request::is('category/' . $goodType->code))
                             <span class="btn-medium btn-floating orange darken-4">
@@ -40,7 +40,7 @@
                             <span class="orange-text">{{__( 'translations.'. $goodType->code)}}</span>
                         @else
                             <span class="btn-medium btn-floating grey darken-4">
-                                <i class="material-icons">{{$goodType->icon}}</i>
+                                <i class="material-icons white-orange-text">{{$goodType->icon}}</i>
                             </span>
                             <span class="">{{__( 'translations.'. $goodType->code)}}</span>
                         @endif

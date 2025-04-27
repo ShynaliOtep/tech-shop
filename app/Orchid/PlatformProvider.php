@@ -87,7 +87,13 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.analytics'),
             Menu::make('Заявки на вывод')
                 ->icon('wallet')
-                ->route('platform.withdraw.requests')
+                ->route('platform.withdraw.requests'),
+            Menu::make('Карусель')
+                ->icon('bar-chart')
+                ->route('platform.carousel.list'),
+             Menu::make('Быстрое оформление заказа')
+                 ->icon('bar-chart')
+                 ->route('platform.quick-order-client')
 
 
         ];

@@ -11,14 +11,15 @@ class BonusSystem
 {
     public function applyBonus(Client $user, Order $order)
     {
-        $bonusPercentage = match ($user->bonus->level) {
-            1 => 0,
-            2 => 5, // 5% на 1 уровне
-            3 => 7, // 7% на 2 уровне
-            5 => 10, // 10% на 3 уровне
-        };
+        $bonusLevel = BonusLevels::levelMatch($user->bonus->level);
 
-        $bonusAmount = $order->amount_paid * ($bonusPercentage / 100); // Получаем сумму заказа
+        $percent = $bonusLevel->percent;
+
+        if ($user->bonus_percent  && $user->bonus_percent > 0) {
+            $percent = $user->bonus_percent;
+        }
+
+        $bonusAmount = $order->amount_paid * ($percent / 100); // Получаем сумму заказа
 
         // Записываем бонусную транзакцию
         BonusTransaction::create([
@@ -45,12 +46,8 @@ class BonusSystem
     private function updateUserBonusLevel(Client $user)
     {
         $totalEarned = $user->bonus->total_earned;
-
-        if ($totalEarned >= 1000) {
-            $user->bonus->update(['level' => 3]);
-        } elseif ($totalEarned >= 500) {
-            $user->bonus->update(['level' => 2]);
-        }
+        $bonusLevel = BonusLevels::getLevelFromEarned($totalEarned);
+        $user->bonus->update(['level' => $bonusLevel->level]);
     }
 
     private function applyReferralBonus(int $referrerId, Order $order)

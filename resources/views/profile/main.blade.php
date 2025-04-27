@@ -4,7 +4,7 @@
     <h5 class="white-text">Ваш профиль:</h5>
 
     <div class="profile-bonus-block">
-        <p class="white-text">Ваш бонус: <span>{{$client->getBonus()->balance}}</span> тенге</p>
+        <p class="white-text">Ваш бонус: <span>{{$client->getAvailableBalance()}}</span> тенге</p>
     </div>
     <div class="referral-block">
         <label class="white-text">Ваша реферальная ссылка:</label>
@@ -55,6 +55,7 @@
         ->orderByDesc('created_at')
         ->get();
         $availableBalance = $client->getAvailableBalance();
+        $request = \App\Models\BonusWithdrawRequest::where('user_id', $client->id)->where('status', 'pending')->get();
     @endphp
 
     <div>
@@ -83,6 +84,8 @@
             <input type="hidden" name="amount" value="{{ $availableBalance }}">
             <button class="orange white-text darken-4 " style="border-radius: 16px; border: none; padding: 5px 10px; cursor: pointer" type="submit">Снять {{ number_format($availableBalance, 2) }} ₸</button>
         </form>
+    @elseif($request)
+        <p style="color: #fff">Ваша заявка в обработке</p>
     @else
         <p style="color: red">Недостаточно средств для вывода</p>
     @endif

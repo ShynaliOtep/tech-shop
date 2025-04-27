@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers as HttpControllers;
+use App\Http\Controllers\Api\CarouselController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\ClientController;
+use App\Http\Controllers\BonusController;
 use App\Http\Controllers\CityController;
 use App\Models\City;
 use App\Models\GoodType;
@@ -38,7 +42,7 @@ Route::prefix('/')->group(function () {
 
 
     Route::get('/cart', [HttpControllers\Vue\CartController::class, 'index'])->name('vue.cart');
-
+    Route::get('/bonus', [HttpControllers\Vue\BonusController::class, 'index'])->name('vue.bonus');
 
 });
 
@@ -124,10 +128,29 @@ Route::post('/cart/update-quantity', function (Request $request) {
 
 Route::get('categories', [HttpControllers\GoodController::class, 'categories'])->name('view.Categories');
 
-
 Route::get('{good}', [HttpControllers\GoodController::class, 'view'])->name('viewGood');
 Route::get('autofill/{goodName}', [HttpControllers\GoodController::class, 'autofill'])->name('autofill');
 Route::post('good/{id}/get-items', [HttpControllers\GoodController::class, 'getAvailableItems'])->name('getAvailableItems');
+
+
+Route::prefix('/api')->group(function () {
+    Route::post('/bonus/withdraw', [BonusController::class, 'requestWithdraw'])->middleware('auth');
+
+    Route::get('/cart', [CartController::class, 'cart']);
+
+    Route::post('/cart/items', [CartController::class, 'cartItems']);
+    Route::post('/get-available-additions', [CartController::class, 'getAvailableAdditionals']);
+
+
+    Route::get('/client', [ClientController::class, 'index']);
+    Route::post('/order', [HttpControllers\Api\OrderController::class, 'index']);
+
+    Route::get('/carousels', [CarouselController::class, 'list']);
+
+    Route::post('/get-available-count/{id}', [CartController::class, 'getAvailableItemsByCount']);
+
+});
+
 
 
 

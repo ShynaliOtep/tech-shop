@@ -5,6 +5,8 @@ namespace App\Orchid\Screens\Client;
 use App\Mail\ConfirmationMail;
 use App\Models\Client;
 use App\Models\Wanted;
+use App\Services\Bonus\BonusLevel;
+use App\Services\Bonus\BonusLevels;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -30,6 +32,7 @@ class ClientEditScreen extends Screen
      */
     public function query(Client $client): array
     {
+        $client->load('bonus');
         $client->load('attachment');
 
         return [
@@ -80,6 +83,12 @@ class ClientEditScreen extends Screen
      */
     public function layout(): array
     {
+        $bonusLevels = BonusLevels::levels();
+        $bonusOptions = [];
+        foreach ($bonusLevels as $bonusLevel) {
+            $bonusOptions[$bonusLevel->level] = $bonusLevel->name . ' ' . $bonusLevel->percent . '%';
+        }
+
         return [
             Layout::rows([
                 Input::make('client.name')
@@ -92,11 +101,13 @@ class ClientEditScreen extends Screen
                     ->help(__('translations.Client email help'))
                     ->required(),
 
-                Input::make('client.discount')
-                    ->title(__('translations.Discount'))
-                    ->help(__('translations.Client discount help'))
-                    ->type('number')
-                    ->required(),
+                Input::make('client.bonus_percent')
+                    ->title('Процент бонуса')
+                    ->type('number'),
+
+                Select::make('client.bonus.level')
+                    ->options($bonusOptions)
+                    ->title('Уровень бонуса'),
 
                 Input::make('client.iin')
                     ->title(__('translations.Iin'))
@@ -156,6 +167,11 @@ class ClientEditScreen extends Screen
     public function createOrUpdate(Client $client, Request $request)
     {
         $client->fill($request->except('client.attachment', 'client.password1')['client']);
+
+        $client->bonus()->updateOrCreate(
+            ['user_id' => $client->id],
+            ['level' => $request->input('client.bonus.level')]
+        );
 
         $client->confirmation_code = Str::random(10);
         if (($request->input('client')['password1'])) {

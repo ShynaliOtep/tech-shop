@@ -29,6 +29,11 @@
                     </i>
                 </a>
             @endguest
+                @if(isset($isNew) && $isNew)
+                    <a class="btn-floating add-to-news-btn btn-large halfway-fab waves-effect waves-light darken-4" data-product-id="{{$good->id}}">
+                        New
+                    </a>
+                @endif
         </div>
         <a href="{{route('viewGood', $good)}}">
         <div class="card-content">
@@ -62,7 +67,7 @@
         </a>
         <a class="add-to-cart-btn waves-effect waves-light orange darken-4 good-add-to-card"
            data-product-id="{{ $good->id }}">
-            <span class="default-text">Добавить в корзину</span>
+            <span class="default-text add-to-cart-btn-text">Добавить в корзину</span>
             <span class="cart-controls" style="display: none;">
                 <i class="add-to-cart-btn-delete tiny material-icons">delete</i>
                 <span class="add-to-cart-btn-minus tiny material-icons">-</span>

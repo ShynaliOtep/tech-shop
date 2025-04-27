@@ -1,9 +1,18 @@
 import { createApp } from 'vue';
+import {createPinia} from 'pinia'
 import CartPage from './pages/CartPage.vue';
 import i18n from './i18n.js'
+import ImageCarousel from "./components/ImageCarousel.vue";
+import BonusPage from "./pages/BonusPage.vue";
+import BonusPage2 from "./pages/BonusPage2.vue"
+
+const pinia = createPinia();
 
 const components = {
     'cart-page': CartPage,  // Добавь сюда другие компоненты, если нужно
+    'carousel': ImageCarousel,
+    'bonus-page-old': BonusPage,
+    'bonus-page': BonusPage2
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(selector).forEach((el) => {
             const app = createApp(components[selector]);
             app.use(i18n); // Подключаем i18n
+            app.use(pinia)
             app.mount(el);
             console.log(`Vue смонтирован на ${selector}`);
         });

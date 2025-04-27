@@ -15,8 +15,13 @@ body {
 .add-to-cart-btn:not(.cart-active) .add-to-cart-btn-count,
 .add-to-cart-btn:not(.cart-active) .add-to-cart-btn-plus {
     display: none;
+    padding-bottom: 10px !important;
 }
 
+.add-to-cart-btn-text {
+    display: block;
+    padding-bottom: 10px !important;
+}
 
 .hide-desktop {
     display: none;
@@ -26,19 +31,32 @@ body {
     border: none;
     box-shadow: none;
 }
+.new-item {
+    flex: 0 0 auto; /* Предотвращает изменение размеров элементов */
+    width: 200px;   /* Фиксированная ширина каждого блока */
+    margin-right: 10px; /* Отступ между блоками */
+}
 
 .add-to-cart-btn-delete {
     margin-top: 5px;
     float: left;
+    color: #fff;
+    padding: 0 30px 10px;
 }
 .add-to-cart-btn-minus {
     margin-top: -5px;
     float: left;
+    color: #fff;
+    padding: 0 30px 10px;
 }
-
+.add-to-cart-btn {
+    color: #fff;
+}
 .add-to-cart-btn-plus {
     float: right;
     margin-top: -5px;
+    color: #fff;
+    padding: 0 30px 10px;
 }
 
 .no-margin {
@@ -193,11 +211,19 @@ header, .main {
     color: #edeef0 !important;
 }
 
+.add-to-news-btn {
+    position: absolute;
+    /*right: 10px;*/
+    /*top: 10px;*/
+    color: #edeef0 !important;
+    text-transform: none !important;
+}
+
 .good-add-to-card {
     width: 90%;
     display: block;
-    padding: 10px 20px;
-    color: #000000;
+    padding: 10px 0 0;
+    color: #ffffff;
     text-align: center;
     border-radius: 10px;
     margin: 10px auto 0;
@@ -270,6 +296,10 @@ header, .main {
 .card-presenter-image {
     border-top-left-radius: 8px !important;
     border-top-right-radius: 8px !important;
+}
+
+.white-orange-text {
+    color: #D79B6C !important;
 }
 
 .modal-btn {
@@ -762,8 +792,30 @@ input[type="checkbox"]:checked + span:not(.lever)::before {
     font-size: calc(0.5vw + 0.5em);
 }
 
+.order-title {
+    font-size: 16px;
+}
+
 .order-wrapper {
-    border: 1px solid grey;
+
+}
+.order-date {
+    font-weight: 300;
+    font-size: 14px;
+    color: #fff;
+}
+
+.order-text {
+    color: #fff;
+    font-size: 14px;
+}
+
+.order-main-block {
+    display: flex;
+}
+.order-main-block img {
+    width: 17%;
+    padding: 10px 20px;
 }
 
 .order-view-wrapper {
@@ -971,6 +1023,36 @@ input[type="radio"][name="rent-type"]:disabled + span {
     color: #fff;
 }
 
+.diamond {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #000000; /* тёмный цвет как на изображении */
+    clip-path: polygon(
+        50% 0%,    /* верх */
+        65% 35%,   /* верх-право */
+        100% 50%,  /* право */
+        65% 65%,   /* низ-право */
+        50% 100%,  /* низ */
+        35% 65%,   /* низ-лево */
+        0% 50%,    /* лево */
+        35% 35%    /* верх-лево */
+    );
+}
+
+.head-bonus-button {
+    margin-top: 5px;
+    display: block;
+    width: 150px;
+    background-color: #d79b6c !important;
+    border: 1px solid transparent;
+    border-radius: 15px;
+    color: #000000;
+    font-size: 13px;
+    line-height: 13px;
+    padding: 10px;
+    transition: all .25s;
+}
 
 @media (max-width: 600px) {
     .hide-desktop {

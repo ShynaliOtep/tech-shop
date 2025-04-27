@@ -4,10 +4,13 @@ namespace App\Orchid\Screens;
 
 use App\Models\City;
 use App\Models\Order;
+use App\Orchid\Layouts\Dashboard\SalesDataChartLayout;
 use Illuminate\Support\Carbon;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\DateRange;
 use Orchid\Screen\Screen;
+use Orchid\Screen\TD;
 use Orchid\Support\Color;
 use Orchid\Support\Facades\Layout;
 
@@ -43,14 +46,27 @@ class DashboardScreen extends Screen
             ->get()
             ->pluck('total_sales', 'period')
             ->toArray();
-        dd($salesData);
+
+        $unpaidSales = Order::where('city_id', City::getPlatformCity())->whereBetween('created_at',[$start->startOfDay(), $end->endOfDay()])->where('paid_status', 'unpaid')->sum('amount_unpaid');
+        $unpaidOrders = Order::where('city_id', City::getPlatformCity())->whereBetween('created_at',[$start->startOfDay(), $end->endOfDay()])->where('paid_status', 'unpaid')->get();
+
+//      dump( [
+//        'labels' => array_keys($salesData),
+//        'data' => array_values($salesData),
+//    ]);
+
 
         return [
             'salesChart' => [
-                'labels' => array_keys($salesData),
-                'data' => array_values($salesData),
+                [
+                    'labels' => array_keys($salesData),
+                    'values' => array_values($salesData),
+                ]
             ],
+
             'totalSales' => array_sum($salesData),
+            'unpaidSales' => $unpaidSales,
+            'unpaidOrders' => $unpaidOrders,
             'date_from' => $start->toDateString(),
             'date_to' => $end->toDateString(),
         ];
@@ -75,11 +91,22 @@ class DashboardScreen extends Screen
 
             Layout::metrics([
                 'Итого за выбранный период' => 'totalSales',
+                'Неоплаченные заказы' => 'unpaidSales',
             ]),
 
-            Layout::chart('salesChart')
-                ->title('График продаж')
-                ->type('line'),
+            Layout::table('unpaidOrders', [
+                TD::make('id', 'ID')
+                    ->render(function ($order) {
+                        return Link::make($order->id)
+                            ->route('platform.orders.edit', $order->id);
+                    }),
+                TD::make('customer_name', 'Клиент')->render(fn ($order) => $order->owner->name),
+                TD::make('amount_paid', 'Сумма к оплате')->render(fn ($order) => number_format($order->amount_paid, 0, ',', ' ') . ' ₸'),
+                TD::make('amount_unpaid', 'Не оплаченная сумма')->render(fn ($order) => number_format($order->amount_unpaid, 0, ',', ' ') . ' ₸'),
+                TD::make('created_at', 'Дата')->render(fn ($order) => $order->created_at->format('d.m.Y H:i')),
+            ])->title('Неоплаченные заказы'),
+
+            SalesDataChartLayout::make('salesChart', 'График продаж')
         ];
     }
 

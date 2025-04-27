@@ -35,7 +35,16 @@ class GoodController extends Controller
             ])
             ->get();
 
-        return view('good', compact('viewedGoodTypes'));
+        $news = Good::query()
+            ->whereHas('items', function ($itemQuery) use ($cityId) {
+                $itemQuery->where('status', 'available')
+                    ->where('city_id', $cityId);
+            })->with('attachment')
+            ->orderBy('created_at', 'desc')
+            ->limit(20)
+            ->get();
+        $carousel = true;
+        return view('good', compact('viewedGoodTypes', 'news', 'carousel'));
     }
 
     public function view(Good $good)

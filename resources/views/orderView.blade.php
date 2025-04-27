@@ -9,6 +9,14 @@
                     {{__('translations.Your order consists of the following goods')}}:
                 </h5>
                 @foreach($order->orderItems as $index => $item)
+                    @php
+                    if (isset($additionals)) {
+                         $additionals = $item->additionals;
+                    if (is_string($additionals)) {
+                        $additionals = json_decode($item->additionals, true);
+                    }
+                    }
+                    @endphp
                     <div class="order-item-wrapper z-depth-5">
                         <div class="row">
                             <div class="col s12 m9">
@@ -18,10 +26,10 @@
                                 <p class="white-text">{{__('translations.Good type')}}: <a href="{{route('goodList', $item->item->good->goodType->code)}}" class="orange-text">{{$item->item->good->goodType->name}}</a></p>
                                 <p class="white-text">{{__('translations.Rent start time')}}: <span class="orange-text">{{$item->rent_start_date}} {{$item->rent_start_time}}</span></p>
                                 <p class="white-text">{{__('translations.Rent end time')}}: <span class="orange-text">{{$item->rent_end_date}} {{$item->rent_end_time}}</span></p>
-                                @if (isset($item->additionals) && count(json_decode($item->additionals)) > 0)
+                                @if (isset($additionals) &&  count($additionals) > 0)
                                     <p class="white-text">Дополнительные товары:</p>
                                     <ul>
-                                        @foreach(\App\Models\Good::query()->whereIn('id', json_decode($item->additionals))->get() as $additional)
+                                        @foreach(\App\Models\Good::query()->whereIn('id',$additionals)->get() as $additional)
                                             <li class="white-text">{{$additional['name_' . session()->get('locale', 'ru')]}} <span class="grey-text"> (+{{($additional->additional_cost ?? $additional->cost) * $item->amount_of_days}} тг)</span></li>
                                         @endforeach
                                     </ul>

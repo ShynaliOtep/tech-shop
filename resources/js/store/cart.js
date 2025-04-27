@@ -13,14 +13,14 @@ const Cart = {
             cart[productId].quantity += 1;
         }
         localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
-        setTimeout(sendCartData, 1000);
+        // setTimeout(sendCartData, 1000);
     },
 
     removeFromCart(productId) {
         let cart = this.getCart();
         delete cart[productId];
         localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
-        setTimeout(sendCartData, 1000);
+        //setTimeout(sendCartData, 1000);
     },
 
     decreaseQuantity(productId) {
@@ -33,7 +33,7 @@ const Cart = {
             }
             localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
         }
-        setTimeout(sendCartData, 1000);
+       //setTimeout(sendCartData, 1000);
     },
 
     getTotalItems() {
@@ -46,7 +46,12 @@ const Cart = {
            return cart[productId].quantity;
         }
         return 0;
+    },
+    clearCart() {
+        localStorage.removeItem(this.CART_KEY);
     }
 };
+
+
 
 export default Cart;

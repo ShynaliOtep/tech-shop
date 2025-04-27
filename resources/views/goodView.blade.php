@@ -64,11 +64,22 @@
         <div class="col s12">
             <hr>
             <div class="row view-btns-holder">
-                <div class="col s6 center">
-                    <a class="btn-large orange darken-4 auth-link confirm-order-btn no-margin add-to-cart-btn"
+                <div class="col s4 center">
+{{--                    <a class="btn-large orange darken-4 auth-link confirm-order-btn no-margin add-to-cart-btn"--}}
+{{--                       data-product-id="{{ $good->id }}">--}}
+{{--                        <span class="hide-on-med-and-down good-view-action-btn">{{__('translations.To cart')}}</span>--}}
+{{--                        <i class="material-icons">add_shopping_cart</i>--}}
+{{--                    </a>--}}
+
+                    <a class="add-to-cart-btn waves-effect waves-light orange darken-4 good-add-to-card"
                        data-product-id="{{ $good->id }}">
-                        <span class="hide-on-med-and-down good-view-action-btn">{{__('translations.To cart')}}</span>
-                        <i class="material-icons">add_shopping_cart</i>
+                        <span class="default-text add-to-cart-btn-text">Добавить в корзину</span>
+                        <span class="cart-controls" style="display: none;">
+                        <i class="add-to-cart-btn-delete tiny material-icons">delete</i>
+                        <span class="add-to-cart-btn-minus tiny material-icons">-</span>
+                        <span class="add-to-cart-btn-count">0</span>
+                        <span class="add-to-cart-btn-plus tiny material-icons">+</span>
+                    </span>
                     </a>
                 </div>
                 <div class="col s6 center">

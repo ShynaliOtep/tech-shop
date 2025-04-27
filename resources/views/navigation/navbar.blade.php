@@ -19,7 +19,13 @@
                 </div>
                 <ul class="right nav-buttons hide-mobile">
                     <li class="nav-element center">
-                        <a href="{{route('cart')}}" class="nav-link cart-link">
+                        <a href="/bonus" class="head-bonus-button">
+                            <div class="diamond"></div>
+                            О бонусах
+                        </a>
+                    </li>
+                    <li class="nav-element center">
+                        <a href="{{route('vue.cart')}}" class="nav-link cart-link">
                             <i class="material-icons left navbar-icon">
                                 shopping_cart
                             </i>

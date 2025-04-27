@@ -340,5 +340,6 @@ return [
     'Astana' => 'Астана',
     'approved' => 'Подтвержден',
     'deposit' => 'Поступление',
-    'withdraw' => 'Снятие'
+    'withdraw' => 'Снятие',
+    'news block' => 'Новинки'
 ];
