@@ -21,27 +21,6 @@ services:
                 aliases:
                     - "${APP_DOMAIN}"
 
-    mysql:
-        image: mysql:8.0.36
-        restart: always
-        tty: true
-        command:
-            - --character-set-server=utf8mb4
-            - --collation-server=utf8mb4_unicode_ci
-            - --skip-character-set-client-handshake
-            - --default-authentication-plugin=mysql_native_password
-        environment:
-            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-            MYSQL_DATABASE: "${DB_DATABASE}"
-            MYSQL_USER: "${DB_USERNAME}"
-            MYSQL_PASSWORD: "${DB_PASSWORD}"
-        ports:
-            - "${COMPOSE_GATEWAY}:3306:3306"
-        volumes:
-            - "${COMPOSE_STORAGE_DIR}/mysql:/var/lib/mysql"
-        networks:
-            - app-network
-
     php:
         restart: always
         tty: true
@@ -60,10 +39,6 @@ services:
             - "${COMPOSE_APP_DIR}/../database.sqlite:${COMPOSE_CONTAINER_DIR}/database/database.sqlite"
             - "${COMPOSE_APP_DIR}/.development/docker/php/php.ini:/usr/local/etc/php/php.ini"
             - "${COMPOSE_APP_DIR}/.development/docker/php/docker-entrypoint.sh:/docker-entrypoint.sh"
-        depends_on:
-            - mysql
-        links:
-            - mysql
         networks:
             - app-network
         dns:
