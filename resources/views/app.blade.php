@@ -35,9 +35,9 @@
         @include('navigation.bottom-navbar')
     </div>
 </div>
-<script src="{{asset('js/materialize.js')}}"></script>
 <script src="{{asset('js/script.js')}}"></script>
 <script src="{{asset('js/dropdown.js')}}"></script>
+<script src="{{asset('js/materialize.js')}}"></script>
 @stack('scripts')
 </body>
 </html>

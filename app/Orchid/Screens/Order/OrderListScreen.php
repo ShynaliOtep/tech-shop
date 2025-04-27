@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\Order;
 
+use App\Models\City;
 use App\Models\Client;
 use App\Models\Item;
 use App\Models\Order;
@@ -22,7 +23,7 @@ class OrderListScreen extends Screen
     public function query(): array
     {
         return [
-            'orders' => Order::filters()->defaultSort('id', 'DESC')->paginate(),
+            'orders' => Order::where('city_id', City::getPlatformCity())->filters()->defaultSort('id', 'DESC')->paginate(),
         ];
     }
 

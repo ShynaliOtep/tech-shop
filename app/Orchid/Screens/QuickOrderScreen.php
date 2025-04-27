@@ -55,10 +55,8 @@ class QuickOrderScreen extends Screen
 
     public function layout(): iterable
     {
-        $itemOptions = Item::all()->pluck('name', 'id')->toArray();
 
-       // dd(session()->get('quick_order_items', ));
-
+       // session()->forget('quick_order_items');
         if ($this->query()['client_type'] == 'client') {
             $forms[] =  Relation::make('order.client_id')
                 ->fromModel(Client::class, 'name')
@@ -205,7 +203,13 @@ class QuickOrderScreen extends Screen
 
     public function getOptions(): array
     {
-        $itemOptions = Good::all()->pluck('name_ru', 'id')->toArray();
+        $cityId = City::getPlatformCity();
+        $itemOptions = Good::whereHas('items', function ($query) use ($cityId) {
+            $query->where('status', 'available')
+                ->where('city_id', $cityId);
+        })
+            ->pluck('name_ru', 'id')
+            ->toArray();
         return $itemOptions;
     }
 
@@ -313,6 +317,8 @@ class QuickOrderScreen extends Screen
             'add_names' => isset($addNames) ? implode(', ', $addNames) : '',
             'cost' => $cost,
         ];
+
+
 
         session()->put('quick_order_items', $items);
 

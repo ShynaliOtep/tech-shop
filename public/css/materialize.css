@@ -1724,11 +1724,11 @@
 }
 
 .orange.darken-4 {
-    background-color: #e65100 !important;
+    background-color: #e37509 !important;
 }
 
 .orange-text.text-darken-4 {
-    color: #e65100 !important;
+    color: #e37509 !important;
 }
 
 .orange.accent-1 {
@@ -4329,49 +4329,17 @@ nav .sidenav-trigger i {
 }
 
 nav .brand-logo {
-    position: absolute;
     color: #fff;
-    display: inline-block;
     font-size: 2.1rem;
-    padding: 0;
+    padding: 15px 0;
 }
 
 nav .brand-logo.center {
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
+
 }
 
 @media only screen and (max-width: 992px) {
-    nav .brand-logo {
-        left: 50%;
-        -webkit-transform: translateX(-50%);
-        transform: translateX(-50%);
-    }
-    nav .brand-logo.left, nav .brand-logo.right {
-        padding: 0;
-        -webkit-transform: none;
-        transform: none;
-    }
-    nav .brand-logo.left {
-        left: 0.5rem;
-    }
-    nav .brand-logo.right {
-        right: 0.5rem;
-        left: auto;
-    }
-}
 
-nav .brand-logo.right {
-    right: 0.5rem;
-    padding: 0;
-}
-
-nav .brand-logo i,
-nav .brand-logo [class^="mdi-"], nav .brand-logo [class*="mdi-"],
-nav .brand-logo i.material-icons {
-    float: left;
-    margin-right: 15px;
 }
 
 nav .nav-title {

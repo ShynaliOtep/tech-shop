@@ -189,6 +189,7 @@ header, .main {
 .nav-inner-wrapper {
     padding-left: 40px;
     padding-right: 10px;
+    display: flex;
     justify-content: space-between;
 }
 
@@ -343,13 +344,20 @@ li.disabled>span{
 #search {
     border-radius: 5px;
     outline: none;
-    background-color: gray;
+    background-color: #ff952d; /* Цвет фона */
+    background: url('../img/icon-search.svg') no-repeat scroll 160px center, #e37509; /* Иконка и фон */
+    background-size: 20px; /* Размер иконки */
     color: white;
     border: none;
     font-size: 17px;
     padding: 1%;
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     transition: 0.7ms;
+}
+
+.mr-10 {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .map-iframe {
@@ -1015,8 +1023,8 @@ input[type="radio"][name="rent-type"]:disabled + span {
 }
 
 .bottom-navbar-item .material-icons {
-   font-size: 1.6rem;
-    color:#fff;
+   font-size: 2.6rem;
+    color: #E37509;
 }
 
 .bonus-transactions-profile {
@@ -1095,5 +1103,20 @@ input[type="radio"][name="rent-type"]:disabled + span {
     .logo-mobile {
         display: none;
         width: 70px;
+    }
+    .nav-inner-wrapper {
+        padding-left: 10px !important;
+    }
+    #search {
+        padding: 3%;
+    }
+    .bonus-page {
+        flex-direction: column;
+    }
+    .bonus-page-left {
+        order: 2;
+    }
+    .bonus-page-right {
+        order: 1;
     }
 }

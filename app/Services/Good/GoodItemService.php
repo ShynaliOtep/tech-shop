@@ -4,6 +4,7 @@ namespace App\Services\Good;
 
 use App\Models\Good;
 use App\Models\Item;
+use App\Services\City\CityService;
 use Illuminate\Support\Facades\DB;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -72,7 +73,7 @@ class GoodItemService
             return $item->item_id;
         }, $conflictingItemIds);
 
-        $items = $good->items()->whereNotIn('id', $conflictingItemIds)->with('good')->get();
+        $items = $good->items()->where('city_id', CityService::city())->whereNotIn('id', $conflictingItemIds)->with('good')->get();
 
         $result = [];
         foreach ($items as $item){

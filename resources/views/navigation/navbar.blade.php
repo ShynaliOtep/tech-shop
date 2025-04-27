@@ -7,18 +7,15 @@
                 </div>
                 <a href="#" data-target="slide-out" class="sidenav-trigger hide-on-med-and-up hide-mobile"><i
                         class="material-icons">menu</i></a>
-                <div class="brand-logo hide-mobile">
-                    <div class="search-wrapper valign-wrapper hide-on-small-only input-field">
+                <div class="brand-logo">
+                    <div class="search-wrapper valign-wrapper input-field">
                         <input id="search" type="text"
                                class="validate browser-default text-white center-align autocomplete"
                                placeholder="{{__('translations.Search')}}">
-                        <i class="material-icons">
-                            search
-                        </i>
                     </div>
                 </div>
-                <ul class="right nav-buttons hide-mobile">
-                    <li class="nav-element center">
+                <ul class="right nav-buttons">
+                    <li class="nav-element center hide-mobile">
                         <a href="/bonus" class="head-bonus-button">
                             <div class="diamond"></div>
                             О бонусах
@@ -42,7 +39,7 @@
                         </a>
                     </li>
                     @auth('clients')
-                        <li class="nav-element center">
+                        <li class="nav-element center hide-mobile">
                             <a href="{{route('getFavorites')}}" class="nav-link white-text">
                                 <i class="material-icons left navbar-icon">
                                     favorite_border

@@ -20,16 +20,8 @@
                     <a href="{{route('changeLang', 'en')}}" class="btn language-btn white-text @if(session()->get('locale') === 'en') orange darken-4 @else grey darken-2 @endif">{{__('translations.EN')}}</a>
                     <a href="{{route('changeLang', 'ru')}}" class="btn language-btn white-text @if(session()->get('locale') === 'ru') orange darken-4 @else grey darken-2 @endif">{{__('translations.RU')}}</a>
                 </div>
+                <br>
                 <hr>
-                <div class="hide-on-med-and-up search-wrapper valign-wrapper hide-on-med-and-up input-field">
-                    <input id="search" type="text"
-                           class="validate browser-default text-white center-align autocomplete"
-                           placeholder="{{__('translations.Search')}}">
-                    <i class="material-icons white-text">
-                        search
-                    </i>
-                </div>
-                <hr class="hide-on-med-and-up">
             </li>
             <li class="menu-item center">
                     <form action="/select-city" method="POST">
@@ -58,9 +50,9 @@
                             <span class="orange-text">{{__( 'translations.'. $goodType->code)}}</span>
                         @else
                             <span class="btn-medium btn-floating grey darken-4">
-                                <i class="material-icons">{{$goodType->icon}}</i>
+                                <i class="material-icons orange-text">{{$goodType->icon}}</i>
                             </span>
-                            <span class="">{{__( 'translations.'. $goodType->code)}}</span>
+                            <span class="orange-text">{{__( 'translations.'. $goodType->code)}}</span>
                         @endif
                     </span>
                     </a>

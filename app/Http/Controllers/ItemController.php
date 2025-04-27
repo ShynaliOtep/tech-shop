@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Good;
 use App\Models\Item;
 use App\Models\OrderItem;
+use App\Services\City\CityService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -273,7 +274,7 @@ class ItemController extends Controller
             return $item->item_id;
         }, $conflictingItemIds);
 
-        $items = $good->items()->whereNotIn('id', $conflictingItemIds)->with('good')->get();
+        $items = $good->items()->where('city_id', CityService::city())->whereNotIn('id', $conflictingItemIds)->with('good')->get();
 
         foreach ($items as $item){
             $item->good->name = $item->good['name_'.session()->get('locale', 'ru')];

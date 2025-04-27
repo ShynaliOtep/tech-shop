@@ -435,6 +435,7 @@ export default {
         this.getCart();
         this.getDefaultTimeItems()
         this.getClientData()
+        M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), {});
     },
     methods: {
         setDatesDefault() {
