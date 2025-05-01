@@ -17,8 +17,8 @@
                 <ul class="right nav-buttons">
                     <li class="nav-element center hide-mobile">
                         <a href="/bonus" class="head-bonus-button">
-                            <div class="diamond"></div>
-                            О бонусах
+                            <img class="diamond-icon" src="/img/icon-diamond.png" alt="">
+                            Кэшбек
                         </a>
                     </li>
                     <li class="nav-element center">

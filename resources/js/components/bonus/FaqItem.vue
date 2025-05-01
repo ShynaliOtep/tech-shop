@@ -5,8 +5,7 @@
             <span class="arrow" :class="{ open: isOpen }">▼</span>
         </div>
         <transition name="faq">
-            <div class="faq-answer" v-if="isOpen">
-                {{ answer }}
+            <div class="faq-answer" v-if="isOpen" v-html="answer">
             </div>
         </transition>
     </div>

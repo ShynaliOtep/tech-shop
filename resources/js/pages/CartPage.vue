@@ -814,7 +814,7 @@ export default {
             })
             if (response.data.success === true) {
                 cartStore.clearCart()
-                window.location.href = '/order/confirm-order?new_order=1'
+                window.location.href = '/profile/orders?new_order=1'
                 return
             } else {
                 if (response.data.status === 'spamGuard') {

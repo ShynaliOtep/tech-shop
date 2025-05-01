@@ -25,8 +25,8 @@ $url =request()->path();
         </a>
         @endauth
         <a href="/bonus" class="head-bonus-button">
-            <div class="diamond"></div>
-            О бонусах
+            <img class="diamond-icon" src="/img/icon-diamond.png" alt="">
+            Кэшбек
         </a>
     </div>
 </div>

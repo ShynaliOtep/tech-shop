@@ -277,7 +277,7 @@ return [
     'returned' => 'Возвращён',
     'in_rent' => 'В аренде',
     'Pictures' => 'Фотографии',
-    'waiting' => 'Ожидает подписания',
+    'waiting' => 'Ожидает одобрения',
     'confirmed' => 'Подписан',
     'cancelled' => 'Отменён',
     'OrderItem additionals help' => 'Выберите дополнения к товару',

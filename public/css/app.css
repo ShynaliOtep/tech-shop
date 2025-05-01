@@ -1072,6 +1072,10 @@ input[type="radio"][name="rent-type"]:disabled + span {
     transition: all .25s;
 }
 
+.diamond-icon {
+    width: 10px;
+}
+
 @media (max-width: 600px) {
     .hide-desktop {
         display: block;
@@ -1120,13 +1124,13 @@ input[type="radio"][name="rent-type"]:disabled + span {
     #search {
         padding: 3%;
     }
-    .bonus-page {
-        flex-direction: column;
-    }
-    .bonus-page-left {
-        order: 2;
-    }
-    .bonus-page-right {
-        order: 1;
-    }
+    /*.bonus-page {*/
+    /*    flex-direction: column;*/
+    /*}*/
+    /*.bonus-page-left {*/
+    /*    order: 2;*/
+    /*}*/
+    /*.bonus-page-right {*/
+    /*    order: 1;*/
+    /*}*/
 }
