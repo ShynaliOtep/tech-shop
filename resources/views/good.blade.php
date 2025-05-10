@@ -4,7 +4,7 @@
         <div>
             <carousel></carousel>
         </div>
-        @vite('resources/js/app.ts')
+        @vite('resources/js/app.js')
     @endif
     @if(isset($news))
         <div class="row">
