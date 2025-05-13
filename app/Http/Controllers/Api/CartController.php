@@ -85,8 +85,7 @@ class CartController extends Controller
         $good = Good::query()->findOrFail($goodId);
 
         $additionalIds = $good->additionals;
-        dd($additionalIds);
-        if (count($additionalIds) < 0) {
+        if (!is_array($additionalIds) || count($additionalIds) < 0) {
             return response()
                 ->json([
                     'success' => true,
