@@ -92,7 +92,6 @@ class OrderController extends Controller
                 );
             }
            // dd($availableItems, $itemAdditionsData);
-
             foreach ($itemAdditionsData as $itemAdditionData) {
                 foreach ($itemAdditionData as $index => $itemAddition) {
                     if (count($availableItems) > $index) {
@@ -149,8 +148,10 @@ class OrderController extends Controller
                 ';
 
                 $additionsIds = [];
-                foreach ($itemObject->additionalItems as $additionalItem) {
-                   $additionsIds[] = $additionalItem->id;
+                if ($itemObject->additionalItems) {
+                    foreach ($itemObject->additionalItems as $additionalItem) {
+                        $additionsIds[] = $additionalItem->id;
+                    }
                 }
 
                 $parentOrderItem = OrderItem::query()->create([
@@ -167,37 +168,40 @@ class OrderController extends Controller
                     'rent_end_time' => $dateObj2->format('H:i:s'),
                 ]);
 
-                foreach ($itemObject->additionalItems as $additionalItem) {
+                if ($itemObject->additionalItems) {
+                    foreach ($itemObject->additionalItems as $additionalItem) {
 
-                    $additionalId = $additionalItem->id;
+                        $additionalId = $additionalItem->id;
 
-                    $additional = Item::query()->find($additionalId)->load('good');
+                        $additional = Item::query()->find($additionalId)->load('good');
 
-                    $orderItemMessageData = $orderItemMessageData . '   Наименование: ' . $additional->good->name_ru . '
+                        $orderItemMessageData = $orderItemMessageData . '   Наименование: ' . $additional->good->name_ru . '
                     ';
 
-                    $orderItemMessageData = $orderItemMessageData . '       Цена: ' . (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) . '
+                        $orderItemMessageData = $orderItemMessageData . '       Цена: ' . (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) . '
                     ';
 
-                    $additionalCost = (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) * $diffInDays;
+                        $additionalCost = (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) * $diffInDays;
 
-                    $totalSum += $additionalCost;
+                        $totalSum += $additionalCost;
 
-                    OrderItem::query()->create([
-                        'item_id' => $additionalId,
-                        'order_id' => $order->id,
-                        'parent_order_item_id' => $parentOrderItem->id,
-                        'status' => 'waiting',
-                        'amount_of_days' => $diffInDays,
-                        'is_additional' => true,
-                        'additionals' => [],
-                        'amount_paid' => $additionalCost / 100 * (100 - $client->discount),
-                        'rent_start_date' => $dateObj1->format('Y-m-d'),
-                        'rent_start_time' => $dateObj1->format('H:i:s'),
-                        'rent_end_date' => $dateObj2->format('Y-m-d'),
-                        'rent_end_time' => $dateObj2->format('H:i:s'),
-                    ]);
+                        OrderItem::query()->create([
+                            'item_id' => $additionalId,
+                            'order_id' => $order->id,
+                            'parent_order_item_id' => $parentOrderItem->id,
+                            'status' => 'waiting',
+                            'amount_of_days' => $diffInDays,
+                            'is_additional' => true,
+                            'additionals' => [],
+                            'amount_paid' => $additionalCost / 100 * (100 - $client->discount),
+                            'rent_start_date' => $dateObj1->format('Y-m-d'),
+                            'rent_start_time' => $dateObj1->format('H:i:s'),
+                            'rent_end_date' => $dateObj2->format('Y-m-d'),
+                            'rent_end_time' => $dateObj2->format('H:i:s'),
+                        ]);
+                    }
                 }
+
                 $totalSum += $currentItemCost;
 
                 $itemCount++;
