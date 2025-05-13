@@ -175,7 +175,7 @@
                                 <p v-if="good.availableItems == null" class="info-for-items-label">У каждого варианта
                                     свое свободное время!</p>
                                 <p v-if="good.availableItems === false && good.availableItemsQuantity === 0" class="info-for-items-label">На выбранную дату
-                                    нет свободных вариантов</p>
+                                    нет свободные варианты</p>
                                 <p v-if="good.availableItems === false && good.availableItemsQuantity < good.quantity" class="info-for-items-label">
                                     На выбранную дату доступно: {{good.availableItemsQuantity}}</p>
                                 <p v-if="good.availableItems === true" style="color: green"
