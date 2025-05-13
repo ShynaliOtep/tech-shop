@@ -1077,6 +1077,9 @@ input[type="radio"][name="rent-type"]:disabled + span {
 }
 
 @media (max-width: 600px) {
+    .profile-options {
+        width: 200px;
+    }
     .hide-desktop {
         display: block;
     }
