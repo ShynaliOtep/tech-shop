@@ -45,7 +45,6 @@
             display: flex;
             overflow-x: auto;
             padding: 10px;
-            white-space: nowrap; /* Запрещает перенос строк */
         }
     </style>
 @endsection
