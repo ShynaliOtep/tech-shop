@@ -1080,6 +1080,9 @@ input[type="radio"][name="rent-type"]:disabled + span {
     #profile-options {
         width: 200px !important;
     }
+    .dropdown-content li > a, .dropdown-content li > span {
+        font-size: 11px;
+    }
     .hide-desktop {
         display: block;
     }
