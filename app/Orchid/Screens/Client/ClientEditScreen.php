@@ -166,7 +166,7 @@ class ClientEditScreen extends Screen
      */
     public function createOrUpdate(Client $client, Request $request)
     {
-        $client->fill($request->except('client.attachment', 'client.password1')['client']);
+        $client->fill($request->except('client.attachment', 'client.password1', 'client.bonus.level')['client']);
 
         $client->bonus()->updateOrCreate(
             ['user_id' => $client->id],
