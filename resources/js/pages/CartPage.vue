@@ -179,7 +179,7 @@
                                 <p v-if="good.availableItems === false && good.availableItemsQuantity < good.quantity" class="info-for-items-label">
                                     На выбранную дату доступно: {{good.availableItemsQuantity}}</p>
                                 <p v-if="good.availableItems === true" style="color: green"
-                                   class="info-for-items-label">На выбранную дату есть свободных вариантов</p>
+                                   class="info-for-items-label">На выбранную дату есть свободные варианты</p>
                                 <div class="col s12 input-field white-text hide {{index}}">
                                 </div>
 
@@ -244,7 +244,7 @@
 
                                         </div>
                                         <div class="grey darken-4 additionals-wrapper" v-if="good.additions">
-                                            <p v-for="(addition, additionalIndex) in good.additions">
+                                            <div v-for="(addition, additionalIndex) in good.additions">
                                                 <label>
                                                     <input
                                                         @change="(event) => handleAdditional(event, index, additionalIndex)"
@@ -258,7 +258,7 @@
                                                 <p v-if="addition.availableQuantity < addition.quantity" class="info-for-items-label">
                                                     На выбранную дату доступно: {{addition.availableQuantity}}</p>
                                                 <p v-if="addition.availableQuantity >= addition.quantity" style="color: green"
-                                                   class="info-for-items-label">На выбранную дату есть свободных вариантов</p>
+                                                   class="info-for-items-label">На выбранную дату есть свободные варианты</p>
 
                                                 <div v-if="addition.added" class="add-to-cart-btn waves-effect waves-light orange darken-4 good-add-to-card">
                                                     <span class="quantity-btn-minus" @click="minusAdditional(index, additionalIndex)">
@@ -268,7 +268,7 @@
                                                     <span class="quantity">{{addition.quantity }}</span>
                                                     <span class="quantity-btn-plus" @click="plusAdditional(index, additionalIndex)">+</span>
                                                 </div>
-                                            </p>
+                                            </div>
                                         </div>
                                     </li>
                                 </ul>
