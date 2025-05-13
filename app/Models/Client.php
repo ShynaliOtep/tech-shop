@@ -165,9 +165,11 @@ class Client extends Authenticatable
     {
         $level = self::getBonusLevel($clientId);
         $bonusPercentage = match ($level) {
-            1 => 5, // 5% на 1 уровне
-            2 => 7, // 7% на 2 уровне
-            3 => 10, // 10% на 3 уровне
+            0 => 0,
+            1 => 5,
+            2 => 10,
+            3 => 15,
+            4 => 30
         };
 
         return $bonusPercentage;
