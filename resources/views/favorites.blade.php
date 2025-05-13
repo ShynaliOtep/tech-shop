@@ -2,7 +2,7 @@
 @section('content')
     <div class="row">
         @if(count($goods) != 0)
-            @foreach($goodType->goods as $good)
+            @foreach($goods as $good)
                 <div class="col s6 m4 l3">
                     @include('goodCard', ['good' => $good])
                 </div>
