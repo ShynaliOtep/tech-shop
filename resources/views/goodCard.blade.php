@@ -66,7 +66,7 @@
         </div>
         </a>
         <a class="add-to-cart-btn waves-effect waves-light orange darken-4 good-add-to-card"
-           data-product-id="{{ $good->id }}">
+           data-product-id="{{ $good->id }}" data-max-count="{{$good->items()->count()}}">
             <span class="default-text add-to-cart-btn-text">Добавить в корзину</span>
             <span class="cart-controls" style="display: none;">
                 <i class="add-to-cart-btn-delete tiny material-icons">delete</i>

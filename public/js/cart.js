@@ -31,10 +31,12 @@ function updateCartUI(productId) {
         const countElement = button.querySelector('.add-to-cart-btn-count');
         const deleteBtn = button.querySelector('.add-to-cart-btn-delete');
         const minusBtn = button.querySelector('.add-to-cart-btn-minus');
+        const plusBtn = button.querySelector('.add-to-cart-btn-plus'); // ⬅️ добавляем
         const cartControls = button.querySelector('.cart-controls');
         const defaultText = button.querySelector('.default-text');
 
         const item = cart[productId];
+        const maxCount = parseInt(button.dataset.maxCount || '0'); // ⬅️ получаем max count
 
         if (item) {
             button.classList.add('cart-active');
@@ -42,6 +44,7 @@ function updateCartUI(productId) {
             cartControls.style.display = "inline";
             defaultText.style.display = "none";
 
+            // Логика показа кнопок -
             if (item.quantity > 1) {
                 minusBtn.style.display = "inline";
                 deleteBtn.style.display = "none";
@@ -49,11 +52,20 @@ function updateCartUI(productId) {
                 minusBtn.style.display = "none";
                 deleteBtn.style.display = "inline";
             }
+
+            // ⬇️ Логика скрытия кнопки +
+            if (item.quantity >= maxCount) {
+                plusBtn.style.opacity = "0";
+            } else {
+                plusBtn.style.opacity = "1";
+            }
+
         } else {
             button.classList.remove('cart-active');
             countElement.textContent = "0";
             deleteBtn.style.display = "none";
             minusBtn.style.display = "none";
+            plusBtn.style.opacity = "1"; // сбрасываем видимость +
             cartControls.style.display = "none";
             defaultText.style.display = "inline";
         }
