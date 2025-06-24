@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
             Cart.decreaseQuantity(productId);
         } else if (target.classList.contains('add-to-cart-btn-delete')) {
             Cart.removeFromCart(productId);
-        } else if (target.classList.contains('add-to-cart-btn-text')) {
+        } else if (target.classList.contains('add-to-cart-btn-text') ||
+            target.classList.contains('good-add-to-card-text')) {
             Cart.addToCart(productId);
         } else {
             const width = window.innerWidth;

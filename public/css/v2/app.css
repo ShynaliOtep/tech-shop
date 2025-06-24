@@ -698,6 +698,7 @@
     color: #FF962E;
     font-size: 16px;
     font-weight: 500;
+    cursor: pointer;
 }
 .cart-clear-btn span {
     margin-left: 10px;
