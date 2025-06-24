@@ -442,6 +442,13 @@
     right: 0;
 }
 
+.cart-agree {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
 .cio-before{
     content: '';
     width: 24px;

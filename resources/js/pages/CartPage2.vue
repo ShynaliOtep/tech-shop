@@ -581,7 +581,7 @@
          style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1);"
          id="modal" class="modal">
             <div class="black-block simple-centred-block modal-block ">
-                <span class="close" onclick="closeModal()">
+                <span class="close" onclick="modalClose()">
                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M-6.99382e-07 16L6.56802 7.52941L9.50835 7.52941L16 16L13.0597 16L8.05728 9.26909L2.94033 16L-6.99382e-07 16Z" fill="#404040"/>
                     <path d="M16 2.94707e-06L9.43198 8.47059L6.49165 8.47059L1.90735e-06 -6.99382e-07L2.94034 -3.59166e-07L7.94272 6.73091L13.0597 1.70928e-06L16 2.94707e-06Z" fill="#404040"/>
@@ -602,7 +602,7 @@
     <div v-if="modal.open && isAuthenticated" id="modal" class="modal"
          style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1);">
         <div class="black-block simple-centred-block modal-block ">
-                <span class="close" onclick="closeModal()">
+                <span class="close" onclick="modalClose()">
                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M-6.99382e-07 16L6.56802 7.52941L9.50835 7.52941L16 16L13.0597 16L8.05728 9.26909L2.94033 16L-6.99382e-07 16Z" fill="#404040"/>
                     <path d="M16 2.94707e-06L9.43198 8.47059L6.49165 8.47059L1.90735e-06 -6.99382e-07L2.94034 -3.59166e-07L7.94272 6.73091L13.0597 1.70928e-06L16 2.94707e-06Z" fill="#404040"/>
@@ -634,8 +634,8 @@
                     @click="orderEvent()">
                 {{ $t('translations.Place order') }}
             </button>
-            <div class="auth-add-option" style="display: flex">
-                <label class="cio-in">
+            <div class="cart-agree">
+                <label class="cio-in" style="margin: 0">
                     <input
                         name="checkbox-agree"
                         type="checkbox" class="cia-checkbox" v-model="agree" >
@@ -1052,6 +1052,9 @@ export default {
             return Math.max(diffInDays, 1)
         },
         async orderEvent() {
+            if (!this.agree) {
+                return
+            }
             let data = []
             this.cart.forEach(cartItem => {
                 let additions = []
@@ -1116,6 +1119,9 @@ export default {
         clearCart() {
             cartStore.clearCart()
             this.cart = []
+        },
+        closeModal() {
+            this.modal.open = false
         }
     },
 };
