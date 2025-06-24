@@ -41,7 +41,7 @@ return redirect(route('logout'));
             ->whereNotIn('order_items.status', ['cancelled', 'waiting'])
             ->count();
 
-        return view('profile.main', compact('client'));
+        return view('_v2.pages.profile.main', compact('client'));
     }
 
     public function editProfile(Request $request): Factory|\Illuminate\Foundation\Application|View|Application
@@ -143,5 +143,10 @@ return redirect(route('logout'));
         ]);
 
         return back()->with('success', 'Заявка на вывод отправлена.');
+    }
+
+    public function list(Request $request)
+    {
+        return view('_v2.pages.profile.list');
     }
 }

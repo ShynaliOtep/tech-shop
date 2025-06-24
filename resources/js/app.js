@@ -3,16 +3,19 @@ import {createPinia} from 'pinia'
 import CartPage from './pages/CartPage.vue';
 import i18n from './i18n.js'
 import ImageCarousel from "./components/ImageCarousel.vue";
-import BonusPage from "./pages/BonusPage.vue";
 import BonusPage2 from "./pages/BonusPage2.vue"
+import BonusPageNew from "./pages/BonusPageNew.vue";
+import CartPage2 from "./pages/CartPage2.vue";
+import 'vue-datepicker-next/index.css';
 
 const pinia = createPinia();
 
 const components = {
     'cart-page': CartPage,  // Добавь сюда другие компоненты, если нужно
     'carousel': ImageCarousel,
-    'bonus-page-old': BonusPage,
-    'bonus-page': BonusPage2
+    'bonus-page': BonusPage2,
+    'cart-page2': CartPage2,
+    'bonus-page-new': BonusPageNew,
 };
 
 document.addEventListener("DOMContentLoaded", () => {

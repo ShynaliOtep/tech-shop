@@ -9,6 +9,6 @@ class CartController extends Controller
 {
     public function index(Request $request)
     {
-        return view('vue.cart');
+        return view('_v2.pages.cart.cart');
     }
 }

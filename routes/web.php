@@ -80,6 +80,7 @@ Route::prefix('/profile')->group(function () {
     Route::get('/', [HttpControllers\ProfileController::class, 'viewProfile'])->name('viewProfile');
     Route::get('/edit', [HttpControllers\ProfileController::class, 'editProfile'])->name('editProfile');
     Route::post('/update', [HttpControllers\ProfileController::class, 'updateProfile'])->name('updateProfile');
+    Route::get('/list', [HttpControllers\ProfileController::class, 'list'])->name('list');
 
     Route::prefix('/favorite')->group(function () {
         Route::get('/', [HttpControllers\FavoriteController::class, 'getFavorites'])->name('getFavorites');

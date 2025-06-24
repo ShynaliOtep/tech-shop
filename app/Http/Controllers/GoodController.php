@@ -44,14 +44,14 @@ class GoodController extends Controller
             ->limit(20)
             ->get();
         $carousel = true;
-        return view('good', compact('viewedGoodTypes', 'news', 'carousel'));
+        return view('_v2.pages.main', compact('viewedGoodTypes', 'news', 'carousel'));
     }
 
     public function view(Good $good)
     {
         $good->with('relatedGoods');
 
-        return view('goodView', compact('good'));
+        return view('_v2.pages.good.goodView', compact('good'));
     }
 
     public function goodList(string $goodTypeCode, Request $request): \Illuminate\Contracts\Foundation\Application|Factory|View|Application
@@ -70,7 +70,7 @@ class GoodController extends Controller
             ])
             ->get();
 
-        return view('good', compact('viewedGoodTypes'));
+        return view('_v2.pages.good.goods', compact('viewedGoodTypes'));
     }
 
     public function autofill(string $goodName)
@@ -96,6 +96,6 @@ class GoodController extends Controller
 
     public function categories(Request $request)
     {
-        return view('categories');
+        return view('_v2.pages.categories.categories');
     }
 }

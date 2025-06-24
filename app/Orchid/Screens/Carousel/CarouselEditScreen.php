@@ -48,7 +48,6 @@ class CarouselEditScreen extends Screen
 
                 Input::make('carousel.order')->title('Порядок'),
                 Input::make('carousel.title')->title('Заголовка'),
-                Input::make('carousel.short_text')->title('Краткое описание'),
                 Quill::make('carousel.text')->title('Описание'),
             ]),
         ];
@@ -60,7 +59,6 @@ class CarouselEditScreen extends Screen
 
         $carousel->image = $data['carousel']['image'];
         $carousel->title = $data['carousel']['title'];
-        $carousel->short_text = $data['carousel']['short_text'];
         $carousel->order = $data['carousel']['order'];
         $carousel->text = $data['carousel']['text'];
         $carousel->save();

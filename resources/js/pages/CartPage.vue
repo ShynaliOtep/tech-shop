@@ -394,8 +394,11 @@
 import axios from 'axios';
 //import  useTimeStore  from '../store/timeStore.js'
 import cartStore from '../store/cart.js';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 export default {
+    components: { Datepicker },
     data() {
         return {
             cart: [],
@@ -403,7 +406,7 @@ export default {
             isCartEmpty: true,
             rentType: null,
             date: {
-                dateStart: null,
+                dateStart: '2025-05-01',
                 timeStart: null,
                 dateEnd: null,
                 timeEnd: null,

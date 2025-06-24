@@ -25,7 +25,7 @@ class AuthController extends Controller
 {
     public function login(): View|\Illuminate\Foundation\Application|Factory|Application
     {
-        return view('auth.login');
+        return view('_v2.pages.auth.login');
     }
 
     public function authenticate(Request $request): RedirectResponse
@@ -64,12 +64,12 @@ class AuthController extends Controller
 
     public function register(Request $request): View|\Illuminate\Foundation\Application|Factory|Application
     {
-        return view('auth.register', ['ref' => $request->query('ref')]);
+        return view('_v2.pages.auth.register', ['ref' => $request->query('ref')]);
     }
 
     public function needConfirmation()
     {
-        return view('auth.neededConfirmation');
+        return view('_v2.pages.auth.neededConfirmation');
     }
 
     public function storeUser(Request $request): \Illuminate\Foundation\Application|Redirector|RedirectResponse|Application
@@ -155,15 +155,15 @@ class AuthController extends Controller
                 return view('auth.emailConfirmed');
             }
 
-            return view('auth.invalidConfirmationLink');
+            return view('_v2.pages.auth.invalidConfirmationLink');
         } catch (\Exception) {
-            return view('auth.invalidConfirmationLink');
+            return view('_v2.pages.auth.invalidConfirmationLink');
         }
     }
 
     public function forgotPassword(): Factory|\Illuminate\Foundation\Application|View|Application
     {
-        return view('auth.forgotPassword');
+        return view('_v2.pages.auth.forgotPassword');
     }
 
     public function forgotPasswordPost(ForgotPasswordRequest $request)
@@ -189,14 +189,14 @@ class AuthController extends Controller
         $confirmationStringSplit = explode('pixelrental', $token);
         $iin = Cache::pull(Client::RESET_PASSWORD_CACHE_KEY . $confirmationStringSplit[1]);
         if ($iin !== $confirmationStringSplit[0] || !$iin) {
-            return view('auth.invalidConfirmationLink');
+            return view('_v2.pages.auth.invalidConfirmationLink');
         }
         $client = Client::query()->where('iin', '=', $iin)->first();
         if (!$client || $client->blocked) {
             return view('auth.userNotFound');
         }
 
-        return view('auth.resetPassword', ['email' => $client->email]);
+        return view('_v2.pages.auth.resetPassword', ['email' => $client->email]);
     }
 
     public function resetPasswordPost(ResetPasswordRequest $request)

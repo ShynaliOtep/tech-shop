@@ -1,8 +1,12 @@
 <template>
     <div class="faq-item">
-        <div class="faq-question" @click="toggle">
+        <div class="faq-question" :class="{open: isOpen }" @click="toggle">
             {{ question }}
-            <span class="arrow" :class="{ open: isOpen }">▼</span>
+            <span class="arrow" :class="{ open: isOpen }">
+                <svg width="24" height="15" viewBox="0 0 24 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 0L14.148 15L9.73747 15L0 -1.09278e-06L4.4105 -8.91963e-07L11.9141 11.9193L19.5895 -2.00822e-07L24 0Z" fill="currentColor"/>
+                </svg>
+            </span>
         </div>
         <transition name="faq">
             <div class="faq-answer" v-if="isOpen" v-html="answer">
@@ -25,40 +29,3 @@ function toggle() {
     isOpen.value = !isOpen.value
 }
 </script>
-
-<style scoped>
-.faq-item {
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-}
-
-.faq-question {
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #E37509;
-}
-
-.arrow {
-    transition: transform 0.3s ease;
-}
-.arrow.open {
-    transform: rotate(180deg);
-}
-
-.faq-answer {
-    padding: 8px 0;
-    color: #E37509;
-}
-
-/* Анимация */
-.faq-enter-active, .faq-leave-active {
-    transition: all 0.3s ease;
-}
-.faq-enter-from, .faq-leave-to {
-    opacity: 0;
-    transform: translateY(-5px);
-}
-</style>

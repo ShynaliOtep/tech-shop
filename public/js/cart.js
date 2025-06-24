@@ -5,18 +5,37 @@ document.addEventListener('DOMContentLoaded', function () {
         const target = event.target;
         const button = target.closest('.add-to-cart-btn');
 
+
         if (!button) return;
 
         const productId = button.dataset.productId;
 
+        console.log(target.classList)
+
         if (target.classList.contains('add-to-cart-btn-plus')) {
+
+            const maxCount = parseInt(button.dataset.maxCount || '0'); // ⬅️ получаем max count
+            const cart = Cart.getCart();
+            const item = cart[productId];
+            if (item.quantity >= maxCount) {
+                return;
+            }
+
             Cart.addToCart(productId);
         } else if (target.classList.contains('add-to-cart-btn-minus')) {
             Cart.decreaseQuantity(productId);
         } else if (target.classList.contains('add-to-cart-btn-delete')) {
             Cart.removeFromCart(productId);
-        } else {
+        } else if (target.classList.contains('add-to-cart-btn-text')) {
             Cart.addToCart(productId);
+        } else {
+            const width = window.innerWidth;
+            console.log(width)
+            if (width <= 600) {
+                console.log(width)
+                Cart.addToCart(productId);
+            }
+            return;
         }
 
         updateCartUI(productId);
@@ -33,7 +52,7 @@ function updateCartUI(productId) {
         const minusBtn = button.querySelector('.add-to-cart-btn-minus');
         const plusBtn = button.querySelector('.add-to-cart-btn-plus'); // ⬅️ добавляем
         const cartControls = button.querySelector('.cart-controls');
-        const defaultText = button.querySelector('.default-text');
+        const defaultText = button.querySelector('.add-to-cart-btn-text');
 
         const item = cart[productId];
         const maxCount = parseInt(button.dataset.maxCount || '0'); // ⬅️ получаем max count
@@ -41,24 +60,25 @@ function updateCartUI(productId) {
         if (item) {
             button.classList.add('cart-active');
             countElement.textContent = item.quantity;
-            cartControls.style.display = "inline";
+            cartControls.style.display = "flex";
             defaultText.style.display = "none";
+
 
             // Логика показа кнопок -
             if (item.quantity > 1) {
-                minusBtn.style.display = "inline";
+                minusBtn.style.display = "flex";
                 deleteBtn.style.display = "none";
             } else {
                 minusBtn.style.display = "none";
-                deleteBtn.style.display = "inline";
+                deleteBtn.style.display = "flex";
             }
 
-            // ⬇️ Логика скрытия кнопки +
-            if (item.quantity >= maxCount) {
-                plusBtn.style.opacity = "0";
-            } else {
-                plusBtn.style.opacity = "1";
-            }
+            // // ⬇️ Логика скрытия кнопки +
+            // if (item.quantity >= maxCount) {
+            //     plusBtn.style.color = "grey";
+            // } else {
+            //     plusBtn.style.opacity = "#ffffff";
+            // }
 
         } else {
             button.classList.remove('cart-active');
@@ -67,7 +87,7 @@ function updateCartUI(productId) {
             minusBtn.style.display = "none";
             plusBtn.style.opacity = "1"; // сбрасываем видимость +
             cartControls.style.display = "none";
-            defaultText.style.display = "inline";
+            defaultText.style.display = "flex";
         }
     });
 
@@ -77,8 +97,16 @@ function updateCartUI(productId) {
 
 function updateCartCounter() {
     const cartCountContainer = document.querySelector('.in-cart-item-counter');
-    if (cartCountContainer) {
-        cartCountContainer.textContent = Cart.getTotalItems();
+    const headerCart =  document.querySelector('.header-cart');
+    const quantity =  Cart.getTotalItems();
+    console.log(quantity)
+    if (quantity) {
+        headerCart.style.color = '#ffffff'
+        cartCountContainer.style.display = 'block'
+        cartCountContainer.textContent = quantity
+        headerCart.style.backgroundColor = '#FF962E'
+    } else {
+        cartCountContainer.style.display = 'none'
     }
 }
 

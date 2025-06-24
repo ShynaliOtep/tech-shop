@@ -1,11 +1,11 @@
 const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-document.querySelectorAll('.add-to-favorites-btn').forEach(btn => {
+document.querySelectorAll('.good-add-to-favorites').forEach(btn => {
     btn.addEventListener('click', addToFavorite)
 })
 
 
-document.querySelectorAll('.remove-from-favorites-btn').forEach(btn => {
+document.querySelectorAll('.good-remove-to-favorites').forEach(btn => {
     btn.addEventListener('click', deleteFromFavorite)
 })
 

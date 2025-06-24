@@ -251,7 +251,7 @@ return [
     'filters' => 'Фильтры',
     'stands' => 'Штативы/стойки',
     'kits' => 'Наборы',
-    'Additional accessories' => 'Дополнительные аксессуары',
+    'Additional accessories' => 'В дополнении к комплекту берут',
     'Price for breakdown during rental' => 'Цена за поломку во время аренды',
     'Cost for day' => 'Цена (за сутки)',
     'Please note: For late payment of payments specified in the agreement, the Lessor has the right require the Tenant to pay a penalty in the amount of 5% of the unpaid payment for each day delays' => 'Примите к сведению: За просрочку выплаты платежей, указанных в договоре, Арендодатель в праве требовать от Арендатора выплатить пеню в размере 5% от не выплаченного платежа за каждый день просрочки',

@@ -25,7 +25,7 @@ return redirect(route('logout'));
 
         $goods = Good::query()->whereIn('id', $favoriteGoodIds)->get();
 
-        return view('favorites', compact('goods'));
+        return view('_v2.pages.favourites', compact('goods'));
     }
 
     public function add(Good $good)

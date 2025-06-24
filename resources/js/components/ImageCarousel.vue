@@ -2,8 +2,8 @@
     <div class="swiper-container">
         <br>
         <swiper
-            :slides-per-view="1.5"
-            :space-between="12"
+            :slides-per-view="1"
+            :space-between="0"
             :navigation="true"
             :loop="true"
             :autoplay="{ delay: 3000 }"
@@ -15,31 +15,52 @@
                     :src="image.image"
                     :alt="image.image"
                     draggable="false"
+                    @click="openModal(image)"
                     style="object-fit: cover;"
                 />
-                <div class="carousel_block">
-                    <h4>
-                        {{image.title}}
-                    </h4>
-                    <p>{{image.short_text}}</p>
-                    <button class="button-carousel"  @click="openModal(image)">
-                        <span class="circle">
-                            <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </span>
-                        <span class="text">Learn more</span>
-                    </button>
-                </div>
+<!--                <div class="carousel_block">-->
+<!--                    <h4>-->
+<!--                        {{image.title}}-->
+<!--                    </h4>-->
+<!--                    <p>{{image.short_text}}</p>-->
+<!--                    <button class="button-carousel"  @click="openModal(image)">-->
+<!--                        <span class="circle">-->
+<!--                            <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">-->
+<!--                              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />-->
+<!--                            </svg>-->
+<!--                        </span>-->
+<!--                        <span class="text">Learn more</span>-->
+<!--                    </button>-->
+<!--                </div>-->
             </swiper-slide>
         </swiper>
 
+<!--        <div v-if="modal.open && !isAuthenticated" id="modal" class="modal">-->
+<!--            <div class="black-block simple-centred-block modal-block ">-->
+<!--                <span class="close" onclick="closeModal()">-->
+<!--                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                    <path d="M-6.99382e-07 16L6.56802 7.52941L9.50835 7.52941L16 16L13.0597 16L8.05728 9.26909L2.94033 16L-6.99382e-07 16Z" fill="#404040"/>-->
+<!--                    <path d="M16 2.94707e-06L9.43198 8.47059L6.49165 8.47059L1.90735e-06 -6.99382e-07L2.94034 -3.59166e-07L7.94272 6.73091L13.0597 1.70928e-06L16 2.94707e-06Z" fill="#404040"/>-->
+<!--                    </svg>-->
+<!--                </span>-->
+<!--                <p class="modal-title big-white-title mb-20">-->
+<!--                    Войдите в аккаунт-->
+<!--                </p>-->
+<!--                <p class="grey-s-light-text mb-20">-->
+<!--                    Для того, чтобы создать заявку на аренду – Войдите или Создайте аккаунт-->
+<!--                </p>-->
+<!--                <a href="/auth/login" class="orange-btn mb-20">Войти</a>-->
+<!--                <a href="/auth/register" class="black-btn">Создать аккаунт</a>-->
+<!--            </div>-->
+<!--        </div>-->
+
         <!-- Модальное окно -->
-        <div v-if="selectedImage" class="modal-overlay" @click="closeModal">
-            <div class="modal-content" @click.stop>
+        <div v-if="selectedImage" class="modal" id="modal" @click="closeModal" style="display: block">
+            <div class="black-block simple-centred-block modal-block" @click.stop>
                 <img :src="selectedImage.image" :alt="selectedImage.image" class="modal-image" />
-                <p class="modal-text" v-html="selectedImage.text"></p>
-                <button class="close-button orange" @click="closeModal">Закрыть</button>
+                <p class="modal-title big-white-title mb-20">{{selectedImage.title}}</p>
+                <p class="grey-s-light-text mb-20" v-html="selectedImage.text"></p>
+                <button class="orange-btn" @click="closeModal">Закрыть</button>
             </div>
         </div>
     </div>
@@ -88,7 +109,6 @@ export default {
 <style>
 .swiper-container {
     width: 100%;
-    max-width: 1200px;
     margin: auto;
 }
 .articles-slider-slide {

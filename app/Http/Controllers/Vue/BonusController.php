@@ -8,6 +8,6 @@ class BonusController extends Controller
 {
     public function index()
     {
-        return view('vue.bonus');
+        return view('_v2.pages.bonus.bonus');
     }
 }
