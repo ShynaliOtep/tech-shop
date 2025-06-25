@@ -1,5 +1,5 @@
 @php use App\Models\BonusTransaction; @endphp
-@extends('_v2.layouts.base')
+@extends('app')
 @section('content')
     <h5 class="white-text">Ваш профиль:</h5>
 

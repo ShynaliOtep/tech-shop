@@ -71,6 +71,11 @@
         .dots button.active {
             background: #333;
         }
+        @media (max-width: 600px) {
+            .horizontal-scrolling-news .item {
+                width: 150px !important;
+            }
+        }
     </style>
     <script>
         const carousel = document.getElementById('carousel');

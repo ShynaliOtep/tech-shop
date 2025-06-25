@@ -2,6 +2,7 @@
     <div class="swiper-container">
         <br>
         <swiper
+            :modules="[Navigation, Autoplay]"
             :slides-per-view="1"
             :space-between="0"
             :navigation="true"
@@ -70,9 +71,9 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/vue";
+import { Navigation, Autoplay } from 'swiper/modules';
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 export default {
     components: { Swiper, SwiperSlide },
@@ -100,7 +101,7 @@ export default {
             selectedImage.value = null;
         };
 
-        return { images, selectedImage, openModal, closeModal };
+        return { images, selectedImage, openModal, closeModal, Navigation, Autoplay };
     }
 };
 </script>
@@ -163,9 +164,16 @@ export default {
 }
 .swiper-button-prev,
 .swiper-button-next {
-    opacity: 0;
-    transition: opacity 0.3s;
+    color: white;
+    opacity: 1 !important;
+    transition: none;
 }
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    color: #f97316;
+}
+
 .carousel_block {
     position: absolute;
     top: 60%;
