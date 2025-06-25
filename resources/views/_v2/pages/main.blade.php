@@ -77,27 +77,31 @@
         const dotsContainer = document.getElementById('carousel-dots');
         const items = carousel.querySelectorAll('.item');
 
-        items.forEach((_, index) => {
+        const groupSize = 4; // сколько элементов в одной группе
+        const totalGroups = Math.ceil(items.length / groupSize);
+
+        for (let i = 0; i < totalGroups; i++) {
             const dot = document.createElement('button');
             dot.addEventListener('click', () => {
+                const scrollTo = i * groupSize * items[0].offsetWidth;
                 carousel.scrollTo({
-                    left: index * items[0].offsetWidth,
+                    left: scrollTo,
                     behavior: 'smooth'
                 });
             });
             dotsContainer.appendChild(dot);
-        });
+        }
 
         const dots = dotsContainer.querySelectorAll('button');
 
-        // Активная точка при скролле
+        // Обновление активной точки при прокрутке
         carousel.addEventListener('scroll', () => {
-            const index = Math.round(carousel.scrollLeft / items[0].offsetWidth);
+            const index = Math.round(carousel.scrollLeft / (groupSize * items[0].offsetWidth));
             dots.forEach(dot => dot.classList.remove('active'));
             if (dots[index]) dots[index].classList.add('active');
         });
 
-        // Установить первую точку как активную
-        dots[0].classList.add('active');
+        // Активировать первую точку по умолчанию
+        if (dots.length) dots[0].classList.add('active');
     </script>
 @endsection
