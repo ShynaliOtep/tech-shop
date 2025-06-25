@@ -70,6 +70,7 @@
         position: relative;
         width: 144px;
         height: 49px;
+        z-index: 20;
     }
     .dropdown {
         width: 144px;

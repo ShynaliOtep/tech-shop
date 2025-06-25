@@ -15,7 +15,7 @@
             <form method="POST" action="">
                 {{csrf_field()}}
                 <div>
-                    <input name="phone" type="tel" placeholder="{{__('translations.Phone')}}" class="p-input grey-s-text mb-20">
+                    <input name="phone" type="tel" placeholder="{{__('translations.Phone')}}" class="p-input grey-s-text mb-20" value="+7">
                 </div>
                 <div>
                     <input name="password" type="password" placeholder="{{__('translations.Password')}}" class="p-input grey-s-text mb-20">
@@ -26,7 +26,7 @@
                     </button>
                 </div>
                 @if ($errors->any())
-                    <div class="col s12">
+                    <div class="auth-form-element">
                         <ul class="red-text">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>

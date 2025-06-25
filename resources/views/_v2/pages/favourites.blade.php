@@ -8,7 +8,7 @@
             </div>
         @endforeach
     @else
-        <h5 class="white-text center">{{__('translations.There is nothing here yet')}} :(</h5>
+        <h5 class="white-m-text">{{__('translations.There is nothing here yet')}} :(</h5>
     @endif
     @push('scripts')
         <script src="{{asset('js/favoriteActions.js')}}"></script>

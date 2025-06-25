@@ -3,6 +3,7 @@
     <div class="profile-list">
         <a href="{{route('getMyOrders')}}" class="profile-list-item">{{__('translations.My orders')}}</a>
         <a href="{{route('viewProfile')}}" class="profile-list-item">{{__('translations.Check profile')}}</a>
+        <a href="/bonus" class="profile-list-item">Кэшбек</a>
         <div class="profile-break"></div>
         <a href="{{route('logout')}}" class="profile-list-item">{{__('translations.Logout')}}</a>
     </div>

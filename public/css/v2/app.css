@@ -1146,9 +1146,10 @@ html, body {
         padding: 15px;
         background-color: #191919;
     }
-    .end-cart-btn {
+    .end-disabled {
         background-color: #151515;
     }
+
     .new-good-bookmark-m {
         position: absolute;
         top: -5px;

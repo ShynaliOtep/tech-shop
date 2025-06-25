@@ -73,7 +73,8 @@
         }
         @media (max-width: 600px) {
             .horizontal-scrolling-news .item {
-                width: 150px !important;
+                width: 190px !important;
+                min-width: 190px !important;
             }
         }
     </style>

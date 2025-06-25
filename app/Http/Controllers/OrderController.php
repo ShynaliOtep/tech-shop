@@ -24,7 +24,7 @@ class OrderController extends Controller
 
     public function spamGuard()
     {
-        return response(view('ordering.spamGuard'))->cookie('cart', '{}', 60 * 30 * 24);
+        return response(view('_v2.pages.ordering.spamGuard'))->cookie('cart', '{}', 60 * 30 * 24);
     }
 
     public function settleOrderAll(Request $request)
