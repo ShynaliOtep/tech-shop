@@ -74,9 +74,9 @@
         </section>
         @include('_v2.components.navigation.bottom-navbar')
     </div>
-<script src="{{asset('js/script.js')}}"></script>
-<script src="{{asset('js/dropdown.js')}}"></script>
-<script src="{{asset('js/materialize.js')}}"></script>
+<script src="{{asset('js/script.js?v=1')}}"></script>
+<script src="{{asset('js/dropdown.js?v=1')}}"></script>
+<script src="{{asset('js/materialize.js?v=1')}}"></script>
 @stack('scripts')
 </body>
 </html>
