@@ -1017,9 +1017,97 @@ html, body {
     display: none !important;
 }
 
+.mini-btn {
+    width: 200px;
+    height: 50px;
+    font-size: 16px;
+    font-weight: 400;
+}
 
+.collection {
+    border-radius: 15px;
+    border: 1px solid #404040;
+}
+.collection-item {
+    padding: 15px 30px;
+    border-bottom: 1px solid #404040;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+}
+
+.collection-table {
+    border-radius: 15px;
+    border: 1px solid #404040;
+    border-collapse: collapse;
+    margin: 30px 0;
+}
+
+.collection-table th, .collection-table td {
+    border: 1px solid #404040;
+    padding: 15px;
+    color: #fff;
+}
+
+.orange-text {
+    color: #FF962E;
+}
+
+.order-main-block {
+    display: flex;
+}
+
+.order-main-block img {
+    width: 17%;
+    padding: 10px 20px;
+}
+
+.order-text {
+    margin-top: 20px;
+}
+
+.order-v-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0px;
+    border-bottom: 1px solid #404040;
+}
+
+.ov-texts {
+    width: 75%;
+}
+.ov-image {
+    width: 20%;
+}
+
+.order-view-wrapper {
+    border: 1px solid #404040;
+    padding: 20px 30px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
 
 @media (max-width: 600px) {
+
+    .collection-table th, .collection-table td {
+        padding: 10px;
+        font-weight: 300;
+        font-size: 12px;
+    }
+    .order-main-block img {
+        width: 30%;
+    }
+    .ov-texts {
+        width: 100%;
+    }
+    .ov-image {
+        width: 100%;
+    }
+    .order-v-item {
+        flex-wrap: wrap;
+    }
     .hide-m {
         display: none !important;
     }

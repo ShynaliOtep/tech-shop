@@ -23,7 +23,7 @@ return redirect(route('logout'));
 
         $orders = Order::query()->where('client_id', '=', $clientId)->with('orderItems')->get();
 
-        return view('orderList', compact('orders'));
+        return view('_v2.pages.order.orderList', compact('orders'));
     }
 
     public function viewOrder(Request $request, Order $order)
@@ -37,7 +37,7 @@ return redirect(route('logout'));
 
         $order->load('orderItems.item.good.goodType');
 
-        return view('orderView', compact('order'));
+        return view('_v2.pages.order.orderView', compact('order'));
     }
 
     public function cancelOrder(Request $request, Order $order)
