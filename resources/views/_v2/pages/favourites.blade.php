@@ -2,11 +2,13 @@
 @section('content')
     <h4 class="big-white-title">Избранное</h4>
     @if(count($goods) != 0)
-        @foreach($goods as $good)
-            <div class="col s6 m4 l3">
-                @include('_v2.components.good.goodCard', ['good' => $good])
-            </div>
-        @endforeach
+        <div class="items">
+            @foreach($goods as $good)
+                <div class="item">
+                    @include('_v2.components.good.goodCard', ['good' => $good])
+                </div>
+            @endforeach
+        </div>
     @else
         <h5 class="white-m-text">{{__('translations.There is nothing here yet')}} :(</h5>
     @endif
