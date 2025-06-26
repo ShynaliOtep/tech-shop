@@ -18,18 +18,6 @@
     @endpush
     @include('auth.modal', ['icon' => 'favorite_border', 'title' => __('translations.Authorization required'), 'content' => __('translations.To add a product to your favorites, you must be authenticated')])
     <style>
-        .horizontal-scrolling-news {
-            display: flex;
-            overflow-x: auto;
-            padding: 10px;
-        }
-        .good-card {
-            width: 425px;
-        }
-        @media (max-width: 600px) {
-            .good-card {
-                width: 48%;
-            }
-        }
+
     </style>
 @endsection
