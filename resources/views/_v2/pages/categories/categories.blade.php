@@ -12,6 +12,9 @@
         @endforeach
     </div>
     <style>
+        .right-header {
+            display: none;
+        }
         .base-section {
             background-color: #191919 !important;
         }

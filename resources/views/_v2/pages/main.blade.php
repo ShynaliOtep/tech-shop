@@ -35,7 +35,7 @@
                         @endforeach
                     </div>
                 @else
-                    <h5 class="white-text center">{{__('translations.There is nothing here yet')}} :(</h5>
+                    <h5 style="text-align: center" class="white-m-text center">{{__('translations.There is nothing here yet')}} :(</h5>
                 @endif
             </div>
         @endforeach
@@ -51,6 +51,7 @@
             overflow-x: auto;
             padding: 30px;
             flex-wrap: nowrap;
+            align-items: stretch;
         }
         .dots {
             text-align: center;
