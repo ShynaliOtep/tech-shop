@@ -49,6 +49,7 @@
         animation-name: move;
         animation-duration: 2s; /* ← 2 секунды */
         animation-timing-function: ease-in-out;
+        z-index: 30;
     }
     .dropbtn-profile-btn {
         display: flex;
