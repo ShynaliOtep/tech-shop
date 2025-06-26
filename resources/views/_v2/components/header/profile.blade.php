@@ -1,5 +1,5 @@
 
-    <div class="dropdown-pp ">
+    <div class="dropdown-pp hide-m">
         <div onclick="dropdownToggleProfile()" class="dropbtn-profile dr-pro">
             <div class="dropbtn-profile-btn dr-pro">
                 <img class="dropbtn-icon-profile dr-pro" src="/img/profile-new.svg" alt="">

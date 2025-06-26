@@ -35,7 +35,7 @@
         @auth('clients')
             @include('_v2.components.header.profile')
         @endauth
-        <div>
+        <div class="hide-m">
             @guest('clients')
                     <a href="{{route('login')}}" class="button-login-header">
                         Начать съемку
