@@ -1,9 +1,9 @@
 
-    <div class="dropdown-pp">
-        <div onclick="dropdownToggleProfile()" class="dropbtn-profile">
-            <div class="dropbtn-profile-btn">
-                <img class="dropbtn-icon-profile" src="/img/profile-new.svg" alt="">
-                <span>Профиль</span>
+    <div class="dropdown-pp ">
+        <div onclick="dropdownToggleProfile()" class="dropbtn-profile dr-pro">
+            <div class="dropbtn-profile-btn dr-pro">
+                <img class="dropbtn-icon-profile dr-pro" src="/img/profile-new.svg" alt="">
+                <span class="dr-pro">Профиль</span>
             </div>
             <div id="profileDropdown" class="dropdown-content-2">
                 <a href="{{route('getMyOrders')}}" class="profile-dropdown-link white-text">{{__('translations.My orders')}}</a>
@@ -20,7 +20,8 @@
     }
 
     window.onclick = function(event) {
-        if (!event.target.matches('.dropbtn-profile')) {
+        console.log(event.target)
+        if (!event.target.matches('.dr-pro')) {
             var dropdowns = document.getElementsByClassName("dropdown-content-2");
             var i;
             for (i = 0; i < dropdowns.length; i++) {
@@ -67,6 +68,7 @@
         width: 100%;
         overflow: auto;
         z-index: 1;
+        padding-top: 20px;
     }
 
     .dropdown-content-2 a {
