@@ -15,7 +15,9 @@
             <form method="POST" action="">
                 {{csrf_field()}}
                 <div>
-                    <input name="phone" type="tel" placeholder="{{__('translations.Phone')}}" class="p-input grey-s-text mb-20" value="+7">
+                    <input id="phone" name="phone" type="tel"
+{{--                           placeholder="{{__('translations.Phone')}}"--}}
+                        class="p-input grey-s-text mb-20" placeholder="+7XXXXXXXXXX" maxlength="12">
                 </div>
                 <div>
                     <input name="password" type="password" placeholder="{{__('translations.Password')}}" class="p-input grey-s-text mb-20">
@@ -42,4 +44,20 @@
             </div>
         </div>
     </div>
+    <script>
+        const input = document.getElementById('phone');
+
+        input.addEventListener('input', function () {
+            let value = input.value.replace(/[^\d]/g, ''); // убираем всё, кроме цифр
+
+            if (!value.startsWith('7')) {
+                value = '7' + value.slice(0, 10); // всегда +7
+            } else {
+                value = value.slice(0, 11); // максимум 11 цифр после +
+            }
+
+            input.value = '+' + value;
+        });
+    </script>
+
 @endsection

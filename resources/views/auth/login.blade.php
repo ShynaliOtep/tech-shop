@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <i class="material-icons prefix white-text">phone</i>
-                            <input name="phone" type="tel" placeholder="{{__('translations.Phone')}}" class="white-text" value="+7">
+                            <input  name="phone" type="tel" placeholder="{{__('translations.Phone')}}" class="white-text" value="+7">
                         </div>
                         <div class="input-field col s12">
                             <i class="material-icons prefix white-text">lock</i>
