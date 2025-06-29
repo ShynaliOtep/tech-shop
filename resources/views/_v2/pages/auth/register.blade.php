@@ -24,7 +24,7 @@
                 <input type="hidden" name="ref" value="{{ request('ref') }}">
                 <div>
                     <input name="phone" id="phone" type="tel" maxlength="12"
-                           placeholder="{{__('translations.Phone')}}"
+                           placeholder="+7__________"
                            class="p-input grey-s-text mb-20"
                            required>
                 </div>
@@ -88,4 +88,18 @@
             </div>
         </div>
     </div>
+    <script>
+        const input = document.getElementById('phone');
+
+        input.addEventListener('input', function () {
+            let value = input.value.replace(/[^\d]/g, ''); // убираем всё, кроме цифр
+
+            if (!value.startsWith('7')) {
+                value = '7' + value.slice(0, 10); // всегда +7
+            } else {
+                value = value.slice(0, 11); // максимум 11 цифр после +
+            }
+
+            input.value = '+' + value;
+        });
 @endsection

@@ -17,7 +17,7 @@
                 <div>
                     <input id="phone" name="phone" type="tel"
 {{--                           placeholder="{{__('translations.Phone')}}"--}}
-                        class="p-input grey-s-text mb-20" placeholder="+7XXXXXXXXXX" maxlength="12">
+                        class="p-input grey-s-text mb-20" placeholder="+7__________" maxlength="12">
                 </div>
                 <div>
                     <input name="password" type="password" placeholder="{{__('translations.Password')}}" class="p-input grey-s-text mb-20">
