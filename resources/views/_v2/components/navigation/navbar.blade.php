@@ -83,5 +83,8 @@
             padding: 20px 15px;
             display: flex;
         }
+        .header-bonus-block {
+            margin-right: 70px;
+        }
     }
 </style>

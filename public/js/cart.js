@@ -64,6 +64,8 @@ function updateCartUI(productId) {
             cartControls.style.display = "flex";
             defaultText.style.display = "none";
 
+            button.style.width = '100%'
+            button.style.borderBottomLeftRadius = '7px'
 
             // Логика показа кнопок -
             if (item.quantity > 1) {
@@ -89,6 +91,8 @@ function updateCartUI(productId) {
             plusBtn.style.opacity = "1"; // сбрасываем видимость +
             cartControls.style.display = "none";
             defaultText.style.display = "flex";
+            button.style.width = '50%'
+            button.style.borderBottomLeftRadius = '0'
         }
     });
 

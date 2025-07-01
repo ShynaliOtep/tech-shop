@@ -26,9 +26,6 @@
         .dropdown-content {
 
         }
-        .location-dropdown {
-            display: none;
-        }
         .profile-list {
             margin-top: 30px;
             width: 100%;

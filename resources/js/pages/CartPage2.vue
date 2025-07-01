@@ -1133,9 +1133,6 @@ export default {
 
 <style>
 @media (max-width: 600px) {
-    .location-dropdown {
-        display: none;
-    }
     .search-block {
         display: none;
     }

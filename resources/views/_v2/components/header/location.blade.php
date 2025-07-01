@@ -1,7 +1,7 @@
 <div class="location-dropdown">
     <div class="dropdown drrrr" onclick="dropdownToggle()">
         <div class="dropbtn drrrr">
-            <span class="drrrr">
+            <span class="drrrr dr-lc-text">
                 @if(session()->get('select_city') === 2)
                     {{__('translations.Astana')}}
                 @else
@@ -12,6 +12,9 @@
                 <path d="M10 0L5.89499 6L4.05728 6L0 -4.37114e-07L1.83771 -3.56785e-07L4.9642 4.76773L8.16229 -8.03288e-08L10 0Z" fill="#404040"/>
             </svg>
         </div>
+        <svg class="dr-lc-icon drrrr show-m" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#404040">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+        </svg>
         <div id="myDropdown" class="dropdown-content">
             <a  @if(session()->get('select_city') === 1) class="city-selected" @endif href="{{route('selectCity', 1)}}">{{__('translations.Almaty')}}</a>
             <a @if(session()->get('select_city') === 2) class="city-selected" @endif href="{{route('selectCity', 2)}}">{{__('translations.Astana')}}</a>
@@ -111,8 +114,36 @@
             font-size: 12px;
         }
         .dropdown-content {
-            min-width: 100px;
+            min-width: 120px;
         }
+        .location-dropdown {
+            position: absolute;
+            top: 20px;
+            right: 15px;
+        }
+        .dropbtn {
+            display: none;
+        }
+        .dropdown {
+            width: 50px;
+            height: 50px;
+            top: 0;
+            right: 0;
+            left: auto;
+            padding: 10px 5px;
+        }
+        .dr-lc-icon {
+            width: 20px;
+            display: block;
+            margin: 0 auto;
+        }
+        .dropdown-content {
+            background-color: #191919;
+            padding: 0 17px;
+            margin-left: -74px;
+            margin-top: 18px;
+        }
+
     }
 </style>
 

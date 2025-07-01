@@ -1278,11 +1278,17 @@ html, body {
         display: flex;
         justify-content: space-between;
     }
+    .good-btn-block {
+        height: 50px;
+    }
     .good-add-to-favorites, .good-remove-to-favorites {
         width: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        position: absolute;
+        left: 0;
+        bottom: 0;
     }
     .good-add-to-favorites svg, .good-remove-to-favorites svg {
         width: 26px;
@@ -1293,6 +1299,10 @@ html, body {
     .good-add-to-card-m {
         width: 50%;
         border-radius: 0 0 7px 0;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border: none;
     }
     .add-to-cart-btn-text {
         display: flex;
@@ -1308,15 +1318,15 @@ html, body {
         width: 100%;
         position: absolute;
         bottom: -1px;
-        left: 1px;
+        left: 0;
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
         background-color: #191919;
         border: 1px solid #191919;
     }
-    .items {
-        align-items: flex-start;
-    }
+    /*.items {*/
+    /*    align-items: flex-start;*/
+    /*}*/
     .item {
         border: none;
     }
