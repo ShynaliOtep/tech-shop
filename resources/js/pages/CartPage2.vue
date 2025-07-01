@@ -1123,6 +1123,7 @@ export default {
         clearCart() {
             cartStore.clearCart()
             this.cart = []
+            this.sumPrice = 0
         },
         closeModal() {
             this.modal.open = false
