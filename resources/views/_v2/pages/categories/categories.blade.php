@@ -1,15 +1,17 @@
 @extends('_v2.layouts.base')
 @section('content')
-    <div class="good-types">
-        @foreach($goodTypes as $goodType)
-            @include(
-                '_v2.components.menu.menu-item',
-                [
-                    'code' => $goodType->code,
-                    'icon' => '/img/types/' . $goodType->icon . '.svg'
-                ]
-            )
-        @endforeach
+    <div class="categories-page">
+        <div class="good-types">
+            @foreach($goodTypes as $goodType)
+                @include(
+                    '_v2.components.menu.menu-item',
+                    [
+                        'code' => $goodType->code,
+                        'icon' => '/img/types/' . $goodType->icon . '.svg'
+                    ]
+                )
+            @endforeach
+        </div>
     </div>
     <style>
         .right-header {
@@ -32,6 +34,11 @@
         }
         .dropdown-content {
 
+        }
+        @media (max-width: 600px) {
+            .categories-page {
+                padding-bottom: 100px;
+            }
         }
     </style>
 @endsection
