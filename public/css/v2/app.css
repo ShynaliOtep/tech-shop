@@ -162,6 +162,10 @@
     display: flex;
 }
 
+.good-add-to-favorites {
+    color: #fff;
+}
+
 .good-add-to-favorites span, .good-remove-to-favorites span, .good-open-btn span{
     font-weight: 400;
     font-size: 16px;
@@ -176,6 +180,20 @@
     color: #ffffff;
     background-color: #151515;
 }
+.good-remove-to-favorites .addf-icon {
+    display: none;
+}
+.good-add-to-favorites .removef-icon {
+    display: none;
+}
+
+.good-remove-to-favorites .removef-icon {
+    display: block;
+}
+.good-add-to-favorites .addf-icon {
+    display: block;
+}
+
 .new-good-bookmark {
     padding-top: 30px;
     position: absolute;

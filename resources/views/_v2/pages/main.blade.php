@@ -44,6 +44,26 @@
         <script src="{{asset('js/favoriteActions.js?v=1')}}"></script>
         <script src="{{asset('js/cart.js?v=1')}}"></script>
     @endpush
+    <div
+         style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1); display: none"
+         id="modal-fav" class="modal" onclick="hideModalFav()">
+        <div class="black-block simple-centred-block modal-block ">
+                <span class="close" onclick="hideModalFav()">
+                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M-6.99382e-07 16L6.56802 7.52941L9.50835 7.52941L16 16L13.0597 16L8.05728 9.26909L2.94033 16L-6.99382e-07 16Z" fill="#404040"/>
+                    <path d="M16 2.94707e-06L9.43198 8.47059L6.49165 8.47059L1.90735e-06 -6.99382e-07L2.94034 -3.59166e-07L7.94272 6.73091L13.0597 1.70928e-06L16 2.94707e-06Z" fill="#404040"/>
+                    </svg>
+                </span>
+            <p class="modal-title big-white-title mb-20">
+                Войдите в аккаунт
+            </p>
+            <p class="grey-s-light-text mb-20">
+                Для добавления товара в "любимые" необходимо аутентифицироваться
+            </p>
+            <a href="/auth/login" class="orange-btn mb-20">Войти</a>
+            <a href="/auth/register" class="black-btn">Создать аккаунт</a>
+        </div>
+    </div>
     @include('auth.modal', ['icon' => 'favorite_border', 'title' => __('translations.Authorization required'), 'content' => __('translations.To add a product to your favorites, you must be authenticated')])
     <style>
         .horizontal-scrolling-news {
@@ -80,6 +100,12 @@
         }
     </style>
     <script>
+        function showModalFav() {
+            document.getElementById('modal-fav').style.display = 'block'
+        }
+        function hideModalFav() {
+            document.getElementById('modal-fav').style.display = 'none'
+        }
         const carousel = document.getElementById('carousel');
         const dotsContainer = document.getElementById('carousel-dots');
         const items = carousel.querySelectorAll('.item');

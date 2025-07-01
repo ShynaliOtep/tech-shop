@@ -21,38 +21,34 @@ function deleteFromFavorite(e) {
     )
         .then(response => response.json())
         .then(data => {
-            if (data.hasOwnProperty('error')) {
-                M.toast({html: `<i class="material-icons orange-text text-darken-4">error_outline</i>` + data.error});
-            } else {
-                if (data.success) {
-                    let url = location.href;
-                    if (!isGoodViewRoute(url)){
-                        e.target.innerHTML = 'favorite_outline'
-                        e.target.parentNode.classList.remove('remove-from-favorites-btn')
-                        e.target.parentNode.classList.add('add-to-favorites-btn')
-                        e.target.parentNode.removeEventListener('click', deleteFromFavorite)
-                        e.target.parentNode.addEventListener('click', addToFavorite)
-                    } else {
-                        e.target.innerHTML = `В любимое
-                                    <i class="large material-icons">
-                                        favorite_border
-                                    </i>`
-                        e.target.classList.remove('remove-from-favorites-btn')
-                        e.target.classList.add('add-to-favorites-btn')
-                        e.target.removeEventListener('click', deleteFromFavorite)
-                        e.target.addEventListener('click', addToFavorite)
-                    }
-                    if (url === 'http://pixelrental.loc/favorite' || url === 'https://pixelrental.loc/favorite'){
-                        e.target.parentNode.parentNode.parentNode.parentNode.remove()
-                    }
-                    M.toast({html: 'Продукт успешно удалён из любимых!'});
+
+            if (data.success) {
+                let url = location.href;
+                if (!isGoodViewRoute(url)){
+                    e.target.parentNode.parentNode.classList.remove('remove-from-favorites-btn')
+                    e.target.parentNode.parentNode.classList.add('good-remove-to-favorites')
+                    // e.target.style.display ='none'
+                    // e.parentNode.children[1].style.display = 'block'
+                    // e.target.parentNode.removeEventListener('click', deleteFromFavorite)
+                    // e.target.parentNode.addEventListener('click', addToFavorite)
                 } else {
-                    M.toast({html: 'Не удалось удалить товар из любимых.'});
+                    e.target.classList.remove('remove-from-favorites-btn')
+                    e.target.classList.add('good-add-to-favorites')
+                    // e.target.children[0].style.display ='none'
+                    // e.parentNode.children[1].style.display = 'block'
+                    // e.target.removeEventListener('click', deleteFromFavorite)
+                    // e.target.addEventListener('click', addToFavorite)
                 }
+                if (url === 'http://pixelrental.loc/favorite' || url === 'https://pixelrental.loc/favorite'){
+                    e.target.parentNode.parentNode.parentNode.parentNode.remove()
+                }
+               // alert('Продукт успешно удалён из любимых!');
+            } else {
+                alert('Не удалось удалить товар из любимых.');
             }
         })
         .catch(error => {
-            M.toast({html: 'Не удалось удалить товар из любимых.'});
+            alert( 'Не удалось удалить товар из любимых.');
         });
 }
 
@@ -68,32 +64,25 @@ function addToFavorite(e) {
     )
         .then(response => response.json())
         .then(data => {
-            if (data.hasOwnProperty('error')) {
-                M.toast({html: `<i class="material-icons orange-text text-darken-4">error_outline</i>` + data.error});
+
+        if (data.success) {
+            let url = location.href;
+            if (!isGoodViewRoute(url)){
+                e.target.parentNode.classList.remove('good-add-to-favorites')
+                e.target.parentNode.classList.add('good-remove-to-favorites')
+                // e.target.parentNode.removeEventListener('click', addToFavorite)
+                // e.target.parentNode.addEventListener('click', deleteFromFavorite)
             } else {
-                if (data.success) {
-                    let url = location.href;
-                    if (!isGoodViewRoute(url)){
-                        e.target.innerHTML = 'favorite'
-                        e.target.parentNode.classList.remove('add-to-favorites-btn')
-                        e.target.parentNode.classList.add('remove-from-favorites-btn')
-                        e.target.parentNode.removeEventListener('click', addToFavorite)
-                        e.target.parentNode.addEventListener('click', deleteFromFavorite)
-                    } else {
-                        e.target.innerHTML = `Удалить из любимого
-                                    <i class="material-icons">
-                                        favorite
-                                    </i>`
-                        e.target.classList.remove('add-to-favorites-btn')
-                        e.target.classList.add('remove-from-favorites-btn')
-                        e.target.removeEventListener('click', addToFavorite)
-                        e.target.addEventListener('click', deleteFromFavorite)
-                    }
-                    M.toast({html: 'Продукт успешно добавлен в любимые!'});
-                } else {
-                    M.toast({html: 'Не удалось добавить товар в любимые.'});
-                }
+                e.target.classList.remove('add-to-favorites-btn')
+                e.target.classList.add('remove-from-favorites-btn')
+                // e.target.removeEventListener('click', addToFavorite)
+                // e.target.addEventListener('click', deleteFromFavorite)
             }
+            //alert('Продукт успешно добавлен в любимые!')
+        } else {
+            alert('Не удалось добавить товар в любимые.')
+        }
+
         })
         .catch(error => {
             M.toast({html: 'Не удалось добавить товар в любимые.'});
