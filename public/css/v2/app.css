@@ -133,6 +133,7 @@
     color: #404040;
     margin-bottom: 20px;
     text-decoration: none;
+    height: 60px;
 }
 
 .good-price {
@@ -1278,7 +1279,7 @@ html, body {
         text-align: center;
     }
     .item {
-        width: calc(50% - 8px);
+        flex: 0 0 calc(50% - 8px);
         min-width: auto;
     }
     .good-card {
@@ -1287,6 +1288,7 @@ html, body {
     }
     .good-title {
         font-size: 14px;
+        height: 35px;
     }
     .good-price {
         margin-top: 20px;
