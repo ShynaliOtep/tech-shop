@@ -13,6 +13,7 @@ class CityController extends Controller
     {
         // Сохраняем город в сессию и куки
         session()->put('select_city', (int) $city);
+        session()->put('is_select_city', true);
         session()->save();
         cookie()->queue(cookie('select_city', (int)$city, 60 * 24 * 30));
 
