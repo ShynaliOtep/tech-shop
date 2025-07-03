@@ -35,7 +35,7 @@
         .dropdown-content {
 
         }
-        @media (max-width: 600px) {
+        @media (max-width: 992px) {
             .categories-page {
                 padding-bottom: 100px;
             }

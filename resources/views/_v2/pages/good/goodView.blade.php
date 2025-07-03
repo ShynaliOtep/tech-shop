@@ -158,7 +158,7 @@
             font-weight: 500;
             color: #ffffff;
         }
-        @media (max-width: 600px) {
+        @media (max-width: 992px) {
             .good-view-block {
                 flex-wrap: wrap;
             }

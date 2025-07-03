@@ -224,7 +224,7 @@ export default {
     opacity: 0.8;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 992px) {
     .image {
         height: 200px;
     }

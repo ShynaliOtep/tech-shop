@@ -84,7 +84,7 @@
         margin-bottom: 25px;
         font-weight: 400;
     }
-    @media (max-width: 600px) {
+    @media (max-width: 992px) {
         footer {
             flex-wrap: wrap;
             padding-bottom: 120px;

@@ -288,7 +288,7 @@ export default {
         width: 30px;
     }
 }
-@media (max-width: 600px) {
+@media (max-width: 992px) {
     .bonus-faq-title {
         font-size: 10px;
     }

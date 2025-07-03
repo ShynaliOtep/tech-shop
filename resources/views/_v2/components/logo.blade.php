@@ -5,7 +5,7 @@
 </a>
 
 <style>
-    @media (max-width: 600px) {
+    @media (max-width: 992px) {
         .logo {
             width: 102px;
             display: block;

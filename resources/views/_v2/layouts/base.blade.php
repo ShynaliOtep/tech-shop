@@ -10,7 +10,7 @@
     @stack('styles')
 {{--    <link rel="stylesheet" href="{{asset('css/materialize.css')}}">--}}
 {{--    <link href="{{asset('css/material-icons.css')}}" rel="stylesheet">--}}
-    <link href="{{  asset('css/v2/app.css?v=3') }}" rel="stylesheet">
+    <link href="{{  asset('css/v2/app.css?v=4') }}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -44,7 +44,15 @@
             min-height: 100vh;
             padding: 40px 60px;
         }
-        @media (max-width: 600px) {
+        @media (max-width: 1440px) {
+            .sidebar {
+                width: 280px;
+            }
+            .base-section {
+                width: calc(100vw - 280px);
+            }
+        }
+        @media (max-width: 992px) {
             .sidebar {
                 display: none;
             }

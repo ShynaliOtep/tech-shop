@@ -109,7 +109,7 @@
     .dropdown a:hover {background-color: #191919;}
 
     .show {display: block;}
-    @media (max-width: 600px) {
+    @media (max-width: 992px) {
         .dropbtn{
             font-size: 12px;
         }

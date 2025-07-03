@@ -1108,7 +1108,20 @@ html, body {
     margin-top: 20px;
 }
 
-@media (max-width: 600px) {
+
+@media (max-width: 1440px) {
+    .item {
+        min-width: 150px;
+        flex: 3 0 calc(33.333% - 14px);
+    }
+
+    .good-open-btn span {
+        display: none;
+    }
+
+}
+
+@media (max-width: 992px) {
 
     .collection-table th, .collection-table td {
         padding: 10px;
@@ -1312,9 +1325,6 @@ html, body {
     }
     .good-add-to-favorites svg, .good-remove-to-favorites svg {
         width: 26px;
-    }
-    .good-add-to-card-text {
-        display: none;
     }
     .good-add-to-card-m {
         width: 50%;

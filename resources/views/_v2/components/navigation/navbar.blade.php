@@ -73,7 +73,7 @@
         border-radius: 10000px;
         padding-top: 7px;
     }
-    @media (max-width: 600px) {
+    @media (max-width: 992px) {
 
         .left-header {
             flex-wrap: wrap;
