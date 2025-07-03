@@ -575,7 +575,23 @@
 
     </div>
 
-
+    <div v-if="modal.info.open" @click="modalCloseInfo()" class="modal-overlay"
+         style="z-index: 1002; display: block; opacity: 0.5;"></div>
+    <div v-if="modal.info.open" id="modal" class="modal"
+         style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1);"
+    >
+        <div class="black-block simple-centred-block modal-block ">
+            <span class="close" @click="modalCloseInfo()">
+                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M-6.99382e-07 16L6.56802 7.52941L9.50835 7.52941L16 16L13.0597 16L8.05728 9.26909L2.94033 16L-6.99382e-07 16Z" fill="#404040"/>
+                    <path d="M16 2.94707e-06L9.43198 8.47059L6.49165 8.47059L1.90735e-06 -6.99382e-07L2.94034 -3.59166e-07L7.94272 6.73091L13.0597 1.70928e-06L16 2.94707e-06Z" fill="#404040"/>
+                    </svg>
+                </span>
+            <p class="modal-title big-white-title mb-20"><b>{{$t('translations.IMPORTANT!')}}</b></p>
+            <p class="grey-s-light-text mb-20">{{$t('translations.Be sure to keep in mind that if you rent equipment and it breaks down, an additional payment will apply, Based on the terms of the contract')}}</p>
+            <p class="grey-s-light-text mb-20">{{$t('translations.Please note: For late payment of payments specified in the agreement, the Lessor has the right require the Tenant to pay a penalty in the amount of 5% of the unpaid payment for each day delays')}}</p>
+        </div>
+    </div>
 
     <div v-if="modal.open && !isAuthenticated"
          style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1);"
@@ -642,7 +658,7 @@
                     <div class="cio-before"></div>
                 </label>
                 <span class="grey-s-text">Я согласен с  </span>
-                <a href="{{route('forgotPassword')}}" class="orange-s-link">Условиями аренды</a>
+                <p @click="modalOpenInfo()" class="orange-s-link">Условиями аренды</p>
             </div>
         </div>
         <!--        <div class="modal-overlay" style="z-index: 1002; display: block; opacity: 0.5;"></div>-->
@@ -687,6 +703,9 @@ export default {
                 guest: {
                     modalClass: String,
                     btnAction: Function
+                },
+                info: {
+                    open: false
                 },
                 open: false
             },
@@ -1128,6 +1147,16 @@ export default {
         },
         closeModal() {
             this.modal.open = false
+        },
+        modalCloseInfo() {
+            this.modal.info.open = false;
+            document.body.style.overflow = ''
+            this.modalOrder()
+        },
+        modalOpenInfo() {
+            this.modal.info.open = true;
+            document.body.style.overflow = 'hidden'
+            this.closeModal()
         }
     },
 };
