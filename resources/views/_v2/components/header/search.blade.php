@@ -49,7 +49,7 @@
         position: relative;
         height: 50px;
     }
-    @media (max-width: 600px) {
+    @media (max-width: 992px) {
         .search-block {
             margin-left: 0;
             margin-top: 20px;

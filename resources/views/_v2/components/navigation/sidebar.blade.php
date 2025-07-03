@@ -20,4 +20,9 @@
     .good-types {
         margin-top: 50px;
     }
+    @media (max-width: 1440px) {
+        .sidebar-component {
+            padding: 50px 30px;
+        }
+    }
 </style>
