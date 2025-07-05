@@ -12,11 +12,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.log(target.classList)
 
+        const cart = Cart.getCart();
+        const item = cart[productId];
+
         if (target.classList.contains('add-to-cart-btn-plus')) {
 
             const maxCount = parseInt(button.dataset.maxCount || '0'); // ⬅️ получаем max count
-            const cart = Cart.getCart();
-            const item = cart[productId];
             if (item.quantity >= maxCount) {
                 return;
             }
@@ -29,9 +30,13 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (target.classList.contains('add-to-cart-btn-text') ||
             target.classList.contains('good-add-to-card-text')) {
             Cart.addToCart(productId);
+        } else if (target.classList.contains('add-to-cart-btn-count')) {
+            return;
         } else {
             const width = window.innerWidth;
-            if (width <= 600) {
+            const cart = Cart.getCart();
+            const item = cart[productId];
+            if (width <= 600 && (!item || item.quantity === 0)) {
                 console.log(width)
                 Cart.addToCart(productId);
             }
