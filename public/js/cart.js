@@ -140,14 +140,14 @@ const Cart = {
             cart[productId].quantity += 1;
         }
         localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
-        requestIdleCallback(() => sendCartData());
+      //  requestIdleCallback(() => sendCartData());
     },
 
     removeFromCart(productId) {
         let cart = this.getCart();
         delete cart[productId];
         localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
-        requestIdleCallback(() => sendCartData());
+      //  requestIdleCallback(() => sendCartData());
     },
 
     decreaseQuantity(productId) {
@@ -160,7 +160,7 @@ const Cart = {
             }
             localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
         }
-        requestIdleCallback(() => sendCartData());
+     //   requestIdleCallback(() => sendCartData());
     },
 
     getTotalItems() {

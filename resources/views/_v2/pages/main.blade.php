@@ -42,7 +42,7 @@
     @endisset
     @push('scripts')
         <script src="{{asset('js/favoriteActions.js?v=1')}}"></script>
-        <script src="{{asset('js/cart.js?v=1')}}"></script>
+        <script src="{{asset('js/cart.js?v=2')}}"></script>
     @endpush
     <div
          style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1); display: none"
