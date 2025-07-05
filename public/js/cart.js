@@ -31,12 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
             Cart.addToCart(productId);
         } else {
             const width = window.innerWidth;
-            console.log(width)
             if (width <= 600) {
                 console.log(width)
                 Cart.addToCart(productId);
             }
-            return;
         }
 
         updateCartUI(productId);
@@ -78,12 +76,11 @@ function updateCartUI(productId) {
                 deleteBtn.style.display = "flex";
             }
 
-            // // ⬇️ Логика скрытия кнопки +
-            // if (item.quantity >= maxCount) {
-            //     plusBtn.style.color = "grey";
-            // } else {
-            //     plusBtn.style.opacity = "#ffffff";
-            // }
+            if (item.quantity >= maxCount) {
+                plusBtn.style.color = "#404040";
+            } else {
+                plusBtn.style.color = "#ffffff";
+            }
 
         } else {
             button.classList.remove('cart-active');

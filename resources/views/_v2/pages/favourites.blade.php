@@ -14,7 +14,7 @@
     @endif
     @push('scripts')
         <script src="{{asset('js/favoriteActions.js')}}"></script>
-        <script src="{{asset('js/cart.js?v=2')}}"></script>
+        <script src="{{asset('js/cart.js?v=3')}}"></script>
     @endpush
     @include('auth.modal', ['icon' => 'favorite_border', 'title' => __('translations.Authorization required'), 'content' => __('translations.To add a product to your favorites, you must be authenticated')])
     <style>
