@@ -33,7 +33,7 @@ services:
       APP_DIR: "${COMPOSE_CONTAINER_DIR}"
     ports:
       - "${COMPOSE_GATEWAY}:443:443"
-      - "${COMPOSE_GATEWAY}:8081:80"
+      - "${COMPOSE_GATEWAY}:80:80"
     volumes:
       - "${COMPOSE_APP_DIR}/.development/docker/nginx/templates/.deployment:/etc/nginx/templates"
       - "${COMPOSE_APP_DIR}:${COMPOSE_CONTAINER_DIR}"
