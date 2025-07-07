@@ -913,7 +913,7 @@ export default {
             if (this.cart[index].quantity === 1) {
                 cartStore.removeFromCart(this.cart[index].id)
                 this.cart.splice(index, 1)
-                this.calc(index)
+                this.calcEnd()
                 return
             }
             this.cart[index].quantity--;
@@ -1034,6 +1034,9 @@ export default {
             this.endAvailable = available
         },
         calcEnd() {
+            if (this.cart.length === 0) {
+                this.isCartEmpty = true
+            }
             let sumPrice = 0;
             for (let i = 0; i < this.cart.length; i++) {
                 sumPrice = sumPrice + this.cart[i].sumCost
