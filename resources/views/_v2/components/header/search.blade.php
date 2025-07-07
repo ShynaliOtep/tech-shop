@@ -49,6 +49,11 @@
         position: relative;
         height: 50px;
     }
+    @media (max-width: 1500px) {
+       .search-block {
+           margin-left: 15px;
+       }
+    }
     @media (max-width: 992px) {
         .search-block {
             margin-left: 0;
