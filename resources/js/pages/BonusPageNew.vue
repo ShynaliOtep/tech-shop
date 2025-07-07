@@ -451,8 +451,8 @@ export default {
            ],
            clientData: null,
            isAuthenticated: false,
-           level: 2,
-           bonusSum: 800000
+           level: 0,
+           bonusSum: 0
        }
     },
     mounted() {
