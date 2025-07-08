@@ -124,6 +124,10 @@
         function hideModalLocation() {
             document.getElementById('modal_location').style.display = 'none'
         }
+        document.cookie.split(";").forEach(function(c) {
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+        });
+        window.location.reload();
     </script>
 <script src="{{asset('js/script.js?v=2')}}"></script>
 <script src="{{asset('js/dropdown.js?v=2')}}"></script>
