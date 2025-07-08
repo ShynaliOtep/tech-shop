@@ -8,7 +8,7 @@
                 <div v-for="(good, index) in cart" class="cart-item-out" :key="index">
                     <div class="cart-item">
                         <div class="cart-item-img">
-                            <img :src="good.attachment?.url ? good.attachment?.url : '/img/example.png'" alt="">
+                            <img :src="good.attachment ? good.attachment[0].url : '/img/example.png'" alt="">
                         </div>
                         <div class="cart-info">
                             <div class="cart-text">
