@@ -834,10 +834,13 @@
     font-weight: 400;
     cursor: pointer;
     border-radius: 25px;
+    display: flex;
+    align-items: center;
 }
 
 .autocomplete-content li img{
-    width: 90px;
+    width: 40px;
+    margin-right: 10px;
 }
 
 .autocomplete-content li:hover {
