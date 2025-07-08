@@ -52,8 +52,7 @@
             $showModal = request()->has('new_order');
         @endphp
         @if($showModal)
-            <div
-                style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1);"
+            <div style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1);"
                 id="modal_new_order" class="modal" onclick="hideModalNewOrder()">
                 <div class="black-block simple-centred-block modal-block ">
             <span class="close" onclick="hideModalNewOrder()">
@@ -74,34 +73,39 @@
                 </div>
             </div>
                 @endif
-            @push('scripts')
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        // Инициализируем все модалки
-                        const modals = document.querySelectorAll('.modal');
-                        M.Modal.init(modals);
+{{--            @push('scripts')--}}
+{{--                <script>--}}
+{{--                    document.addEventListener('DOMContentLoaded', function () {--}}
+{{--                        // Инициализируем все модалки--}}
+{{--                        const modals = document.querySelectorAll('.modal');--}}
+{{--                        M.Modal.init(modals);--}}
 
-                        // Получаем query-параметры
-                        const params = new URLSearchParams(window.location.search);
+{{--                        // Получаем query-параметры--}}
+{{--                        const params = new URLSearchParams(window.location.search);--}}
 
-                        if (params.has('new_order')) {
-                            const modalEl = document.getElementById('success-order');
-                            const instance = M.Modal.getInstance(modalEl);
-                            if (instance) {
-                                instance.open();
-                            }
-                        }
-                    });
-                    function hideModalNewOrder() {
-                        document.getElementById('modal_new_order').style.display = 'none'
-                    }
-                </script>
-            @endpush
+{{--                        if (params.has('new_order')) {--}}
+{{--                            const modalEl = document.getElementById('success-order');--}}
+{{--                            const instance = M.Modal.getInstance(modalEl);--}}
+{{--                            if (instance) {--}}
+{{--                                instance.open();--}}
+{{--                            }--}}
+{{--                        }--}}
+{{--                    });--}}
+{{--                    function hideModalNewOrder() {--}}
+{{--                        document.getElementById('modal_new_order').style.display = 'none'--}}
+{{--                    }--}}
+{{--                </script>--}}
+{{--            @endpush--}}
         </div>
 
     @else
         <h5 class="white-m-text">{{__('translations.You do not have any orders yet')}}</h5>
     @endif
+    <script>
+        function hideModalNewOrder() {
+            document.getElementById('modal_new_order').style.display = 'none'
+        }
+    </script>
 @endsection
 <style>
     #success-order {
