@@ -54,7 +54,7 @@
         @if($showModal)
             <div
                 style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1);"
-                id="modal_location" class="modal" onclick="hideModalNewOrder()">
+                id="modal_new_order" class="modal" onclick="hideModalNewOrder()">
                 <div class="black-block simple-centred-block modal-block ">
             <span class="close" onclick="hideModalNewOrder()">
                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
