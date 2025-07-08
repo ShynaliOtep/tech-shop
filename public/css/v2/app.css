@@ -1140,7 +1140,7 @@ html, body {
         width: 40px;
     }
     .autocomplete-content {
-        padding-top: 20px;
+        padding-top: 20px !important;
     }
     .add-to-cart-btn-delete {
         height: 100%;
