@@ -35,6 +35,9 @@
     font-weight: 600 !important;
 }
 
+.order-item-image-wrapper {
+    width: 100%;
+}
 
 .page-title {
     font-weight: 500;
@@ -817,6 +820,7 @@
     right: 0;
     cursor: pointer;
 }
+
 
 .autocomplete-content {
     border-radius: 25px !important;
