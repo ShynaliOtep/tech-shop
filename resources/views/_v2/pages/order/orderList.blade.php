@@ -51,20 +51,29 @@
         @php
             $showModal = request()->has('new_order');
         @endphp
-
-            <!-- Модальное окно -->
-        <div id="success-order" class="modal custom-modal {{ $showModal ? 'open' : '' }}" style="{{ $showModal ? 'display: block; opacity: 1; transform: translateY(0%)' : '' }}">
-            <div class="modal-content center">
-                <h4>Ваш заказ был успешно оформлен!</h4>
-                <p>Спасибо, что выбираете нас!</p>
+        @if($showModal)
+            <div
+                style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1);"
+                id="modal_location" class="modal" onclick="hideModalNewOrder()">
+                <div class="black-block simple-centred-block modal-block ">
+            <span class="close" onclick="hideModalNewOrder()">
+               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M-6.99382e-07 16L6.56802 7.52941L9.50835 7.52941L16 16L13.0597 16L8.05728 9.26909L2.94033 16L-6.99382e-07 16Z" fill="#404040"/>
+                <path d="M16 2.94707e-06L9.43198 8.47059L6.49165 8.47059L1.90735e-06 -6.99382e-07L2.94034 -3.59166e-07L7.94272 6.73091L13.0597 1.70928e-06L16 2.94707e-06Z" fill="#404040"/>
+                </svg>
+            </span>
+                    <p class="modal-title big-white-title mb-20">
+                        Ваш заказ был успешно оформлен!
+                    </p>
+                    <p class="grey-s-light-text mb-20">
+                        Спасибо, что выбираете нас!
+                    </p>
+                    <p   class="black-btn mb-20" onclick="hideModalNewOrder()">Закрыть</p>
+                    {{--          --}}
+                    {{--                <a href="/auth/register" class="black-btn">Создать аккаунт</a>--}}
+                </div>
             </div>
-            <div class="divider"></div>
-            <div class="modal-footer center">
-                <button class="btn-large orange darken-4 modal-close">
-                    <i class="material-icons">done</i>
-                </button>
-            </div>
-        </div>
+                @endif
             @push('scripts')
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
@@ -83,12 +92,15 @@
                             }
                         }
                     });
+                    function hideModalNewOrder() {
+                        document.getElementById('modal_new_order').style.display = 'none'
+                    }
                 </script>
             @endpush
         </div>
 
     @else
-        <h5 class="white-text page-presenter-header">{{__('translations.You do not have any orders yet')}}</h5>
+        <h5 class="white-m-text">{{__('translations.You do not have any orders yet')}}</h5>
     @endif
 @endsection
 <style>
