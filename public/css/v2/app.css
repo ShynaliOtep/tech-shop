@@ -10,6 +10,9 @@
     color: #404040;
 }
 
+.cart-item-img img{
+    width: 90px;
+}
 .icon-button-grey-text span {
     font-size: 21px;
     font-weight: 500;
