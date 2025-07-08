@@ -15,7 +15,7 @@
             <form method="POST" action="{{route('register')}}" enctype="multipart/form-data">
                 {{csrf_field()}}
                 <div>
-                    <input name="name" id="name" type="text" placeholder="{{__('translations.Full name')}}" value="+7"
+                    <input name="name" id="name" type="text" placeholder="{{__('translations.Full name')}}"
                            class="p-input grey-s-text mb-20" required>
                 </div>
                 <div>
