@@ -1139,6 +1139,9 @@ html, body {
     .autocomplete-content li img{
         width: 40px;
     }
+    .autocomplete-content {
+        padding-top: 20px;
+    }
     .add-to-cart-btn-delete {
         height: 100%;
         padding: 14px 15px;

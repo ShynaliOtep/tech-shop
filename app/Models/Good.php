@@ -95,6 +95,15 @@ class Good extends Model
         return $this->hasMany(Item::class);
     }
 
+    public function itemsByCity(): HasMany
+    {
+        $cityId = City::getSiteCity();
+        if (!$cityId) {
+            $cityId = City::DEFAULT;
+        }
+        return $this->hasMany(Item::class)->where('city_id', $cityId);
+    }
+
     public function relatedGoods(): HasMany
     {
         return $this->hasMany(Good::class, 'id', 'related_goods');

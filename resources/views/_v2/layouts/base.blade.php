@@ -10,7 +10,7 @@
     @stack('styles')
 {{--    <link rel="stylesheet" href="{{asset('css/materialize.css')}}">--}}
 {{--    <link href="{{asset('css/material-icons.css')}}" rel="stylesheet">--}}
-    <link href="{{  asset('css/v2/app.css?v=9') }}" rel="stylesheet">
+    <link href="{{  asset('css/v2/app.css?v=10') }}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">

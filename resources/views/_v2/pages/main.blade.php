@@ -72,6 +72,11 @@
             padding: 30px;
             flex-wrap: nowrap;
             align-items: stretch;
+            scrollbar-width: none;         /* Firefox */
+            -ms-overflow-style: none;
+        }
+        .horizontal-scrolling-news::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
         .dots {
             text-align: center;
