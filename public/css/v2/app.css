@@ -836,6 +836,10 @@
     border-radius: 25px;
 }
 
+.autocomplete-content li img{
+    width: 90px;
+}
+
 .autocomplete-content li:hover {
     border: 1px solid #FF962E;
 }
@@ -1125,6 +1129,9 @@ html, body {
 }
 
 @media (max-width: 992px) {
+    .autocomplete-content li img{
+        width: 40px;
+    }
     .add-to-cart-btn-delete {
         height: 100%;
         padding: 14px 15px;
