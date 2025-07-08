@@ -1125,7 +1125,7 @@ export default {
             console.log('onchange')
             if (date.dateStart !== null && date.timeStart !== null && date.dateEnd !== null && date.timeEnd !== null) {
                 console.log('onchange true')
-                await this.retTypeIndividualDateReady()
+                await this.retTypeIndividualDateReady(index)
                 if (this.cart[index].availableItems === true) {
                     date.open = false
                     date.fill = true
