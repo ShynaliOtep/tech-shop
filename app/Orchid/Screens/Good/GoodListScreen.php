@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\Good;
 
+use App\Models\City;
 use App\Models\Good;
 use App\Models\Item;
 use App\Orchid\Layouts\Good\GoodListLayout;
@@ -147,7 +148,7 @@ class GoodListScreen extends Screen
             return;
         }
 
-        Good::query()->each(function ($good) use ($discount) {
+        Good::query()->where('city_id', City::getPlatformCity())->each(function ($good) use ($discount) {
             $discountCost = $good->cost - ($good->cost * ($discount / 100));
             $good->discount_cost = round($discountCost, 2);
             $good->save();
