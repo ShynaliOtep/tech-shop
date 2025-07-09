@@ -43,15 +43,13 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        'connections' => [
 
             // ... другие подключения
 
-            'oldsqlite' => [
+        'oldsqlite' => [
                 'driver' => 'sqlite',
                 'database' => database_path('old/database.sqlite'),
                 'prefix' => '',
-            ],
         ],
 
 
