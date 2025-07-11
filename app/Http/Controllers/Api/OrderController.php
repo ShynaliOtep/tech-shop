@@ -70,28 +70,37 @@ class OrderController extends Controller
 
             $dateObj1 = Carbon::parse($date['dateStart'] . ' ' . $date['timeStart'] . ':00');
             $dateObj2 = Carbon::parse($date['dateEnd'] . ' ' . $date['timeEnd'] . ':00');
-            $availableItems = $goodItemService->getAvailableGoodItems(
-                new TimeRange(
-                    $dateObj1,
-                    $dateObj2
-                ),
-                $goodId,
-                $item['quantity'],
-            );
+            try {
 
-            $requestAdditionsData = $item['additions'];
-            $itemAdditionsData = [];
-            foreach ($requestAdditionsData as $itemAdditional) {
-                $itemAdditionsData[] = $goodItemService->getAvailableGoodItems(
+                $availableItems = $goodItemService->getAvailableGoodItems(
                     new TimeRange(
                         $dateObj1,
                         $dateObj2
                     ),
-                    $itemAdditional['goodId'],
-                    $itemAdditional['quantity'],
+                    $goodId,
+                    $item['quantity'],
                 );
+
+                $requestAdditionsData = $item['additions'];
+                $itemAdditionsData = [];
+                foreach ($requestAdditionsData as $itemAdditional) {
+                    $itemAdditionsData[] = $goodItemService->getAvailableGoodItems(
+                        new TimeRange(
+                            $dateObj1,
+                            $dateObj2
+                        ),
+                        $itemAdditional['goodId'],
+                        $itemAdditional['quantity'],
+                    );
+                }
+            } catch (\Throwable $e) {
+                return response()->json([
+                    'success' => false,
+                    'status' => 'notAvailable',
+                    'message' => $e->getMessage()
+                ]);
             }
-           // dd($availableItems, $itemAdditionsData);
+
             foreach ($itemAdditionsData as $itemAdditionData) {
                 foreach ($itemAdditionData as $index => $itemAddition) {
                     if (count($availableItems) > $index) {
