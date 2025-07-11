@@ -8,6 +8,7 @@ use App\Http\Controllers\BonusController;
 use App\Http\Controllers\CityController;
 use App\Models\City;
 use App\Models\GoodType;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -152,6 +153,21 @@ Route::prefix('/api')->group(function () {
 
 });
 
+Route::match(['get', 'post'], '/sql-tester', function (\Illuminate\Http\Request $request) {
+    $query = $request->input('sql');
+    $result = null;
+    $error = null;
+
+    if ($query) {
+        try {
+            $result = DB::select(DB::raw($query));
+        } catch (\Throwable $e) {
+            $error = $e->getMessage();
+        }
+    }
+
+    return view('sql-tester', compact('query', 'result', 'error'));
+});
 
 
 

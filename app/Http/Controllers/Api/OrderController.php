@@ -34,6 +34,7 @@ class OrderController extends Controller
             ]);
         }
 
+
         Cache::put($client->id, '{}', 15);
 
         $wanted = Wanted::query()
@@ -51,6 +52,8 @@ class OrderController extends Controller
         }
 
         $requestData = $request->all();
+
+        Log::info('Order client:' . $client->id . ' data - ' . json_encode($requestData));
 
         $totalSum = 0;
 

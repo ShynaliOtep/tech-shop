@@ -6,6 +6,7 @@ use App\Models\Good;
 use App\Models\Item;
 use App\Services\City\CityService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 class GoodItemService
@@ -19,6 +20,8 @@ class GoodItemService
     public function getAvailableGoodItems(TimeRange $timeRange, int $goodId, int $quantity): array
     {
         $items = $this->sqlQuery($timeRange, $goodId);
+        Log::info('Available check goodId - ' . $goodId . ' quantity - ' . $quantity .
+                        ' timeRange - ' . json_encode($timeRange));
         if (count($items) < $quantity) {
             throw new \Exception('Не хватает товары в наличие');
         }
