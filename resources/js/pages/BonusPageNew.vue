@@ -30,7 +30,7 @@
                             </p>
                         </div>
                     </div>
-                    <a href="https://wa.me/77011234567?text=Здравствуйте,%20интересует%20бонусный%20уровень%20Black" class="b-btn" v-if="level < 1">
+                    <a href="https://wa.me/77778176891?text=Здравствуйте,%20интересует%20бонусный%20уровень%20Black" class="b-btn" v-if="level < 1">
                         Подключить
                     </a>
                     <a href="" class="b-btn-active" v-else >
@@ -90,7 +90,7 @@
 <!--                            </p>-->
 <!--                        </div>-->
 <!--                    </div>-->
-                    <a href="https://wa.me/77011234567?text=Здравствуйте,%20интересует%20бонусный%20уровень%20Bronze" class="b-btn" v-if="level < 2">
+                    <a href="https://wa.me/77778176891?text=Здравствуйте,%20интересует%20бонусный%20уровень%20Bronze" class="b-btn" v-if="level < 2">
                         Подключить
                     </a>
                     <a href="" class="b-btn-active" v-else >
@@ -168,7 +168,7 @@
                             </p>
                         </div>
                     </div>
-                    <a href="https://wa.me/77011234567?text=Здравствуйте,%20интересует%20бонусный%20уровень%20Emerald" class="b-btn" v-if="level < 3">
+                    <a href="https://wa.me/77778176891?text=Здравствуйте,%20интересует%20бонусный%20уровень%20Emerald" class="b-btn" v-if="level < 3">
                         Подключить
                     </a>
                     <a href="" class="b-btn-active" v-else >
@@ -244,7 +244,7 @@
                             </p>
                         </div>
                     </div>
-                    <a href="https://wa.me/77011234567?text=Здравствуйте,%20интересует%20бонусный%20уровень%20Amethyst" class="b-btn" v-if="level < 4">
+                    <a href="https://wa.me/77778176891?text=Здравствуйте,%20интересует%20бонусный%20уровень%20Amethyst" class="b-btn" v-if="level < 4">
                         Подключить
                     </a>
                     <a href="" class="b-btn-active" v-else >
