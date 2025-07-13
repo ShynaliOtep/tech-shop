@@ -109,7 +109,7 @@
 }
 
 .item {
-    flex: 0 0 calc(33.333% - 10.66px); /* 3 в строке с учётом gap */
+    width: calc(33% - 10px); /* 3 в строке с учётом gap */
     min-width: 200px;
     box-sizing: border-box;
 }
@@ -141,6 +141,8 @@
     text-decoration: none;
     height: 60px;
 }
+
+
 
 .good-price {
     font-size: 16px;
@@ -225,6 +227,32 @@
     text-align: center;
     font-weight: 600;
     font-size: 16px;
+}
+
+.percent-good-bookmark {
+    padding-top: 30px;
+    position: absolute;
+    width: 58px;
+    height: 115px;
+    top: -10px;
+    left: -15px;
+    background-color: #FF962E;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 100%,
+        50% 85%,
+        0 100%
+    );
+}
+.percent-good-bookmark span {
+    color: #ffffff;
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
 }
 
 
@@ -1122,6 +1150,16 @@ html, body {
     margin-top: 20px;
 }
 
+.cost-has-discount {
+    font-size: 12px;
+    color: #404040;
+    margin-top: -15px;
+    text-decoration: line-through;
+}
+.cost-is-discount {
+    color: #FF962E;
+    font-size: 18px;
+}
 
 @media (max-width: 1440px) {
     .item {
@@ -1314,6 +1352,28 @@ html, body {
         color: #ffffff;
         text-align: center;
     }
+
+    .percent-good-bookmark-m {
+        position: absolute;
+        top: -10px;
+        left: -12px;
+        background-color: #FF962E;
+        width: 35px;
+        height: 35px;
+        border-radius: 100px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+    .percent-good-bookmark-m span{
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 100%;
+        letter-spacing: 0;
+        color: #ffffff;
+        text-align: center;
+    }
     .item {
         flex: 0 0 calc(50% - 8px);
         min-width: auto;
@@ -1426,6 +1486,10 @@ html, body {
         background-color: #FF962E;
     }
 
+    .cost-is-discount {
+        color: #FF962E;
+        font-size: 15px;
+    }
 
     /*header {*/
     /*    position: fixed;*/
