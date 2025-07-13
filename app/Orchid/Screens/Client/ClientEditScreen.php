@@ -168,10 +168,6 @@ class ClientEditScreen extends Screen
     {
         $client->fill($request->except('client.attachment', 'client.password1', 'client.bonus')['client']);
 
-        $client->bonus()->updateOrCreate(
-            ['user_id' => $client->id],
-            ['level' => $request->input('client.bonus.level')]
-        );
 
         $client->confirmation_code = Str::random(10);
         if (($request->input('client')['password1'])) {
@@ -182,6 +178,11 @@ class ClientEditScreen extends Screen
             Mail::to($client->email)->send(new ConfirmationMail($client->email, $client->confirmation_code));
         }
         $client->save();
+
+        $client->bonus()->updateOrCreate(
+            ['user_id' => $client->id],
+            ['level' => $request->input('client.bonus.level')]
+        );
 
         $client->attachment()->syncWithoutDetaching(
             $request->input('client.attachment', [])
