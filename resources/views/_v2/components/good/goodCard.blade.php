@@ -18,15 +18,33 @@ $auth = (bool) Auth::guard('clients')->id();
         <p class="good-title">
             {{$good['name_' . session()->get('locale', 'ru')]}}
         </p>
-        <p class="good-price hide-m">
-            {{$good->cost}}   {{__('translations.Tenge per day')}}
-        </p>
+        @if($good->discount_cost)
+            <p class="good-price hide-m">
+                {{$good->discount_cost}}   {{__('translations.Tenge per day')}}
+            </p>
+            <p class="good-price cost-has-discount hide-m">
+                {{$good->cost}}   {{__('translations.Tenge per day')}}
+            </p>
+        @else
+            <p class="good-price hide-m">
+                {{$good->cost}}   {{__('translations.Tenge per day')}}
+            </p>
+        @endif
 
         <img loading="lazy" src="{{$imageUrl}}" class="good-card-image" alt="">
 
-        <p class="good-price show-m">
-            {{$good->cost}}   {{__('translations.Tenge per day')}}
-        </p>
+        @if($good->discount_cost)
+            <p class="good-price show-m">
+                {{$good->discount_cost}}   {{__('translations.Tenge per day')}}
+            </p>
+            <p class="good-price cost-has-discount show-m">
+                {{$good->cost}}   {{__('translations.Tenge per day')}}
+            </p>
+        @else
+            <p class="good-price show-m">
+                {{$good->cost}}   {{__('translations.Tenge per day')}}
+            </p>
+        @endif
 
         <div class="good-btn-block">
             @auth('clients')
