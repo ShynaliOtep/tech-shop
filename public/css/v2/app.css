@@ -109,9 +109,12 @@
 }
 
 .item {
-    width: calc(33% - 10px); /* 3 в строке с учётом gap */
-    min-width: 200px;
     box-sizing: border-box;
+}
+
+.item {
+    min-width: 150px;
+    flex: 3 0 calc(33.333% - 14px);
 }
 
 /* Планшеты: 2 в строке */

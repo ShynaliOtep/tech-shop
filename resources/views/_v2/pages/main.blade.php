@@ -102,6 +102,9 @@
                 width: 190px !important;
                 min-width: 190px !important;
             }
+            .horizontal-scrolling-news {
+                padding: 20px 0 0;
+            }
         }
     </style>
     <script>
