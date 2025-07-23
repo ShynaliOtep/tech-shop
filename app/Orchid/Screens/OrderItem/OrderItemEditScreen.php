@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\OrderItem;
 
+use App\Models\City;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -71,7 +72,9 @@ class OrderItemEditScreen extends Screen
 
     public function layout(): array
     {
-        $itemOptions = Item::all()->pluck('name', 'id')->toArray();
+        $cityId = session()->get('selected_city');
+        $cityId = $cityId ?: City::DEFAULT;
+        $itemOptions = Item::where('city_id', $cityId)->get()->pluck('name', 'id')->toArray();
 
         return [
 
