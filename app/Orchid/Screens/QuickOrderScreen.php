@@ -355,7 +355,6 @@ class QuickOrderScreen extends Screen
 
     public function saveOrder(Request $request)
     {
-      //  $order = Order::create($request->input('order'));
 
         $requestOrderData = $request->input('order');
         if ($requestOrderData['client_type'] == 'client') {
@@ -393,11 +392,15 @@ class QuickOrderScreen extends Screen
             $items = $items1;
         }
 
+        //dd($items);
+
         foreach ($items as $item) {
-            $item = Item::query()->find($item['item_id'])->load('good');
+            $itemObj = Item::query()->find($item['item_id'])->load('good');
 
             $dateObj1 = Carbon::parse($item['rent_start_date'].' '.$item['rent_start_time']);
             $dateObj2 = Carbon::parse($item['rent_end_date'].' '.$item['rent_end_time']);
+
+           // dump($dateObj1, $dateObj2);
 
             $date1 = Carbon::parse($item['rent_start_date']);
             $date2 = Carbon::parse($item['rent_end_date']);
@@ -408,20 +411,20 @@ class QuickOrderScreen extends Screen
 
             $diffInDays = max(1, $diffInDays);
 
-            $currentItemCost = $diffInDays * $item->good->cost;
+            $currentItemCost = $diffInDays * $itemObj->good->cost;
 
             $parentOrderItem = OrderItem::query()->create([
-                'item_id' => $item['id'],
+                'item_id' => $itemObj->id,
                 'status' => $order->status,
                 'amount_of_days' => $diffInDays,
                 'order_id' => $order->id,
                 'is_additional' => $item['is_additional'] ? 1 : 0,
                 'additionals' => $item['additionals'] ?? [],
                 'amount_paid' => $currentItemCost,
-                'rent_start_date' => $dateObj1->format('Y-m-d'),
-                'rent_start_time' => $dateObj1->format('H:i:s'),
-                'rent_end_date' => $dateObj2->format('Y-m-d'),
-                'rent_end_time' => $dateObj2->format('H:i:s'),
+                'rent_start_date' => $item['rent_start_date'],
+                'rent_start_time' => $item['rent_start_time'],
+                'rent_end_date' => $item['rent_end_date'],
+                'rent_end_time' => $item['rent_end_time'],
             ]);
             if ($item['additionals']) {
                 foreach ($item['additionals'] as $additionalId) {
@@ -450,7 +453,7 @@ class QuickOrderScreen extends Screen
 
             $totalSum += $currentItemCost;
         }
-
+        //dd('end');
         $order->amount_paid = $totalSum;
         $order->save();
 
