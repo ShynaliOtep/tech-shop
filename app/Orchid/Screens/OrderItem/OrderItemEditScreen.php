@@ -231,7 +231,6 @@ class OrderItemEditScreen extends Screen
             }
         }
 
-        $totalAmount = $totalAmount / 100 * (100 - $client->discount);
         $order->amount_paid = $order->amount_paid + $totalAmount;
 
         $order->save();
