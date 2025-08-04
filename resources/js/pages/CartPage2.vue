@@ -52,6 +52,7 @@
                             </p>
                             <div class="cart-dates">
                                 <DatePicker class="cart-date mb-20" v-model="good.date.dateStart"
+                                            :min-date="today"
                                             @change="changeDateElement(index)"
                                 />
                                 <div class="cart-time">
@@ -69,6 +70,7 @@
                             </p>
                             <div class="cart-dates">
                                 <DatePicker class="cart-date mb-20" v-model="good.date.dateEnd"
+                                            :min-date="good.date.dateStart ? good.date.dateStart : today"
                                             @change="changeDateElement(index)"
                                 />
                                 <div class="cart-time">
@@ -172,6 +174,7 @@
                             class="cart-date mb-20"
                             v-model="date.dateStart"
                             @change="changeDateElementAll()"
+                            :min-date="today"
                         />
                         <div class="cart-time">
                             <Select
@@ -188,6 +191,7 @@
                         <DatePicker
                             class="cart-date mb-20"
                             v-model="date.dateEnd"
+                            :min-date="date.dateStart ? date.dateStart : today"
                             @change="changeDateElementAll()"
                         />
                         <div class="cart-time">
@@ -350,7 +354,7 @@ export default {
             isCartEmpty: true,
             rentType: 'all',
             date: {
-                dateStart: '2025-05-01',
+                dateStart: null,
                 timeStart: null,
                 dateEnd: null,
                 timeEnd: null,
@@ -379,7 +383,8 @@ export default {
                 open: false
             },
             agree: false,
-            loadingModal: false
+            loadingModal: false,
+            today: new Date().toISOString().split('T')[0]
         };
     },
     mounted() {

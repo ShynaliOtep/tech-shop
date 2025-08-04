@@ -5,6 +5,7 @@
                 ref="dateInput"
                 type="date"
                 v-model="selectedDate"
+                :min="minDate"
                 class="custom-date picker"
                 @click.stop
             />
@@ -19,6 +20,10 @@
 <script>
 export default {
     name: "CustomDatePicker",
+    props: {
+        modelValue: String,
+        minDate: String // 👈 минимальная дата как пропс
+    },
     data() {
         return {
             selectedDate: this.modelValue || null
