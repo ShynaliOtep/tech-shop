@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\DateTimer;
+use Orchid\Screen\Fields\Label;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Sight;
@@ -58,51 +59,58 @@ class QuickOrderScreen extends Screen
 
        // session()->forget('quick_order_items');
         if ($this->query()['client_type'] == 'client') {
-            $forms[] =  Relation::make('order.client_id')
-                ->fromModel(Client::class, 'name')
-                ->help(__('translations.Order client help'))
-                ->required()
+            $forms[] = Label::make('order.client_id')
                 ->title(__('translations.Client'))
-                ->ajax('asyncUpdateFields');
+                ->value(Client::find($this->query()['client_id'])->name);
+            $forms[] = Input::make('order.client_id')
+                ->value($this->query()['client_id'])
+                ->style()
+                ->hidden();
         } else {
-            $forms[] = Input::make('order.phone')
+            $forms[] = Label::make('order.phone')
                 ->title('Номер телефона')
-                ->mask('+7 (999) 999-99-99') // Формат маски номера
-                ->required();
-            $forms[] = Input::make('order.instagram')
+                ->value($this->query()['phone']);
+            $forms[] = Input::make('order.phone')
+                ->value($this->query()['phone'])
+                ->hidden();
+            $forms[] = Label::make('order.instagram')
                 ->title('Инстаграм')
-                ->required();
+                ->value($this->query()['instagram']);
+            $forms[] = Input::make('order.instagram')
+                ->value($this->query()['instagram'])
+                ->hidden();
         }
-        $forms[] = Input::make('order.client_type')
-                        ->value($this->query()['client_type'])
-                        ->hidden();
+        $statuses = [
+            'pending' => __('Ожидается'),
+            'paid' => __('Оплачен'),
+            'unpaid' => __('Не оплачен'),
+        ];
+        $paidStatus =  $statuses[$this->query()['paid_status']];
+
         return [
-            Layout::rows(array_merge( $forms ,[
-                Select::make('order.status')
-                    ->options([
-                        'returned' => __('translations.returned'),
-                        'in_rent' => __('translations.in_rent'),
-                        'waiting' => __('translations.waiting'),
-                        'confirmed' => __('translations.confirmed'),
-                        'cancelled' => __('translations.cancelled'),
-                    ])
-                    ->title(__('translations.Status'))
-                    ->help(__('translations.Order status help')),
-
-                Select::make('order.paid_status')
-                    ->options([
-                        'pending' => __('Ожидается'),
-                        'paid' => __('Оплачен'),
-                        'unpaid' => __('Не оплачен'),
-                    ])
-                    ->title(__('Статус оплаты')),
-                //  ->help(__('translations.Order status help')),
-
-                Input::make('order.amount_unpaid')
-                    ->title(__('Не оплаченная сумма'))
-                    //  ->help(__('translations.Order agreement id help')),
-                    ->type('number'),
-                    ])
+            Layout::rows(array_merge( $forms , [
+                    Label::make('order.status')
+                        ->title(__('translations.Status'))
+                        ->value( __('translations.' . $this->query()['status'])),
+                    Label::make('order.paid_status')
+                        ->title(__('Статус оплаты'))
+                        ->value($paidStatus),
+                    Label::make('order.amount_unpaid')
+                       ->title(__('Неоплаченная сумма'))
+                       ->value($this->query()['amount_unpaid']),
+                     Input::make('order.status')
+                        ->value($this->query()['status'])
+                        ->hidden(),
+                    Input::make('order.paid_status')
+                        ->value($this->query()['paid_status'])
+                        ->hidden(),
+                    Input::make('order.amount_unpaid')
+                        ->value($this->query()['amount_unpaid'])
+                        ->hidden(),
+                    Input::make('order.client_type')
+                        ->value($this->query()['client_type'])
+                        ->hidden()
+                ])
             ),
 
             Layout::legend('order_info', [
@@ -187,6 +195,12 @@ class QuickOrderScreen extends Screen
     {
         return [
             'client_type' => request()->get('client_type'),
+            'client_id' => request()->get('client_id'),
+            'phone' => request()->get('phone'),
+            'instagram' => request()->get('instagram'),
+            'status' => request()->get('status'),
+            'paid_status' => request()->get('paid_status'),
+            'amount_unpaid' => request()->get('amount_unpaid'),
             'selectedItems' => session()->get('quick_order_items', []),
         ];
     }

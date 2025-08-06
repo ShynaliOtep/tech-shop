@@ -19,6 +19,7 @@ use App\Orchid\Screens\Order\OrderListScreen;
 use App\Orchid\Screens\OrderItem\OrderItemEditScreen;
 use App\Orchid\Screens\OrderItem\OrderItemListScreen;
 use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\QuickOrderClientDataScreen;
 use App\Orchid\Screens\QuickOrderClientScreen;
 use App\Orchid\Screens\QuickOrderScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
@@ -261,6 +262,9 @@ Route::screen('carousel/create', CarouselEditScreen::class)->name('platform.caro
 
 Route::screen('quick-order', QuickOrderScreen::class)
     ->name('platform.quick-order');
+
+Route::screen('quick-order-client-data', QuickOrderClientDataScreen::class)
+    ->name('platform.quick-order-client-data');
 
 Route::screen('quick-order-client', QuickOrderClientScreen::class)
     ->name('platform.quick-order-client');

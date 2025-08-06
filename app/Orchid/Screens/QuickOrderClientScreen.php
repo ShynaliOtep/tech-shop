@@ -27,7 +27,7 @@ class QuickOrderClientScreen extends Screen
                         'client' => 'Для клиента',
                         'guest' => 'Для гостя'
                     ]),
-                Button::make('Перейти')
+                Button::make('Дальше')
                     ->method('next')
             ]),
         ];
@@ -35,6 +35,6 @@ class QuickOrderClientScreen extends Screen
 
     public function next(Request $request)
     {
-        return redirect()->route('platform.quick-order', ['client_type' => $request->get('client_type')]);
+        return redirect()->route('platform.quick-order-client-data', ['client_type' => $request->get('client_type')]);
     }
 }
