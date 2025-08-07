@@ -154,9 +154,9 @@ class OrderController extends Controller
 
         }
 
-        if ($client->discount) {
-            $totalSum = $totalSum / 100 * (100 - $client->discount);
-        }
+//        if ($client->discount) {
+//            $totalSum = $totalSum / 100 * (100 - $client->discount);
+//        }
 
         $order->amount_paid = $totalSum;
         $order->save();
@@ -186,9 +186,9 @@ class OrderController extends Controller
 Электронный адрес: $client->email
 Ссылка на договор: $aggreementUrl
 ИИН: $client->iin
-Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)
-Скидка: $client->discount процентов
-Общая сумма: $totalSum тг
+Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)".
+//Скидка: $client->discount процентов
+"Общая сумма: $totalSum тг
 
 Список товаров:
 ".$orderItemMessageData);
@@ -340,9 +340,9 @@ class OrderController extends Controller
 
         }
 
-        if ($client->discount) {
-            $totalSum = $totalSum / 100 * (100 - $client->discount);
-        }
+//        if ($client->discount) {
+//            $totalSum = $totalSum / 100 * (100 - $client->discount);
+//        }
 
         $order->amount_paid = $totalSum;
 

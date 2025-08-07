@@ -3,6 +3,7 @@
 namespace App\Orchid\Layouts\OrderItem;
 
 use App\Orchid\Filters\OrderItemNameFilter;
+use App\Orchid\Filters\StatusFilter;
 use Orchid\Screen\Layouts\Selection;
 
 class OrderItemFiltersLayout extends Selection
@@ -11,6 +12,7 @@ class OrderItemFiltersLayout extends Selection
     {
         return [
             OrderItemNameFilter::class,
+            StatusFilter::class,
         ];
     }
 }

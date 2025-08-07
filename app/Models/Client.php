@@ -139,7 +139,7 @@ class Client extends Authenticatable
         $bonus = new Bonus();
         $bonus->user_id = $this->id;
         $bonus->balance = 0;
-        $bonus->level = 1;
+        $bonus->level = 0;
         $bonus->save();
         return $bonus;
 
@@ -156,7 +156,7 @@ class Client extends Authenticatable
         $model = new Bonus();
         $model->user_id = $client->id;
         $model->balance = 0;
-        $model->level = 1;
+        $model->level = 0;
         $model->save();
         return $model->level;
     }

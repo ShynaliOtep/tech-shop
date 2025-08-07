@@ -52,20 +52,20 @@ class OrderItemListLayout extends Table
                         ->route('platform.orders.edit', $orderItemItem->order->id);
                 }),
 
-            TD::make('status', __('translations.Status'))
+            TD::make('order_items.status', __('translations.Status'))
                 ->sort()
-                ->filter(
-                    Select::make('status')
-                        ->options([
-                            null => __('translations.not chosen'),
-                            'returned' => __('translations.returned'),
-                            'in_rent' => __('translations.in_rent'),
-                            'waiting' => __('translations.waiting'),
-                            'confirmed' => __('translations.confirmed'),
-                            'cancelled' => __('translations.cancelled'),
-                        ])
-                        ->title(__('translations.Status'))
-                )
+//                ->filter(
+//                    Select::make('order_items.status')
+//                        ->options([
+//                            null => __('translations.not chosen'),
+//                            'returned' => __('translations.returned'),
+//                            'in_rent' => __('translations.in_rent'),
+//                            'waiting' => __('translations.waiting'),
+//                            'confirmed' => __('translations.confirmed'),
+//                            'cancelled' => __('translations.cancelled'),
+//                        ])
+//                        ->title(__('translations.Status'))
+//                )
                 ->render(function (OrderItem $orderItemItem) {
                     return __('translations.'.$orderItemItem->status);
                 }),

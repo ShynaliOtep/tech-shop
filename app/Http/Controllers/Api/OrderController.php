@@ -205,7 +205,7 @@ class OrderController extends Controller
                             'amount_of_days' => $diffInDays,
                             'is_additional' => true,
                             'additionals' => [],
-                            'amount_paid' => $additionalCost / 100 * (100 - $client->discount),
+                            'amount_paid' => $additionalCost,
                             'rent_start_date' => $dateObj1->format('Y-m-d'),
                             'rent_start_time' => $dateObj1->format('H:i:s'),
                             'rent_end_date' => $dateObj2->format('Y-m-d'),
