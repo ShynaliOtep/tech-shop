@@ -35,7 +35,7 @@
                     </a>
                 @endguest
             </div>
-                <a hhref="{{ url()->previous() }}" class="good-view-back-btn">
+                <a href="{{ url()->previous() }}" class="good-view-back-btn">
                     <svg width="32" height="30" viewBox="0 0 32 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.62676e-07 17.1429L5.89673e-07 12.8571L32 12.8571V17.1429L9.62676e-07 17.1429Z" fill="white"/>
                         <path d="M19.2 30L0 17.685L4.79831e-07 12.1718L19.2 0V5.51313L3.94328 14.8926L19.2 24.4869L19.2 30Z" fill="white"/>
