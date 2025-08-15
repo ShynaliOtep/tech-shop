@@ -21,7 +21,8 @@ return redirect(route('logout'));
 
         $clientId = $client->id;
 
-        $orders = Order::query()->where('client_id', '=', $clientId)->with('orderItems')->get();
+        $orders = Order::query()->where('client_id', '=', $clientId)->with('orderItems')
+            ->orderByDesc('created_at')->get();
 
         return view('_v2.pages.order.orderList', compact('orders'));
     }

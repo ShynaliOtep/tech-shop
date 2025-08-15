@@ -44,4 +44,9 @@ class OrderService
 
         return $text;
     }
+
+    public static function getLastOrder(int $clientId): ?Order
+    {
+        return Order::where('client_id', $clientId)->orderBy('created_at', 'desc')->first();
+    }
 }

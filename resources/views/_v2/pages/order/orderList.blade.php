@@ -49,7 +49,8 @@
                 </div>
             @endforeach
         @php
-            $showModal = request()->has('new_order');
+            $lastOrder = \App\Services\Order\OrderService::getLastOrder(Auth::guard('clients')->id());
+            $showModal = $lastOrder && $lastOrder->created_at->addMinute()->greaterThan(now());
         @endphp
         @if($showModal)
             <div style="z-index: 1003; display: block; opacity: 1; bottom: 0; transform: scaleX(1) scaleY(1);"
