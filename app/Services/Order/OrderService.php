@@ -49,4 +49,22 @@ class OrderService
     {
         return Order::where('client_id', $clientId)->orderBy('created_at', 'desc')->first();
     }
+
+    public static function calculateTotalSum(Order $order): void
+    {
+        $orderItems = $order->orderItems;
+        $totalSum = 0;
+        foreach ($orderItems as $orderItem) {
+            $totalSum += $orderItem->amount_paid;
+        }
+        $order->amount_paid = $totalSum;
+        $order->save();
+    }
+
+    public static function calculateRentDates(Order $order): void
+    {
+        $order->rent_end_date = $order->orderItems()->max('rent_end_date');
+        $order->rent_start_date = $order->orderItems()->min('rent_start_date');
+        $order->save();
+    }
 }

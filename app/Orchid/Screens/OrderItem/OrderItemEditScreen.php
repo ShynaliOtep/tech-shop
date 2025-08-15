@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\Order\OrderService;
 use DateTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -161,16 +162,10 @@ class OrderItemEditScreen extends Screen
 
         $item = Item::find($request->input('orderItem')['item_id']);
 
-        $order = Order::query()->find($orderId);
+        $order = Order::find($orderId);
 
-        $client = $order->owner;
 
         $orderItem->fill($request->input('orderItem'));
-
-        if ($orderItem->exists && !$orderItem->is_additional){
-            $order->amount_paid = $order->amount_paid - $orderItem->amount_paid;
-            $order->save();
-        }
 
         $dateObj1 = DateTime::createFromFormat('Y-m-d H:i:s', $request->all()['orderItem']['rent_start_date'].' '.$request->all()['orderItem']['rent_start_time']);
         $dateObj2 = DateTime::createFromFormat('Y-m-d H:i:s', $request->all()['orderItem']['rent_end_date'].' '.$request->all()['orderItem']['rent_end_time']);
@@ -189,31 +184,22 @@ class OrderItemEditScreen extends Screen
 
         $goodAmount *= $diffInDays;
 
-        $totalAmount = $goodAmount;
-
         $orderItem->amount_paid = $goodAmount;
 
         $orderItem->additionals = $request->input('orderItem.additionals', []);
 
         if ($orderItem->exists && count($orderItem->additionals) != 0) {
-            $totalAmount = 0;
-            $order->amount_paid = $order->amount_paid - OrderItem::query()->where('parent_order_item_id', '=', $orderItem->id)->sum('amount_paid');
 
-            $order->save();
             OrderItem::query()->where('parent_order_item_id', '=', $orderItem->id)->delete();
 
             $orderItem->additionals = $request->input('orderItem')['additionals'] ?? [];
         }
 
-        $orderItem->save();
-
-        $parentOrderItemAdditionalsId = [];
-
         if (count($orderItem->additionals) != 0) {
             $orderItem->is_additional = false;
             foreach ($orderItem->additionals as $additionalId) {
                 $additional = Item::find($additionalId);
-                $childOrderItem = OrderItem::query()->create([
+                OrderItem::query()->create([
                     'order_id' => $order->id,
                     'item_id' => $additionalId,
                     'additionals' => [],
@@ -227,18 +213,13 @@ class OrderItemEditScreen extends Screen
                     'rent_end_date' => $request->input('orderItem')['rent_end_date'],
                     'rent_end_time' => $request->input('orderItem')['rent_end_time'],
                 ]);
-                $totalAmount += ($additional->good->additional_cost ?? $additional->good->cost) * $diffInDays;
             }
         }
 
-        $order->amount_paid = $order->amount_paid + $totalAmount;
+        $orderItem->save();
 
-        $order->save();
-
-        $order->rent_end_date = $order->orderItems()->max('rent_end_date');
-        $order->rent_start_date = $order->orderItems()->min('rent_start_date');
-
-        $order->save();
+        OrderService::calculateRentDates($order);
+        OrderService::calculateTotalSum($order);
 
         Alert::info('You have successfully created a orderItem.');
 
@@ -252,10 +233,6 @@ class OrderItemEditScreen extends Screen
      */
     public function remove(OrderItem $orderItem)
     {
-        $orderItem->order->amount_paid = $orderItem->order->amount_paid - $orderItem->amount_paid;
-
-        $orderItem->order->save();
-
         if ($orderItem->is_additional){
             $parentOrderItem = OrderItem::find($orderItem->parent_order_item_id);
 
@@ -271,13 +248,10 @@ class OrderItemEditScreen extends Screen
 
         $orderItem->delete();
 
+        OrderService::calculateRentDates($orderItem->order);
+        OrderService::calculateTotalSum($orderItem->order);
+
         Alert::info('You have successfully deleted the orderItem.');
-
-        $orderItem->order->rent_end_date = $orderItem->order->orderItems()->max('rent_end_date');
-        $orderItem->order->rent_start_date = $orderItem->order->orderItems()->min('rent_start_date');
-
-        $orderItem->order->save();
-
 
         return redirect()->route('platform.orderItems.list', ["filter[order_id]" => $orderItem->order->id]);
     }

@@ -29,9 +29,9 @@ class GoodItemService
         return  count($items) == $quantity ? $items : array_slice($items, 0, $quantity);
     }
 
-    public function isAvailableByTime(TimeRange $timeRange, int $goodId, int $quantity): bool
+    public function isAvailableByTime(TimeRange $timeRange, int $goodId, int $quantity, $excludeOrderItems = []): bool
     {
-        $items = $this->sqlQuery($timeRange, $goodId);
+        $items = $this->sqlQuery($timeRange, $goodId, $excludeOrderItems);
         return count($items) >= $quantity;
     }
 
@@ -48,7 +48,7 @@ class GoodItemService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function sqlQuery(TimeRange $timeRange, int $goodId): array
+    private function sqlQuery(TimeRange $timeRange, int $goodId, $excludeOrderItems = []): array
     {
         $good = Good::query()->find($goodId);
 
@@ -57,6 +57,7 @@ class GoodItemService
     FROM order_items
     JOIN items ON order_items.item_id = items.id
     WHERE items.good_id = :good_id
+    AND order_items.id NOT IN (:exclude_order_items)
     AND order_items.status IN ('in_rent', 'waiting', 'confirmed')
     AND (
         (order_items.rent_start_date < :end_date OR (order_items.rent_start_date = :end_date_v2 AND order_items.rent_start_time <= :end_time))
@@ -71,6 +72,7 @@ class GoodItemService
             'end_date' =>  $timeRange->end->format('Y-m-d'),
             'end_date_v2' =>  $timeRange->end->format('Y-m-d'),
             'end_time' => $timeRange->end->format('H:i:s'),
+            'exclude_order_items' => implode("','", $excludeOrderItems),
         ]);
         $conflictingItemIds = array_map(function ($item) {
             return $item->item_id;
