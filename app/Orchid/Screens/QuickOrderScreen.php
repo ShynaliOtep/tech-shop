@@ -425,7 +425,7 @@ class QuickOrderScreen extends Screen
 
             $diffInDays = max(1, $diffInDays);
 
-            $currentItemCost = $diffInDays * $itemObj->good->cost;
+            $currentItemCost = $diffInDays * ($good->discount_cost ?? $good->cost);
 
             $parentOrderItem = OrderItem::query()->create([
                 'item_id' => $itemObj->id,
