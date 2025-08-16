@@ -5,6 +5,7 @@
                 ref="dateInput"
                 type="date"
                 v-model="selectedDate"
+                :min="minDate"
                 @change="validateDate"
                 class="custom-date picker"
                 @click.stop
