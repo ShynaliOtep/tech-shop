@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -326,5 +327,69 @@ class OrderController extends Controller
         }
 
         return null;
+    }
+
+    public function getAgreement(int $orderId)
+    {
+        $order = Order::query()->find($orderId);
+
+        if (! $order) {
+            abort(404);
+        }
+
+        $attachment = $order->attachment()->first();
+
+        if (!$attachment) {
+            abort(404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'attachment' => $attachment,
+        ]);
+    }
+
+    public function saveSignature(Request $request)
+    {
+        $order = Order::find($request->order_id);
+        // signature: "data:image/png;base64,iVBORw0KGgoAAAANS..."
+        $signatureData = $request->input('signature');
+
+        // Отрезаем префикс "data:image/png;base64,"
+        $signatureData = preg_replace('#^data:image/\w+;base64,#i', '', $signatureData);
+
+        // Декодируем
+        $decoded = base64_decode($signatureData);
+
+        if ($decoded === false) {
+            return response()->json(['error' => 'Invalid base64 string'], 400);
+        }
+
+        // Генерируем имя файла
+        $fileName = 'signatures/' . uniqid() . '.png';
+
+        // Сохраняем файл в storage/app/public/signatures
+        Storage::disk('public')->put($fileName, $decoded);
+
+        // Сохраняем путь в БД
+        $order->signature_url = $fileName;
+        $order->save();
+
+        foreach ($order->attachment as $attachment) {
+            $attachment->delete();
+        }
+
+        $aggreementFile = makeOrderAgreement($order->fresh(['orderItems', 'owner']));
+
+        $order->attachment()->syncWithoutDetaching($aggreementFile->id);
+        $order->agreement_id = $aggreementFile->id;
+
+        $order->save();
+
+        return response()->json([
+            'message' => 'Signature saved successfully',
+            'path' => Storage::url($fileName), // для фронта сразу URL
+            'agreement_url' => $order->attachment()->first()->url
+        ]);
     }
 }

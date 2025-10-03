@@ -44,7 +44,8 @@ Route::prefix('/')->group(function () {
 
     Route::get('/cart', [HttpControllers\Vue\CartController::class, 'index'])->name('vue.cart');
     Route::get('/bonus', [HttpControllers\Vue\BonusController::class, 'index'])->name('vue.bonus');
-
+    Route::get('/order/signature', [HttpControllers\Vue\Admin\SignatureController::class, 'index'])->name('vue.order.signature');
+    Route::get('/order/agreement', [App\Http\Controllers\Vue\Admin\SignatureController::class, 'agreement'])->name('vue.order.agreement');
 });
 
 Route::prefix('/auth')->group(function () {
@@ -150,6 +151,9 @@ Route::prefix('/api')->group(function () {
     Route::get('/carousels', [CarouselController::class, 'list']);
 
     Route::post('/get-available-count/{id}', [CartController::class, 'getAvailableItemsByCount']);
+
+    Route::get('/order/agreement/{orderId}', [HttpControllers\Api\OrderController::class, 'getAgreement']);
+    Route::post('/order/signature', [HttpControllers\Api\OrderController::class, 'saveSignature']);
 
 });
 

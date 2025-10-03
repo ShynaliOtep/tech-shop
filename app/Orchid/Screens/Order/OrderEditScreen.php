@@ -11,6 +11,7 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Fields\Upload;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Alert;
@@ -120,7 +121,10 @@ class OrderEditScreen extends Screen
                     ->help(__('translations.Order Agreement help'))
                     ->title(__('translations.Agreement'))
                     ->acceptedFiles('.doc, .docx, .pdf, .txt'),
-
+                TextArea::make('order.comment')
+                    ->rows(5)
+                    ->title('Комментарий')
+                    ->help('Комментарий по заказам'),
             ]),
         ];
 

@@ -45,6 +45,11 @@ class OrderListLayout extends Table
                     return Link::make($order->id)
                         ->route('platform.orders.edit', $order->id);
                 }),
+            TD::make('comment', 'Комментарий')
+                ->sort()
+                ->filter(
+                    Input::make()
+                ),
             TD::make('client_id', __('translations.Client'))
                 ->filter(
                     Relation::make()
@@ -144,6 +149,9 @@ class OrderListLayout extends Table
                         ->method('makeAgreement', [
                             'id' => $order->id,
                         ]);
+                    $btnsList[] = Link::make('Посмотреть договор')
+                        ->href('/order/agreement?id=' . $order->id)
+                        ->icon('bs.file-text');
 
                     if ($order->status === 'in_rent') {
                         $btnsList[] = Button::make(__('translations.Return'))

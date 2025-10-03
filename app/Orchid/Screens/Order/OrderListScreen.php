@@ -124,4 +124,23 @@ class OrderListScreen extends Screen
         $order->save();
         Toast::info('Договор был успешно сформирован');
     }
+
+    public function signatureAgreement(Request $request)
+    {
+        $order = Order::findOrFail($request->get('id'));
+
+        if (!$order->attachment()->first()) {
+
+            $aggreementFile = makeOrderAgreement($order->fresh(['orderItems', 'owner']));
+
+            $order->attachment()->syncWithoutDetaching($aggreementFile->id);
+            $order->agreement_id = $aggreementFile->id;
+
+            $order->save();
+        }
+
+        return [
+            'redirect' => route('admin.agreement', ['id' => $order->id]),
+        ];
+    }
 }

@@ -7,6 +7,8 @@ import BonusPage2 from "./pages/BonusPage2.vue"
 import BonusPageNew from "./pages/BonusPageNew.vue";
 import CartPage2 from "./pages/CartPage2.vue";
 import 'vue-datepicker-next/index.css';
+import SignaturePage from "./pages/SignaturePage.vue";
+import AgreementPage from "./pages/Agreement.vue";
 
 const pinia = createPinia();
 
@@ -16,6 +18,8 @@ const components = {
     'bonus-page': BonusPage2,
     'cart-page2': CartPage2,
     'bonus-page-new': BonusPageNew,
+    'signature-page': SignaturePage,
+    'agreement-page': AgreementPage
 };
 
 document.addEventListener("DOMContentLoaded", () => {

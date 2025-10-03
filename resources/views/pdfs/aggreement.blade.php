@@ -186,8 +186,12 @@
             <p class="white-text">test</p>
             <p class="white-text">test</p>
             <p class="white-text">test</p>
-            <p class="white-text">test</p>
-            ___________________/
+            @if($order->signature_url)
+                <p> <img src="{{ public_path('storage/' . $order->signature_url) }}"  style="height: 40px" alt="{{ public_path('storage/' . $order->signature_url) }}"> / </p>
+            @else
+                <p class="white-text">test</p>
+                ___________________/
+            @endif
             <p class="white-text">test</p>
         </div>
     </div>
@@ -248,7 +252,13 @@
         <br>
         <br>
         <br>
-        <p class="right">Подпись клиента ___________________/</p>
+        <p class="right">Подпись клиента
+            @if($order->signature_url)
+                <img src="{{ public_path('storage/' . $order->signature_url) }}"  style="height: 40px" alt="{{ public_path('storage/' . $order->signature_url) }}">
+            @else
+                ___________________
+            @endif
+            /</p>
     </div>
 </div>
 <div class="page-break"></div>
@@ -330,8 +340,12 @@
             <p class="white-text">test</p>
             <p class="white-text">test</p>
             <p class="white-text">test</p>
-            <p class="white-text">test</p>
-            ___________________/
+            @if($order->signature_url)
+                <p> <img src="{{ public_path('storage/' . $order->signature_url) }}"  style="height: 40px" alt="{{ public_path('storage/' . $order->signature_url) }}"> / </p>
+            @else
+                <p class="white-text">test</p>
+                ___________________/
+            @endif
             <p class="white-text">test</p>
         </div>
     </div>
