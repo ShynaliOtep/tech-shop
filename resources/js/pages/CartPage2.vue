@@ -460,7 +460,7 @@ export default {
             let cartItem = this.cart[index]
             const response = await axios.request({
                 method: 'POST',
-                url: 'item/get-available-items/' + cartItem.id,
+                url: 'api/get-available-count/' + cartItem.id,
                 data: {
                     end_date: cartItem.date.dateEnd,
                     end_time: cartItem.date.timeEnd,
@@ -468,9 +468,8 @@ export default {
                     start_time: cartItem.date.timeStart
                 }
             })
-            let items = response.data.available_items
-            this.cart[index].availableItems = items.length >= cartItem.quantity
-            this.cart[index].availableItemsQuantity = items.length
+            this.cart[index].availableItems = response.data.quantity >= cartItem.quantity
+            this.cart[index].availableItemsQuantity = response.data.quantity
             this.calcEnd()
         },
         async getAvailableItemsAddition(index, additionalIndex) {

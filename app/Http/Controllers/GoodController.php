@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Good;
 use App\Models\GoodType;
+use App\Models\Set;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -30,6 +31,7 @@ class GoodController extends Controller
                         $itemQuery->where('status', 'available')
                             ->where('city_id', $cityId);
                     });
+                    $query->where('is_set', '=', 0);
                 },
                 'goods.attachment'
             ])
@@ -40,11 +42,20 @@ class GoodController extends Controller
                 $itemQuery->where('status', 'available')
                     ->where('city_id', $cityId);
             })->with('attachment')
+            ->where('is_set', '=', 0)
             ->orderBy('created_at', 'desc')
             ->limit(20)
             ->get();
         $carousel = true;
-        return view('_v2.pages.main', compact('viewedGoodTypes', 'news', 'carousel'));
+
+        $sets = Set::whereHas('goods.items', function ($query) use ($cityId) {
+            $query->where('city_id', $cityId)
+                ->where('status', 'available');
+        })
+            ->get();
+
+
+        return view('_v2.pages.main', compact('viewedGoodTypes', 'news', 'carousel', 'sets'));
     }
 
     public function view(Good $good)
@@ -69,6 +80,7 @@ class GoodController extends Controller
                 'goods.attachment'
             ])
             ->get();
+
 
         return view('_v2.pages.good.goods', compact('viewedGoodTypes'));
     }

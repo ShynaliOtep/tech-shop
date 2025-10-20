@@ -24,6 +24,8 @@ use App\Orchid\Screens\QuickOrderClientScreen;
 use App\Orchid\Screens\QuickOrderScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\Set\SetEditScreen;
+use App\Orchid\Screens\Set\SetListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
@@ -269,4 +271,27 @@ Route::screen('quick-order-client-data', QuickOrderClientDataScreen::class)
 Route::screen('quick-order-client', QuickOrderClientScreen::class)
     ->name('platform.quick-order-client');
 //    ->breadcrumbs(fn ($trail) => $trail->parent('platform.main')->push('Быстрое оформление заказа'));
+
+
+
+// Platform > System > Goods > Good
+Route::screen('sets/{set}/edit', SetEditScreen::class)
+    ->name('platform.sets.edit')
+    ->breadcrumbs(fn (Trail $trail, $set) => $trail
+        ->parent('platform.sets.list')
+        ->push($set['id'], route('platform.sets.edit', $set)));
+
+// Platform > System > Goods > Create
+Route::screen('sets/create', SetEditScreen::class)
+    ->name('platform.sets.create')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.sets.list')
+        ->push(__('translations.Create'), route('platform.sets.create')));
+
+// Platform > System > Goods
+Route::screen('sets', SetListScreen::class)
+    ->name('platform.sets.list')
+    ->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Наборы'), route('platform.sets.list')));
 

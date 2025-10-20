@@ -3,6 +3,7 @@
 namespace App\Orchid\Layouts\OrderItem;
 
 use App\Models\Client;
+use App\Models\Good;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Orchid\Screen\Actions\Link;
@@ -75,6 +76,22 @@ class OrderItemListLayout extends Table
                 ->filter(
                     NumberRange::make('amount_paid')
                 ),
+
+            TD::make('set_good_id', __('Набор'))
+                ->sort()
+                ->render(function (OrderItem $orderItemItem) {
+                    if (!$orderItemItem->set_good_id) {
+                      return '';
+                    }
+                    $good = Good::query()->find($orderItemItem->set_good_id);
+
+                    if (!$good) {
+                        return '';
+                    }
+
+                    $cost = $good->discount_cost ?? $good->cost;
+                    return 'из набора ' . $good->name_ru  . '(' . $cost . ')';
+                }),
 
             TD::make('rent_start_date', __('translations.Rent start date'))
                 ->align(TD::ALIGN_RIGHT)

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -49,6 +50,7 @@ class Good extends Model
     protected $guarded = [];
 
     protected $allowedFilters = [
+        'is_set' => Where::class,
         'name_ru' => Like::class,
         'name_en' => Like::class,
         'cost' => WhereMaxMin::class,
@@ -63,6 +65,7 @@ class Good extends Model
     ];
 
     protected $allowedSorts = [
+        'is_set',
         'name_ru',
         'name_en',
         'cost',
@@ -122,5 +125,37 @@ class Good extends Model
     public function getRelatedGoods(): Collection
     {
         return Good::whereIn('id', $this->related_goods)->get();
+    }
+
+
+    public function availableCount(): int
+    {
+        if (!$this->is_set) {
+            return $this->itemsByCity()->count();
+        }
+
+        $set = Set::where('good_id', $this->id)->first();
+        if (!$set) {
+            return $this->itemsByCity()->count();
+        }
+
+        $min = 10000;
+
+        foreach ($set->goods as $good) {
+            $count = $good->itemsByCity()->count();
+            $min =  min($count, $min);
+        }
+
+        return $min;
+    }
+
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeSimple(Builder $query)
+    {
+        return $query->where('is_set', 0);
     }
 }

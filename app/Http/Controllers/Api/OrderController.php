@@ -9,6 +9,7 @@ use App\Models\Good;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Set;
 use App\Models\Wanted;
 use App\Services\Bonus\GoodService;
 use App\Services\Good\GoodItemService;
@@ -67,6 +68,28 @@ class OrderController extends Controller
         ]);
 
         $goodItemService = new GoodItemService;
+
+        $cart = [];
+        foreach ($requestData['cart'] as $index => $item) {
+            $set = Set::query()->where('good_id', $item['id'])->first();
+            if ($set) {
+                $cost = $set->good->discount_cost ? $set->good->discount_cost : $set->good->cost;
+                foreach ($set->goods as $good) {
+                    $item['id'] = $good->id;
+                    $item['set_good_id'] = $set->good_id;
+                    $item['set_good_name'] = $set->good->name_ru;
+                    $item['cost'] = $cost;
+                    $cost = 0;
+                    $cart[] = $item;
+                }
+            } else {
+                $cart[] = $item;
+            }
+        }
+
+        $requestData['cart'] = $cart;
+
+      //  dd($requestData);
 
         foreach ($requestData['cart'] as $item) {
             $date = $item['date'];
@@ -137,14 +160,19 @@ class OrderController extends Controller
                 $orderItemMessageData = $orderItemMessageData . 'Товар: ' . str_replace(")", "", str_replace("(", "", $good->name_ru)) . '
                 ';
 
-
-                if ($good->discount_cost) {
-                    $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $good->discount_cost . '(скидка)
+                if (array_key_exists('cost', $item)) {
+                    $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $item['cost'] . '(из набора  ' . $item['set_good_name'] . ')
                 ';
                 } else {
-                    $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $good->cost . '
+                    if ($good->discount_cost) {
+                        $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $good->discount_cost . '(скидка)
                 ';
+                    } else {
+                        $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $good->cost . '
+                ';
+                    }
                 }
+
 
                 $orderItemMessageData = $orderItemMessageData . 'Дата начала аренды: *' . $dateObj1->format('d/m/Y H:i') . '*
                 ';
@@ -153,7 +181,7 @@ class OrderController extends Controller
                 $orderItemMessageData = $orderItemMessageData . 'Количество дней: *' . $diffInDays . '*
                 ';
 
-                $currentItemCost = $diffInDays * ($good->discount_cost ?? $good->cost);
+                $currentItemCost = $diffInDays * ($item['cost'] ?? ($good->discount_cost ?? $good->cost));
                 $orderItemMessageData = $orderItemMessageData . 'Общая сумма за товар: *' . $currentItemCost . '*
                 ';
 
@@ -179,6 +207,7 @@ class OrderController extends Controller
                     'rent_start_time' => $dateObj1->format('H:i:s'),
                     'rent_end_date' => $dateObj2->format('Y-m-d'),
                     'rent_end_time' => $dateObj2->format('H:i:s'),
+                    'set_good_id' => $item['set_good_id'] ?? null,
                 ]);
 
                 if ($itemObject->additionalItems) {
@@ -246,34 +275,34 @@ class OrderController extends Controller
 
         Log::info('settleOrder', [$client, $order]);
 
-        $response = sendTelegramMessage(
-            "*НОВЫЙ ЗАКАЗ* $order->id
-Покупатель: [$client->phone](https://wa.me/$client->phone)
-Имя: $client->name
-Электронный адрес: $client->email
-Ссылка на договор: $aggreementUrl
-ИИН: $client->iin
-Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
-//Скидка: $client->discount процентов
-"Общая сумма: $totalSum тг
-
-Список товаров:
-".$orderItemMessageData);
-
-        if (! $response->ok()) {
-            sendTelegramMessage(
-                "*НОВЫЙ ЗАКАЗ* $order->id
-Покупатель: [$client->phone](https://wa.me/$client->phone)
-Имя: $client->name
-Электронный адрес: $client->email
-Ссылка на договор: $aggreementUrl
-ИИН: $client->iin
-Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
-//Скидка: $client->discount процентов
-"Общая сумма: $totalSum тг
-
-Список товаров слишком большой для отображения в боте.");
-        }
+//        $response = sendTelegramMessage(
+//            "*НОВЫЙ ЗАКАЗ* $order->id
+//Покупатель: [$client->phone](https://wa.me/$client->phone)
+//Имя: $client->name
+//Электронный адрес: $client->email
+//Ссылка на договор: $aggreementUrl
+//ИИН: $client->iin
+//Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
+////Скидка: $client->discount процентов
+//"Общая сумма: $totalSum тг
+//
+//Список товаров:
+//".$orderItemMessageData);
+//
+//        if (! $response->ok()) {
+//            sendTelegramMessage(
+//                "*НОВЫЙ ЗАКАЗ* $order->id
+//Покупатель: [$client->phone](https://wa.me/$client->phone)
+//Имя: $client->name
+//Электронный адрес: $client->email
+//Ссылка на договор: $aggreementUrl
+//ИИН: $client->iin
+//Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
+////Скидка: $client->discount процентов
+//"Общая сумма: $totalSum тг
+//
+//Список товаров слишком большой для отображения в боте.");
+//        }
 
         return response()->json([
             'success' => true

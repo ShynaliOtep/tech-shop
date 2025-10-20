@@ -26,6 +26,7 @@ final class OrderItem extends Model
         'amount_paid' => WhereMaxMin::class,
         'rent_start_date' => WhereDateStartEnd::class,
         'rent_end_date' => WhereDateStartEnd::class,
+        'set_good_id' => Where::class,
     ];
 
     protected $allowedSorts = [
@@ -35,6 +36,7 @@ final class OrderItem extends Model
         'amount_paid',
         'rent_start_date',
         'rent_end_date',
+        'set_good_id'
     ];
 
     protected $casts = [

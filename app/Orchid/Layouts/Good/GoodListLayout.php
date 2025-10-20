@@ -111,6 +111,17 @@ class GoodListLayout extends Table
                         ->route('platform.goodTypes.edit', $good->goodType);
                 }),
 
+
+            TD::make('is_set', __('Набор'))
+                ->sort()
+//                ->filter([
+//                    0 => 'Нет',
+//                    1 => 'да'
+//                ])
+                ->render(function (Good $good) {
+                    return $good->is_set ? 'Да' : 'Нет';
+                }),
+
             TD::make('priority', __('translations.Priority'))
                 ->sort(),
 

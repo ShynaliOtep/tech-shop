@@ -22,6 +22,21 @@
             <div class="dots" id="carousel-dots"></div>
         </div>
     @endif
+
+    @if(isset($sets))
+        <div>
+            <h5 class="page-type-title">{{__('Наборы')}}</h5>
+            <div class="items horizontal-scrolling-news" id="carousel">
+                @foreach($sets as $set)
+                    <div class="item">
+                        @include('_v2.components.good.goodCard', ['good' => $set->good])
+                    </div>
+                @endforeach
+            </div>
+            <div class="dots" id="carousel-dots"></div>
+        </div>
+    @endif
+
     @isset($viewedGoodTypes)
         @foreach($viewedGoodTypes as $goodType)
             <div class="row">

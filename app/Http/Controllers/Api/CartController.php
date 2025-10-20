@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\Good;
 use App\Models\Item;
+use App\Models\Set;
 use App\Services\Bonus\GoodService;
 use App\Services\Good\GoodItemService;
 use App\Services\Good\TimeRange;
@@ -58,17 +59,34 @@ class CartController extends Controller
         $endTime = $request->post('end_time');
 
         $service = new GoodItemService();
+        $good = Good::query()->find($id);
 
-        $result = $service->getAvailableCountByTime(
-            new TimeRange(
-                \Illuminate\Support\Carbon::parse($startDate. ' '. $startTime . ':00'),
-                \Illuminate\Support\Carbon::parse($endDate. ' '. $endTime . ':00'),
-            ),
-            $id,
-        );
+        $goodIds = [];
+
+        if ($good->is_set) {
+            $set = Set::query()->where('good_id', $good->id)->first();
+            foreach ($set->goods as $goo) {
+                $goodIds[] = $goo->id;
+            }
+        } else {
+            $goodIds[] = $id;
+        }
+
+        $min = 100000;
+
+        foreach ($goodIds as $goodId) {
+            $result = $service->getAvailableCountByTime(
+                new TimeRange(
+                    \Illuminate\Support\Carbon::parse($startDate. ' '. $startTime . ':00'),
+                    \Illuminate\Support\Carbon::parse($endDate. ' '. $endTime . ':00'),
+                ),
+                $goodId,
+            );
+            $min = min($min, $result);
+        }
 
         return response()->json([
-            'quantity' => $result,
+            'quantity' => $min,
         ]);
     }
 
@@ -83,6 +101,14 @@ class CartController extends Controller
         $endDateTimeString = $endDateString.' '.$endTimeString;
         $goodId = $request->input('goodId');
         $good = Good::query()->findOrFail($goodId);
+
+        if ($good->is_set) {
+            return response()
+                ->json([
+                    'success' => true,
+                    'additionals' => [],
+                ]);
+        }
 
         $additionalIds = $good->additionals;
         if (!is_array($additionalIds) || count($additionalIds) < 0) {
