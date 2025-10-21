@@ -275,34 +275,34 @@ class OrderController extends Controller
 
         Log::info('settleOrder', [$client, $order]);
 
-//        $response = sendTelegramMessage(
-//            "*НОВЫЙ ЗАКАЗ* $order->id
-//Покупатель: [$client->phone](https://wa.me/$client->phone)
-//Имя: $client->name
-//Электронный адрес: $client->email
-//Ссылка на договор: $aggreementUrl
-//ИИН: $client->iin
-//Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
-////Скидка: $client->discount процентов
-//"Общая сумма: $totalSum тг
-//
-//Список товаров:
-//".$orderItemMessageData);
-//
-//        if (! $response->ok()) {
-//            sendTelegramMessage(
-//                "*НОВЫЙ ЗАКАЗ* $order->id
-//Покупатель: [$client->phone](https://wa.me/$client->phone)
-//Имя: $client->name
-//Электронный адрес: $client->email
-//Ссылка на договор: $aggreementUrl
-//ИИН: $client->iin
-//Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
-////Скидка: $client->discount процентов
-//"Общая сумма: $totalSum тг
-//
-//Список товаров слишком большой для отображения в боте.");
-//        }
+        $response = sendTelegramMessage(
+            "*НОВЫЙ ЗАКАЗ* $order->id
+Покупатель: [$client->phone](https://wa.me/$client->phone)
+Имя: $client->name
+Электронный адрес: $client->email
+Ссылка на договор: $aggreementUrl
+ИИН: $client->iin
+Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
+//Скидка: $client->discount процентов
+"Общая сумма: $totalSum тг
+
+Список товаров:
+".$orderItemMessageData);
+
+        if (! $response->ok()) {
+            sendTelegramMessage(
+                "*НОВЫЙ ЗАКАЗ* $order->id
+Покупатель: [$client->phone](https://wa.me/$client->phone)
+Имя: $client->name
+Электронный адрес: $client->email
+Ссылка на договор: $aggreementUrl
+ИИН: $client->iin
+Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
+//Скидка: $client->discount процентов
+"Общая сумма: $totalSum тг
+
+Список товаров слишком большой для отображения в боте.");
+        }
 
         return response()->json([
             'success' => true
