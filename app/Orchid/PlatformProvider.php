@@ -55,7 +55,7 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make(__('Наборы'))
                 ->icon('bs.box')
                 ->route('platform.sets.list')
-                ->permission('platform.sets.list'),
+                ->permission('platform.goods.list'),
 
             Menu::make(__('translations.GoodTypes'))
                 ->icon('bs.type')
