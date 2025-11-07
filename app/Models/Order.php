@@ -108,4 +108,23 @@ class Order extends Model
 
         return $totalSum;
     }
+
+    public function convertArray()
+    {
+        return [
+            'id' => $this->id,
+            'client_id' => $this->client_id,
+            'agreement_id' => $this->agreement_id,
+            'amount_paid' => $this->amount_paid,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'city_id' => $this->city_id,
+            'rent_start_date' =>  \Illuminate\Support\Carbon::parse($this->rent_start_date)->format('Y-m-d H:i:s'),
+            'rent_end_date' =>  \Illuminate\Support\Carbon::parse($this->rent_end_date)->format('Y-m-d H:i:s'),
+            'items' => array_map(function ($item) {
+                return $item->convertArray();
+            }, $this->orderItems->toArray()),
+        ];
+    }
 }

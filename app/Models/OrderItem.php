@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Orchid\Filters\Filterable;
 use Orchid\Filters\Types\Where;
 use Orchid\Filters\Types\WhereDateStartEnd;
@@ -56,5 +57,19 @@ final class OrderItem extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
+
+    public function convertToArray()
+    {
+        return [
+            'item_id' => $this->item_id,
+            'order_id' => $this->order_id,
+            'amount_of_days' => $this->amount_of_days,
+            'status' => $this->status,
+            'amount_paid' => $this->amount_paid,
+            'rent_start_date' => Carbon::parse($this->rent_start_date)->format('Y-m-d H:i:s'),
+            'rent_end_date' => Carbon::parse($this->rent_end_date)->format('Y-m-d H:i:s'),
+            'set_good_id' => $this->set_good_id,
+        ];
     }
 }

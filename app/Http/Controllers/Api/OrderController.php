@@ -273,7 +273,7 @@ class OrderController extends Controller
 
         $aggreementUrl = $aggreementFile->url();
 
-        Log::info('settleOrder', [$client, $order]);
+        Log::info('settleOrder', [$client, ['order' => $order->convertArray()]]);
 
         $response = sendTelegramMessage(
             "*НОВЫЙ ЗАКАЗ* $order->id
