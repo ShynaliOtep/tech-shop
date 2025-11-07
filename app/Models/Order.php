@@ -111,6 +111,10 @@ class Order extends Model
 
     public function convertArray()
     {
+        $items = [];
+        foreach ($this->orderItems as $orderItem){
+            $items[] = $orderItem->converToArray();
+        }
         return [
             'id' => $this->id,
             'client_id' => $this->client_id,
@@ -122,9 +126,7 @@ class Order extends Model
             'city_id' => $this->city_id,
             'rent_start_date' =>  \Illuminate\Support\Carbon::parse($this->rent_start_date)->format('Y-m-d H:i:s'),
             'rent_end_date' =>  \Illuminate\Support\Carbon::parse($this->rent_end_date)->format('Y-m-d H:i:s'),
-            'items' => array_map(function ($item) {
-                return $item->convertArray();
-            }, $this->orderItems->toArray()),
+            'items' => $items
         ];
     }
 }
