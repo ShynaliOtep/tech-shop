@@ -113,7 +113,7 @@ class Order extends Model
     {
         $items = [];
         foreach ($this->orderItems as $orderItem){
-            $items[] = $orderItem->converToArray();
+            $items[] = $orderItem->convertToArray();
         }
         return [
             'id' => $this->id,
