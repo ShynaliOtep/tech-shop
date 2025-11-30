@@ -2,6 +2,7 @@
 
 namespace App\Services\Good;
 
+use App\Models\City;
 use App\Models\Good;
 use App\Models\Item;
 use App\Services\City\CityService;
@@ -51,12 +52,14 @@ class GoodItemService
     private function sqlQuery(TimeRange $timeRange, int $goodId, $excludeOrderItems = []): array
     {
         $good = Good::query()->find($goodId);
+        $cityId = City::getSiteCity();
 
         $conflictingItemIds = DB::select("
     SELECT order_items.item_id
     FROM order_items
     JOIN items ON order_items.item_id = items.id
     WHERE items.good_id = :good_id
+    AND items.city_id = :city_id
     AND order_items.id NOT IN (:exclude_order_items)
     AND order_items.status IN ('in_rent', 'waiting', 'confirmed')
     AND (
@@ -73,6 +76,7 @@ class GoodItemService
             'end_date_v2' =>  $timeRange->end->format('Y-m-d'),
             'end_time' => $timeRange->end->format('H:i:s'),
             'exclude_order_items' => implode("','", $excludeOrderItems),
+            'city_id' => $cityId
         ]);
         $conflictingItemIds = array_map(function ($item) {
             return $item->item_id;

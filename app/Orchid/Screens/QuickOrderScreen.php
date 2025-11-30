@@ -516,12 +516,14 @@ class QuickOrderScreen extends Screen
     )
     {
         $good = Good::query()->find($id);
+        $cityId = City::getPlatformCity();
 
         $conflictingItemIds = DB::select("
     SELECT order_items.item_id
     FROM order_items
     JOIN items ON order_items.item_id = items.id
     WHERE items.good_id = :good_id
+    AND items.city_id = :city_id
     AND order_items.status IN ('in_rent', 'waiting', 'confirmed')
     AND (
         (order_items.rent_start_date < :end_date OR (order_items.rent_start_date = :end_date_v2 AND order_items.rent_start_time <= :end_time))
@@ -536,6 +538,7 @@ class QuickOrderScreen extends Screen
             'end_date' => $endDate,
             'end_date_v2' => $endDate,
             'end_time' => $endTime,
+            'city_id' => $cityId,
         ]);
         $conflictingItemIds = array_map(function ($item) {
             return $item->item_id;
