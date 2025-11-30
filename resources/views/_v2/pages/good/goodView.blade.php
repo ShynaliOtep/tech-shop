@@ -1,3 +1,8 @@
+@php
+    /**
+     * @var \App\Models\Good $good
+     */
+    @endphp
 @extends('_v2.layouts.base')
 @section('content')
 
@@ -60,9 +65,9 @@
                     @endif
                 </div>
                 <p class="big-white-title g-v-price">
-                    @if($good->discount_cost)
+                    @if($good->getDiscountCost())
                         <s>{{$good->cost}}</s>
-                        {{$good->discount_cost}}
+                        {{$good->getDiscountCost()}}
                         {{__('translations.Tenge per day')}}
                     @else
                         {{$good->cost}}

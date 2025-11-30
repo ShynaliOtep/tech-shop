@@ -18,9 +18,9 @@ $auth = (bool) Auth::guard('clients')->id();
         <p class="good-title">
             {{$good['name_' . session()->get('locale', 'ru')]}}
         </p>
-        @if($good->discount_cost)
+        @if($good->getDiscountCost())
             <p class="good-price cost-is-discount hide-m">
-                {{$good->discount_cost}}   {{__('translations.Tenge per day')}}
+                {{$good->getDiscountCost()}}   {{__('translations.Tenge per day')}}
             </p>
             <p class="good-price cost-has-discount hide-m">
                 {{$good->cost}}   {{__('translations.Tenge per day')}}
@@ -33,9 +33,9 @@ $auth = (bool) Auth::guard('clients')->id();
 
         <img loading="lazy" src="{{$imageUrl}}" class="good-card-image" alt="">
 
-        @if($good->discount_cost)
+        @if($good->getDiscountCost())
             <p class="good-price cost-is-discount show-m">
-                {{$good->discount_cost}}   {{__('translations.Tenge per day')}}
+                {{$good->getDiscountCost()}}   {{__('translations.Tenge per day')}}
             </p>
             <p class="good-price cost-has-discount show-m">
                 {{$good->cost}}   {{__('translations.Tenge per day')}}
@@ -140,7 +140,7 @@ $auth = (bool) Auth::guard('clients')->id();
                     <span>NEW</span>
                 </div>
                 @endif
-                @if(!isset($isNew) && $good->discount_cost)
+                @if(!isset($isNew) && $good->getDiscountCost())
 {{--                    <div class="percent-good-bookmark hide-m"--}}
 {{--                         data-product-id="{{$good->id}}">--}}
 {{--                        <span>%</span>--}}

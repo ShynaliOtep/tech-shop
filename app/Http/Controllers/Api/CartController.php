@@ -44,6 +44,9 @@ class CartController extends Controller
         $itemIds = $request->get('items');
 
         $items = Good::query()->whereIn('id', $itemIds)->with('attachment')->get();
+        foreach ($items as $item) {
+            $item->discount_cost = $item->getDiscountCost();
+        }
 
         return response()->json([
             'items' => $items,
@@ -175,7 +178,11 @@ class CartController extends Controller
             $availableGood->available = ! in_array($availableGood->good_id, $unavailableAdditionalIds);
         });
 
-        $availableGoods = $availableGoods->toArray();
+//        foreach ($availableGoods as $good) {
+//            $good->discount_cost = ! $good->getDiscountCost();
+//        }
+
+        $availableGoods->toArray();
 
         $responseData = [
             'success' => true,

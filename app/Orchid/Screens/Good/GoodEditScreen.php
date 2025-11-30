@@ -2,7 +2,9 @@
 
 namespace App\Orchid\Screens\Good;
 
+use App\Models\City;
 use App\Models\Good;
+use App\Models\GoodPrice;
 use App\Models\GoodType;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -174,6 +176,19 @@ class GoodEditScreen extends Screen
         }
 
         $good->save();
+
+
+        if ($request->input('good.discount_cost')) {
+            $discountCost = $request->input('good.discount_cost');
+            $price = $good->platformPrice();
+            if (!$price) {
+                $price = new GoodPrice();
+                $price->good_id = $good->id;
+                $price->city_id = City::getPlatformCity();
+            }
+            $price->discount_cost = $discountCost;
+            $price->save();
+        }
 
         $good->attachment()->syncWithoutDetaching(
             $request->input('good.attachment', [])

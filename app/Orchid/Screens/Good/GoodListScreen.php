@@ -4,6 +4,7 @@ namespace App\Orchid\Screens\Good;
 
 use App\Models\City;
 use App\Models\Good;
+use App\Models\GoodPrice;
 use App\Models\Item;
 use App\Orchid\Layouts\Good\GoodListLayout;
 use Illuminate\Http\Request;
@@ -131,9 +132,15 @@ class GoodListScreen extends Screen
         $goods = Good::whereIn('id', $productIds)->get();
 
         foreach ($goods as $good) {
-            $discountCost = $good->cost - ($good->cost * ($discount / 100)); // Рассчитываем скидку
-            $good->discount_cost = round($discountCost, 2); // Округляем до двух знаков
-            $good->save();
+            $price = $good->platformPrice();
+            if (!$price) {
+                $price = new GoodPrice();
+                $price->good_id = $good->id;
+                $price->city_id = City::getPlatformCity();
+            }
+            $discountCost = $good->cost - ($good->cost * ($discount / 100));
+            $price->discount_cost = round($discountCost, 2);
+            $price->save();
         }
 
         Toast::success("Скидка {$discount}% успешно применена!");
@@ -149,9 +156,15 @@ class GoodListScreen extends Screen
         }
 
         Good::query()->each(function ($good) use ($discount) {
+            $price = $good->platformPrice();
+            if (!$price) {
+                $price = new GoodPrice();
+                $price->good_id = $good->id;
+                $price->city_id = City::getPlatformCity();
+            }
             $discountCost = $good->cost - ($good->cost * ($discount / 100));
-            $good->discount_cost = round($discountCost, 2);
-            $good->save();
+            $price->discount_cost = round($discountCost, 2);
+            $price->save();
         });
 
         Toast::success("Скидка {$discount}% успешно применена ко всем товарам!");
@@ -159,7 +172,9 @@ class GoodListScreen extends Screen
 
     public function removeAllDiscounts()
     {
-        Good::query()->update(['discount_cost' => null]); // Сбрасываем скидку
+        Good::query()->update(['discount_cost' => null]);
+        GoodPrice::query()->where('city_id', City::getPlatformCity())->update(['discount_cost' => null]);
+
 
         Toast::success('Все скидки успешно удалены!');
     }

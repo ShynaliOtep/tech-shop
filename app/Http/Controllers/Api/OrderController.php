@@ -73,7 +73,7 @@ class OrderController extends Controller
         foreach ($requestData['cart'] as $index => $item) {
             $set = Set::query()->where('good_id', $item['id'])->first();
             if ($set) {
-                $cost = $set->good->discount_cost ? $set->good->discount_cost : $set->good->cost;
+                $cost = $set->good->getDiscountCost() ? $set->good->getDiscountCost() : $set->good->cost;
                 foreach ($set->goods as $good) {
                     $item['id'] = $good->id;
                     $item['set_good_id'] = $set->good_id;
@@ -149,6 +149,9 @@ class OrderController extends Controller
 
                 $itemId = $itemObject->id;
 
+                /**
+                 * @var Good $good
+                 */
                 $good = Good::query()->find($goodId);
 
                 $diffInSeconds = $dateObj2->getTimestamp() - $dateObj1->getTimestamp();
@@ -164,8 +167,8 @@ class OrderController extends Controller
                     $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $item['cost'] . '(из набора  ' . $item['set_good_name'] . ')
                 ';
                 } else {
-                    if ($good->discount_cost) {
-                        $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $good->discount_cost . '(скидка)
+                    if ($good->getDiscountCost()) {
+                        $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $good->getDiscountCost() . '(скидка)
                 ';
                     } else {
                         $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $good->cost . '
@@ -181,7 +184,7 @@ class OrderController extends Controller
                 $orderItemMessageData = $orderItemMessageData . 'Количество дней: *' . $diffInDays . '*
                 ';
 
-                $currentItemCost = $diffInDays * ($item['cost'] ?? ($good->discount_cost ?? $good->cost));
+                $currentItemCost = $diffInDays * ($item['cost'] ?? ($good->getDiscountCost() ?? $good->cost));
                 $orderItemMessageData = $orderItemMessageData . 'Общая сумма за товар: *' . $currentItemCost . '*
                 ';
 

@@ -31,7 +31,7 @@ use Orchid\Screen\AsSource;
  * @property int|null $discount_cost
  * @property int $damage_cost
  * @property string|null $related_goods
- * @property string|null $additionals
+
  * @property int $good_type_id
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
@@ -40,7 +40,6 @@ use Orchid\Screen\AsSource;
  * @property-read GoodType|null $goodType
  * @property-read Item[]|\Illuminate\Database\Eloquent\Collection $items
  * @property-read Good[]|\Illuminate\Database\Eloquent\Collection $relatedGoods
- * @property-read Good[]|\Illuminate\Database\Eloquent\Collection $additionals
  * @property-read Attachment[]|\Illuminate\Database\Eloquent\Collection $attachment
  */
 class Good extends Model
@@ -147,6 +146,23 @@ class Good extends Model
         }
 
         return $min;
+    }
+
+    public function platformPrice(): ?GoodPrice
+    {
+        return GoodPrice::where(['good_id'=> $this->id, 'city_id' => City::getPlatformCity()])->first();
+    }
+
+    public function sitePrice(): ?GoodPrice
+    {
+        return GoodPrice::where(['good_id'=> $this->id, 'city_id' => City::getSiteCity()])->first();
+    }
+
+
+    public function getDiscountCost(): ?int
+    {
+        $price = $this->sitePrice();
+        return $price ? $price->discount_cost : $this->discount_cost;
     }
 
     /**

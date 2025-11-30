@@ -88,7 +88,8 @@ class GoodListLayout extends Table
                     NumberRange::make()
                 )
                 ->render(function (Good $good) {
-                    return $good->discount_cost;
+                    $price = $good->platformPrice();
+                    return $price ? $price->discount_cost : $good->discount_cost;
                 }),
 
             TD::make('damage_cost', __('translations.Damage cost'))
