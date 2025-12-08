@@ -297,14 +297,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($order->orderItems()->where('is_additional', '=', 0)->get() as $orderItem)
+            @foreach($order->orderItems()->get() as $orderItem)
                 <tr>
                     <td>
                         {{$orderItem->item->good->name_ru}}
-                        @foreach($orderItem->getAdditionals()->load('good') as $additional)
-                            <br>
-                            +{{$additional->good->name_ru}}
-                        @endforeach
                     </td>
                     <td>{{$orderItem->rent_start_date . ' ' . $orderItem->rent_start_time}}</td>
                     <td>{{$orderItem->rent_end_date . ' ' . $orderItem->rent_end_time}}</td>

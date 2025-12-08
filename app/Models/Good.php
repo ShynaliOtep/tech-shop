@@ -159,9 +159,14 @@ class Good extends Model
     }
 
 
-    public function getDiscountCost(): ?int
+    public function getDiscountCost(string $platform = 'site'): ?int
     {
-        $price = $this->sitePrice();
+        if ($platform == 'site') {
+            $price = $this->sitePrice();
+        } else {
+            $price = $this->platformPrice();
+        }
+
         return $price ? $price->discount_cost : $this->discount_cost;
     }
 

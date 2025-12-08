@@ -159,7 +159,9 @@ class OrderItemEditScreen extends Screen
     public function createOrUpdate(OrderItem $orderItem, Request $request)
     {
         $orderId = $request->input('orderItem')['order_id'];
-
+        /**
+         * @var Item $item
+         */
         $item = Item::find($request->input('orderItem')['item_id']);
 
         $order = Order::find($orderId);
@@ -180,7 +182,7 @@ class OrderItemEditScreen extends Screen
 
         $goodAmount = 0;
 
-        $goodAmount += $item->good->discount_cost ?? $item->good->cost;
+        $goodAmount += $item->good->getDiscountCost('platform') ?? $item->good->cost;
 
         $goodAmount *= $diffInDays;
 
