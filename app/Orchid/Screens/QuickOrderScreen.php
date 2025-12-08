@@ -293,6 +293,9 @@ class QuickOrderScreen extends Screen
             return;
         }
 
+        /**
+         * @var Item $item
+         */
         $item = Item::where('id', $itemId)->first();
 
 
@@ -304,7 +307,7 @@ class QuickOrderScreen extends Screen
 
         $diffInDays = max($diffInDays, 1);
 
-        $cost = $diffInDays * $item->good->cost;
+        $cost = $diffInDays * ($item->good->getDiscountCost('platform') ?? $item->good->cost);
 
         if (isset($data['orderItem']['additionals'])) {
             $addNames = [];
