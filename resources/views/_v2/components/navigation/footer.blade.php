@@ -43,7 +43,14 @@
             Казахстан, г.Алматы, улица Толе Би 176
         </p>
         <p class="footer-text">
-            с 07:00 до 02:00 (без выходных)
+            Круглосуточно
+        </p>
+        <br>
+        <p class="footer-text bold">
+            Казахстан, г.Астана, улица Бокейхана 6
+        </p>
+        <p class="footer-text">
+            с 09:00 до 21:00 (без выходных)
         </p>
     </div>
 </footer>
@@ -81,7 +88,7 @@
         font-size: 16px;
         color: #404040;
         text-align: right;
-        margin-bottom: 25px;
+        margin-bottom: 10px;
         font-weight: 400;
     }
     @media (max-width: 992px) {
