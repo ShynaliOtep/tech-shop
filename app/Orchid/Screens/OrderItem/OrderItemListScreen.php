@@ -2,7 +2,6 @@
 
 namespace App\Orchid\Screens\OrderItem;
 
-use App\Models\City;
 use App\Models\OrderItem;
 use App\Orchid\Filters\OrderItemNameFilter;
 use App\Orchid\Layouts\OrderItem\OrderItemFiltersLayout;
@@ -21,7 +20,7 @@ class OrderItemListScreen extends Screen
     public function query(): array
     {
         return [
-            'orderItems' => OrderItem::where('city_id', City::getPlatformCity())->filters()->filters(OrderItemFiltersLayout::class)->paginate(),
+            'orderItems' => OrderItem::filters()->filters(OrderItemFiltersLayout::class)->paginate(),
         ];
     }
 
