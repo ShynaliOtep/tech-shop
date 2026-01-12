@@ -187,7 +187,7 @@
             <p class="white-text">test</p>
             <p class="white-text">test</p>
             @if($order->signature_url)
-                <p> <img src="{{ public_path('storage/' . $order->signature_url) }}"  style="height: 40px" alt="{{ public_path('storage/' . $order->signature_url) }}"> / </p>
+                <p> <img src="{{ public_path('storage/' . $order->signature_url) }}"  style="height: 60px" alt="{{ public_path('storage/' . $order->signature_url) }}"> / </p>
             @else
                 <p class="white-text">test</p>
                 ___________________/
@@ -254,7 +254,7 @@
         <br>
         <p class="right">Подпись клиента
             @if($order->signature_url)
-                <img src="{{ public_path('storage/' . $order->signature_url) }}"  style="height: 40px" alt="{{ public_path('storage/' . $order->signature_url) }}">
+                <img src="{{ public_path('storage/' . $order->signature_url) }}"  style="height: 60px" alt="{{ public_path('storage/' . $order->signature_url) }}">
             @else
                 ___________________
             @endif
@@ -337,7 +337,7 @@
             <p class="white-text">test</p>
             <p class="white-text">test</p>
             @if($order->signature_url)
-                <p> <img src="{{ public_path('storage/' . $order->signature_url) }}"  style="height: 40px" alt="{{ public_path('storage/' . $order->signature_url) }}"> / </p>
+                <p> <img src="{{ public_path('storage/' . $order->signature_url) }}"  style="height: 60px" alt="{{ public_path('storage/' . $order->signature_url) }}"> / </p>
             @else
                 <p class="white-text">test</p>
                 ___________________/
