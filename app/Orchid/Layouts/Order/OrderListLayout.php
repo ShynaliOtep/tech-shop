@@ -86,7 +86,7 @@ class OrderListLayout extends Table
                         ->help(__('translations.Status'))
                 )
                 ->render(function (Order $order) {
-                    return __('translations.'.$order->status);
+                    return '<span class="order-status-'. $order->status . '">' . __('translations.'.$order->status). '</span>';
                 }),
 
             TD::make('paid_status', __('Статус оплаты'))

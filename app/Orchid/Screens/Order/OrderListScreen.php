@@ -66,6 +66,7 @@ class OrderListScreen extends Screen
     {
         return [
             OrderListLayout::class,
+            Layout::view('orchid.order_style'),
         ];
     }
 
