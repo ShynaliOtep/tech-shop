@@ -29,7 +29,7 @@ export default {
         const canvas = this.$refs.canvas;
         this.signaturePad = new SignaturePad(canvas, {
             backgroundColor: "rgb(255,255,255)", // белый фон, чтобы PNG был чистым
-            penColor: "rgb(65,105 225)",              // цвет ручки (чёрный)
+            penColor: "rgb(65,105,225)",              // цвет ручки (чёрный)
         });
     },
     methods: {
