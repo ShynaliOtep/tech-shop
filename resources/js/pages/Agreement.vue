@@ -69,6 +69,9 @@ export default {
     height: 1000px
 }
 @media (max-width: 1024px) {
-
+    .frame-agreement {
+        width: 100%;
+        height: 100vh
+    }
 }
 </style>
