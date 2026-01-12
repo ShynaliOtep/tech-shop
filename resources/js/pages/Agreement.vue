@@ -2,9 +2,8 @@
     <div class="pdf-page">
         <!-- PDF -->
         <iframe
-            :src="url"
-            width="100%"
-            height="1000px"
+            :src="url + '#zoom=page-width'"
+            class="frame-agreement"
             style="border: none;"
         ></iframe>
 
@@ -64,5 +63,12 @@ export default {
 }
 .btn:hover {
     background: #2563eb;
+}
+.frame-agreement {
+    width: 100%;
+    height: 1000px
+}
+@media (max-width: 1024px) {
+
 }
 </style>
