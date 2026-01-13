@@ -2,7 +2,7 @@
     <div class="pdf-page">
         <!-- PDF -->
         <iframe
-            :src="url + '#zoom=page-width'"
+            :src="'/pdfjs/web/viewer.html?file=' + url"
             class="frame-agreement"
             style="border: none;"
         ></iframe>
