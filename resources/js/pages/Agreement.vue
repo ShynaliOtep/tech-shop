@@ -77,7 +77,7 @@ export default {
 
 @media (max-width: 768px) {
     .frame-agreement {
-        height: 100dvh; /
+        height: 100dvh;
     }
 }
 </style>
