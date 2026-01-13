@@ -2,7 +2,7 @@
     <div class="pdf-page">
         <!-- PDF -->
         <iframe
-            :src="'/pdfjs/web/viewer.html?file=' + url"
+            :src="'/pdfjs/web/viewer.html?file=' + url +'#zoom=page-width'"
             class="frame-agreement"
             style="border: none;"
         ></iframe>
@@ -72,6 +72,12 @@ export default {
     .frame-agreement {
         width: 100%;
         height: 100vh
+    }
+}
+
+@media (max-width: 768px) {
+    .frame-agreement {
+        height: 100dvh; /
     }
 }
 </style>
