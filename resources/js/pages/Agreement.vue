@@ -2,7 +2,7 @@
     <div class="pdf-page">
         <!-- PDF -->
         <iframe
-            :src="'/pdfjs/web/viewer.html?file=' + url +'#zoom=page-width'"
+            :src="url"
             class="frame-agreement"
             style="border: none;"
         ></iframe>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+// :src="'/pdfjs/web/viewer.html?file=' + url +'#zoom=page-width'"
 import axios from "axios";
 
 export default {
