@@ -82,7 +82,12 @@ class GoodItemService
             return $item->item_id;
         }, $conflictingItemIds);
 
-        $items = $good->items()->where('city_id', CityService::city())->whereNotIn('id', $conflictingItemIds)->with('good')->get();
+        $items = $good->items()
+            ->where('city_id', CityService::city())
+            ->whereNotIn('id', $conflictingItemIds)
+            ->where('status', '=', 'available')
+            ->with('good')
+            ->get();
 
         $result = [];
         foreach ($items as $item){
