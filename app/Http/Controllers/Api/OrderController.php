@@ -290,7 +290,7 @@ class OrderController extends Controller
 "Общая сумма: $totalSum тг
 
 Список товаров:
-".$orderItemMessageData);
+".$orderItemMessageData, $order->city_id);
 
         if (! $response->ok()) {
             sendTelegramMessage(
@@ -304,7 +304,7 @@ class OrderController extends Controller
 //Скидка: $client->discount процентов
 "Общая сумма: $totalSum тг
 
-Список товаров слишком большой для отображения в боте.");
+Список товаров слишком большой для отображения в боте.", $order->city_id);
         }
 
         return response()->json([

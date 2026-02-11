@@ -9,12 +9,19 @@ use Illuminate\Support\Facades\Log;
 use Orchid\Attachment\File;
 
 if (! function_exists('sendTelegramMessage')) {
-    function sendTelegramMessage($text): PromiseInterface|Response
+    function sendTelegramMessage($text, int $cityId = 1): PromiseInterface|Response
     {
+        if ($cityId === 1) {
+            $botToken = env('TELEGRAM_BOT_TOKEN');
+            $chatId = env('TELEGRAM_CHAT_ID');
+        } else  {
+            $botToken = env('TELEGRAM_BOT_TOKEN_ASTANA');
+            $chatId = env('TELEGRAM_CHAT_ID_ASTANA');
+        }
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-        ])->post(sprintf(env('TELEGRAM_API_ENDPOINT'), env('TELEGRAM_BOT_TOKEN')), [
-            'chat_id' => env('TELEGRAM_CHAT_ID'),
+        ])->post(sprintf(env('TELEGRAM_API_ENDPOINT'), $botToken), [
+            'chat_id' => $chatId,
             'parse_mode' => 'MarkdownV2',
             'text' => escapeCharacters($text),
         ]);
