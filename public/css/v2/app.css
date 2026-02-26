@@ -505,6 +505,12 @@
     gap: 10px;
 }
 
+.cart-delivery {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .cio-before{
     content: '';
     width: 24px;
@@ -832,6 +838,17 @@
     width: calc(50% - 10px);
 }
 
+.delivery-inputs {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.delivery-input {
+    width: calc(50% - 10px);
+}
+
 .input-field {
     position: relative;
 }
@@ -1032,22 +1049,46 @@
     transform: translateY(-5px);
 }
 
+/*.modal {*/
+/*    display: none; !* скрыто по умолчанию *!*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    background-color: rgba(0,0,0,0.5); !* затемнение *!*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    z-index: 1000;*/
+/*}*/
+
+/*.modal-block {*/
+/*    margin-top: 150px;*/
+/*    position: relative;*/
+/*}*/
+
 .modal {
-    display: none; /* скрыто по умолчанию */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5); /* затемнение */
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
     justify-content: center;
     align-items: center;
+
     z-index: 1000;
+
+    overflow-y: hidden; /* важно */
+    padding: 20px;    /* чтобы не прилипал к краям */
 }
 
 .modal-block {
-    margin-top: 150px;
     position: relative;
+    width: 520px;
+    max-height: 90vh;   /* ключевой момент */
+    overflow-y: auto;   /* скролл внутри */
 }
 
 .close {

@@ -26,7 +26,7 @@
 
 <div>
     <span class=""><b>г.Алматы</b></span>
-    <span class="right"><b>«{{now()->day}}»{{str_pad(now()->month, 2, '0', STR_PAD_LEFT)}}. {{now()->year}}г.</b></span>
+    <span class="right"><b>«{{now()->timezone('Asia/Almaty')->day}}»{{str_pad(now()->timezone('Asia/Almaty')->month, 2, '0', STR_PAD_LEFT)}}. {{now()->timezone('Asia/Almaty')->year}}г.</b></span>
 </div>
 
 <div style="margin-top: 20px">
@@ -202,7 +202,7 @@
     <span class="right right-align">
     <i>Приложение №1</i>
     <br>
-    <i>к Договору №{{$order->id}} от «{{now()->day}}»{{str_pad(now()->month, 2, '0', STR_PAD_LEFT)}}. {{now()->year}} года аренды</i>
+    <i>к Договору №{{$order->id}} от «{{now()->timezone('Asia/Almaty')->day}}»{{str_pad(now()->timezone('Asia/Almaty')->month, 2, '0', STR_PAD_LEFT)}}. {{now()->timezone('Asia/Almaty')->year}} года аренды</i>
     <br>
     <i>оборудования</i>
     </span>
@@ -265,7 +265,7 @@
 <div class="page-break"></div>
 <div class="acceptance-activity">
     <span class="right right-align">
-        <i>Акт приема-передач оборудования к Договору №{{$order->id}} от «{{now()->day}}»{{str_pad(now()->month, 2, '0', STR_PAD_LEFT)}}. {{now()->year}} года</i>
+        <i>Акт приема-передач оборудования к Договору №{{$order->id}} от «{{now()->timezone('Asia/Almaty')->day}}»{{str_pad(now()->timezone('Asia/Almaty')->month, 2, '0', STR_PAD_LEFT)}}. {{now()->timezone('Asia/Almaty')->year}} года</i>
     </span>
     <br>
     <p class="center-align">
@@ -274,7 +274,7 @@
     <div>
         <span class=""><b>г.Алматы</b></span>
         <span
-            class="right"><b>«{{now()->day}}»{{str_pad(now()->month, 2, '0', STR_PAD_LEFT)}}. {{now()->year}}г.</b>
+            class="right"><b>«{{now()->timezone('Asia/Almaty')->day}}»{{str_pad(now()->timezone('Asia/Almaty')->month, 2, '0', STR_PAD_LEFT)}}. {{now()->timezone('Asia/Almaty')->year}}г.</b>
         </span>
     </div>
     <div>

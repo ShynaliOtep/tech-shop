@@ -32,6 +32,7 @@ use Orchid\Screen\AsSource;
  * @property-read OrderItem|null $orderItems
  * @property-read Item[]|\Illuminate\Database\Eloquent\Collection $items
  * @property-read Attachment[]|\Illuminate\Database\Eloquent\Collection $attachment
+ * @property bool $is_delivery
  */
 class Order extends Model
 {
@@ -128,5 +129,10 @@ class Order extends Model
             'rent_end_date' =>  \Illuminate\Support\Carbon::parse($this->rent_end_date)->format('Y-m-d H:i:s'),
             'items' => $items
         ];
+    }
+
+    public function delivery()
+    {
+        return $this->hasOne(Delivery::class);
     }
 }

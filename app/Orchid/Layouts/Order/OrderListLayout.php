@@ -45,7 +45,7 @@ class OrderListLayout extends Table
                     return Link::make($order->id)
                         ->route('platform.orders.edit', $order->id);
                 }),
-            TD::make('comment', 'Комментарий')
+            TD::make('comment', 'Коммен-тарий')
                 ->sort()
                 ->filter(
                     Input::make()
@@ -103,6 +103,39 @@ class OrderListLayout extends Table
                 )
                 ->render(function (Order $order) {
                     return __('translations.'.$order->paid_status);
+                }),
+
+            TD::make('address', 'Адрес доставки')
+                ->width('150px')
+                ->render(function ($order) {
+
+                    if (!$order->is_delivery || !$order->delivery) {
+                        return 'Самовывоз';
+                    }
+
+                    $d = $order->delivery;
+
+                    $address = $d->street . ' ' . $d->house;
+
+                    if ($d->apartment) {
+                        $address .= ', кв. ' . $d->apartment;
+                    }
+
+                    if ($d->entrance) {
+                        $address .= ', подъезд ' . $d->entrance;
+                    }
+
+                    if ($d->floor) {
+                        $address .= ', этаж ' . $d->floor;
+                    }
+
+                    if ($d->comment) {
+                        $address .= '<br><small class="text-muted">'
+                            . e($d->comment) .
+                            '</small>';
+                    }
+
+                    return $address; // просто возвращаем строку с HTML
                 }),
 
             TD::make('created_at', __('translations.Created'))

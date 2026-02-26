@@ -299,26 +299,85 @@
             <p class="modal-title big-white-title mb-20">
                 Подтвердите заказ
             </p>
-            <p class="grey-s-light-text mb-20">
-                {{
-                    $t('translations.After confirming your order, your order will be transferred to the manager and you will be able to receive your goods at the pick-up point at') + ":"
-                }}
-            </p>
-            <a href="https://2gis.kz/almaty/firm/70000001069136996" class="cart-address">
-                <svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11.5492 6.29332C11.4873 5.03493 10.9641 3.84045 10.0751 2.94531C9.18622 2.05018 8.00004 1.52329 6.75038 1.46094L6.5 1.45455C5.15918 1.45455 3.87296 1.99058 2.92486 2.94531C1.97676 3.90004 1.44444 5.19526 1.44444 6.54545C1.44444 8.11587 2.32324 9.80882 3.46512 11.3196C4.56853 12.7794 5.83523 13.9609 6.5 14.5419C7.16477 13.9609 8.43147 12.7794 9.53488 11.3196C10.6768 9.80882 11.5556 8.11587 11.5556 6.54545L11.5492 6.29332ZM7.94444 6.54545C7.94444 5.74213 7.29774 5.09091 6.5 5.09091C5.70226 5.09091 5.05556 5.74213 5.05556 6.54545C5.05556 7.34878 5.70226 8 6.5 8C7.29774 8 7.94444 7.34878 7.94444 6.54545ZM9.38889 6.54545C9.38889 8.1521 8.09549 9.45455 6.5 9.45455C4.90451 9.45455 3.61111 8.1521 3.61111 6.54545C3.61111 4.93881 4.90451 3.63636 6.5 3.63636C8.09549 3.63636 9.38889 4.93881 9.38889 6.54545ZM13 6.54545C13 8.60631 11.8787 10.6203 10.6845 12.2003C9.62502 13.6021 8.43786 14.7534 7.69548 15.4212L7.4063 15.6768C7.394 15.6875 7.38121 15.6983 7.36822 15.7081C7.14927 15.8739 6.88853 15.9728 6.61708 15.995L6.5 16C6.22606 16 5.95864 15.9214 5.72841 15.7749L5.63178 15.7081L5.5937 15.6768C4.90377 15.077 3.52624 13.8022 2.31548 12.2003C1.12134 10.6203 0 8.60631 0 6.54545C0 4.80949 0.684605 3.14441 1.90359 1.9169C3.12258 0.689393 4.77609 0 6.5 0C8.22391 0 9.87742 0.689393 11.0964 1.9169C12.3154 3.14441 13 4.80949 13 6.54545Z" fill="#FF962E"/>
-                </svg>
+            <div class="select-time mb-20">
+                <div :class="{'select-time-option': true, 'selected-option': !isDelivery}" @click="() => {isDelivery = false}">
+                        <span class="option-circle">
+                             <span class="option-circle-in"></span>
+                        </span>
+                    <span class="option-text">Самовывоз</span>
+                </div>
+                <div :class="{'select-time-option': true, 'selected-option': isDelivery}" @click="() => {isDelivery = true}">
+                        <span class="option-circle">
+                            <span class="option-circle-in"></span>
+                        </span>
+                    <span class="option-text">Доставка</span>
+                </div>
+            </div>
 
-                {{
-                    $t('translations.Tole BI street, 176') + '.'
-                }}</a>
+            <div v-if="isDelivery" class="mb-20 delivery-inputs">
+                <p class="grey-s-light-text mb-20">После подтверждения оформления заказа ваш заказ будет передан менеджеру для обработки. Доставка будет выполнена по указанному адресу после подтверждения деталей с вами.</p>
+                <BaseInput
+                    v-model="delivery.street"
+                    class="delivery-input"
+                    placeholder="Улица/Микрорайон *"
+                />
+<!--                    :error="isDelivery && !delivery.street ? 'Обязательное поле' : ''"-->
+
+
+                <BaseInput
+                    v-model="delivery.house"
+                    class="delivery-input"
+                    placeholder="Дом *"
+                />
+<!--                    :error="isDelivery && !delivery.house ? 'Обязательное поле' : ''"-->
+
+                <BaseInput
+                    v-model="delivery.apartment"
+                    class="delivery-input"
+                    placeholder="Квартира"
+                />
+                <BaseInput
+                    v-model="delivery.entrance"
+                    class="delivery-input"
+                    placeholder="Подъезд"
+                />
+
+                <BaseInput
+                    v-model="delivery.floor"
+                    class="delivery-input"
+                    placeholder="Этаж"
+                />
+
+                <BaseInput
+                    v-model="delivery.comment"
+                    class="delivery-input"
+                    placeholder="Комментарий"
+                />
+
+            </div>
+          <div v-if="!isDelivery">
+              <p class="grey-s-light-text mb-20">
+                  {{
+                      $t('translations.After confirming your order, your order will be transferred to the manager and you will be able to receive your goods at the pick-up point at') + ":"
+                  }}
+              </p>
+              <a href="https://2gis.kz/almaty/firm/70000001069136996" class="cart-address">
+                  <svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11.5492 6.29332C11.4873 5.03493 10.9641 3.84045 10.0751 2.94531C9.18622 2.05018 8.00004 1.52329 6.75038 1.46094L6.5 1.45455C5.15918 1.45455 3.87296 1.99058 2.92486 2.94531C1.97676 3.90004 1.44444 5.19526 1.44444 6.54545C1.44444 8.11587 2.32324 9.80882 3.46512 11.3196C4.56853 12.7794 5.83523 13.9609 6.5 14.5419C7.16477 13.9609 8.43147 12.7794 9.53488 11.3196C10.6768 9.80882 11.5556 8.11587 11.5556 6.54545L11.5492 6.29332ZM7.94444 6.54545C7.94444 5.74213 7.29774 5.09091 6.5 5.09091C5.70226 5.09091 5.05556 5.74213 5.05556 6.54545C5.05556 7.34878 5.70226 8 6.5 8C7.29774 8 7.94444 7.34878 7.94444 6.54545ZM9.38889 6.54545C9.38889 8.1521 8.09549 9.45455 6.5 9.45455C4.90451 9.45455 3.61111 8.1521 3.61111 6.54545C3.61111 4.93881 4.90451 3.63636 6.5 3.63636C8.09549 3.63636 9.38889 4.93881 9.38889 6.54545ZM13 6.54545C13 8.60631 11.8787 10.6203 10.6845 12.2003C9.62502 13.6021 8.43786 14.7534 7.69548 15.4212L7.4063 15.6768C7.394 15.6875 7.38121 15.6983 7.36822 15.7081C7.14927 15.8739 6.88853 15.9728 6.61708 15.995L6.5 16C6.22606 16 5.95864 15.9214 5.72841 15.7749L5.63178 15.7081L5.5937 15.6768C4.90377 15.077 3.52624 13.8022 2.31548 12.2003C1.12134 10.6203 0 8.60631 0 6.54545C0 4.80949 0.684605 3.14441 1.90359 1.9169C3.12258 0.689393 4.77609 0 6.5 0C8.22391 0 9.87742 0.689393 11.0964 1.9169C12.3154 3.14441 13 4.80949 13 6.54545Z" fill="#FF962E"/>
+                  </svg>
+
+                  {{
+                      $t('translations.Tole BI street, 176') + '.'
+                  }}</a>
+          </div>
+
             <p class="grey-s-light-text mb-20">
                 {{
                     $t('translations.The manager will double-check your contact details and photographs of your ID, after which an equipment rental agreement will be signed') + '.'
                 }}
             </p>
             <button class="orange-btn  mb-20"
-                    :class="{'order-disabled': !agree }"
+                    :class="{'order-disabled': !agree || (isDelivery  && (!delivery.street || !delivery.house)) }"
                     @click="orderEvent()">
                 {{ $t('translations.Place order') }}
             </button>
@@ -344,9 +403,10 @@ import cartStore from '../store/cart.js';
 import '@vuepic/vue-datepicker/dist/main.css';
 import DatePicker from '../components/DatePicker2.vue'
 import Select from "../components/Select.vue";
+import BaseInput from "../components/BaseInput.vue";
 import Loader from "../components/Loader.vue";
 export default {
-     components: {Loader, Select, DatePicker },
+     components: {Loader, Select, DatePicker, BaseInput },
     data() {
         return {
             cart: [],
@@ -384,7 +444,16 @@ export default {
             },
             agree: false,
             loadingModal: false,
-            today: new Date().toISOString().split('T')[0]
+            today: new Date().toISOString().split('T')[0],
+            isDelivery: false,
+            delivery: {
+                street: null,
+                house: null,
+                apartment: null,
+                entrance: null,
+                floor: null,
+                comment: null
+            }
         };
     },
     mounted() {
@@ -778,7 +847,9 @@ export default {
                 method: 'POST',
                 url: '/api/order',
                 data: {
-                    cart: data
+                    cart: data,
+                    is_delivery: this.isDelivery,
+                    delivery: this.delivery
                 }
             })
             this.loadingModal = false

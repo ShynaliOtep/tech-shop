@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Client;
+use App\Models\Delivery;
 use App\Models\Good;
 use App\Models\Item;
 use App\Models\Order;
@@ -65,7 +66,22 @@ class OrderController extends Controller
             'client_id' => $client->id,
             'amount_paid' => 0,
             'status' => 'waiting',
+            'is_delivery' => (bool) $requestData['is_delivery'],
         ]);
+
+
+        if ($requestData['is_delivery']) {
+            $deliveryData = $requestData['delivery'];
+            $delivery = new Delivery();
+            $delivery->order_id = $order->id;
+            $delivery->street = $deliveryData['street'];
+            $delivery->house = $deliveryData['house'];
+            $delivery->apartment = $deliveryData['apartment'];
+            $delivery->entrance = $deliveryData['entrance'];
+            $delivery->floor = $deliveryData['floor'];
+            $delivery->comment = $deliveryData['comment'];
+            $delivery->save();
+        }
 
         $goodItemService = new GoodItemService;
 
