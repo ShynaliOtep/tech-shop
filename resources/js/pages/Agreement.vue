@@ -1,11 +1,21 @@
 <template>
     <div class="pdf-page">
         <!-- PDF -->
-        <iframe
-            :src="url"
-            class="frame-agreement"
-            style="border: none;"
-        ></iframe>
+<!--        <iframe-->
+<!--            :src="url"-->
+<!--            class="frame-agreement"-->
+<!--            style="border: none;"-->
+<!--        ></iframe>-->
+
+<!--        <object-->
+<!--            :data="url"-->
+<!--            type="application/pdf"-->
+<!--            width="100%"-->
+<!--            height="100">-->
+<!--            <p>Ваш браузер не поддерживает PDF. <a :href="url">Скачать PDF</a></p>-->
+<!--        </object>-->
+
+        <PdfViewer v-if="url" :pdf-url="url" />
 
         <!-- Кнопка -->
         <div class="actions" style="margin-top: 20px; text-align: center;">
@@ -18,9 +28,11 @@
 <script>
 // :src="'/pdfjs/web/viewer.html?file=' + url +'#zoom=page-width'"
 import axios from "axios";
+import PdfViewer from "./PdfViewer.vue";
 
 export default {
     name: "PdfPage",
+    components: {PdfViewer},
     data() {
         return {
             url: '',
