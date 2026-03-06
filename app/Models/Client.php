@@ -175,4 +175,9 @@ class Client extends Authenticatable
         return $bonusPercentage;
 
     }
+
+    public function getOrderCount(): int
+    {
+        return Order::query()->where('client_id', $this->id)->count();
+    }
 }

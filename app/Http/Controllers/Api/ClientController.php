@@ -13,10 +13,14 @@ class ClientController extends Controller
     {
         $isAuthenticated = (bool) Auth::guard('clients')->id();
         if ($isAuthenticated) {
+            /**
+             * @var Client $client
+             */
             $client = Client::query()->find(Auth::guard('clients')->id());
             $clientData = $client->toArray();
             $clientData['bonusPercent'] =  Client::getBonusLevelPercent(Auth::guard('clients')->id());
             $clientData['bonus'] = $client->getBonus()->toArray();
+            $clientData['order_count'] = $client->getOrderCount();
             return response()->json([
                 'isAuthenticated' => (bool) Auth::guard('clients')->id(),
                 'clientData' => $clientData,
