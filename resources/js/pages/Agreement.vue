@@ -7,15 +7,15 @@
 <!--            style="border: none;"-->
 <!--        ></iframe>-->
 
-<!--        <object-->
-<!--            :data="url"-->
-<!--            type="application/pdf"-->
-<!--            width="100%"-->
-<!--            height="100">-->
-<!--            <p>Ваш браузер не поддерживает PDF. <a :href="url">Скачать PDF</a></p>-->
-<!--        </object>-->
+        <object
+            :data="url"
+            type="application/pdf"
+            width="100%"
+            height="200%">
+            <p>Ваш браузер не поддерживает PDF. <a :href="url">Скачать PDF</a></p>
+        </object>
 
-        <PdfViewer v-if="url" :pdf-url="url" />
+<!--        <PdfViewer v-if="url" :pdf-url="url" />-->
 
         <!-- Кнопка -->
         <div class="actions" style="margin-top: 20px; text-align: center;">
@@ -66,6 +66,9 @@ export default {
 </script>
 
 <style>
+.pdf-page {
+    height: 100vh;
+}
 .btn {
     padding: 12px 20px;
     background: #3b82f6;
