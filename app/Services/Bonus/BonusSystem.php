@@ -15,32 +15,36 @@ class BonusSystem
 
         $percent = $bonusLevel->percent;
 
-        if ($user->bonus_percent  && $user->bonus_percent > 0) {
+        if ($user->bonus_percent && $user->bonus_percent > 0) {
             $percent = $user->bonus_percent;
         }
 
-        $bonusAmount = $order->amount_paid * ($percent / 100); // Получаем сумму заказа
+        $bonusAmount = $order->amount_paid * ($percent / 100);
 
-        // Записываем бонусную транзакцию
+        // создаем транзакцию
         BonusTransaction::create([
             'user_id'  => $user->id,
-            'order_id' => $order->id, // Теперь ID заказа доступен
+            'order_id' => $order->id,
             'type' => 'deposit',
-            'amount'   => $bonusAmount,
-            'source' => 'order'
+            'amount' => $bonusAmount,
+            'source' => 'order',
         ]);
 
-        // Обновляем баланс и общую сумму заработанных бонусов
-        $user->bonus->increment('balance', $bonusAmount);
-        $user->bonus->increment('total_earned', $bonusAmount);
+        // обновляем баланс и total_earned
+        $user->bonus->balance += $bonusAmount;
+        $user->bonus->total_earned += $bonusAmount;
 
-        // Начисляем бонус рефереру, если есть
+        // обновляем уровень по новому total_earned
+        $bonusLevel = BonusLevels::getLevelFromEarned($user->bonus->total_earned);
+        $user->bonus->level = $bonusLevel->level;
+
+        // сохраняем всё в базе
+        $user->bonus->save();
+
+        // начисляем бонус рефереру, если есть
         if ($user->referrer_id) {
             $this->applyReferralBonus($user->referrer_id, $order);
         }
-
-        // Проверяем уровень
-        $this->updateUserBonusLevel($user);
     }
 
     private function updateUserBonusLevel(Client $user)

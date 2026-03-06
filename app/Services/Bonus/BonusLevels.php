@@ -50,7 +50,7 @@ class BonusLevels
     {
         $levels = self::levels();
         foreach ($levels as $level){
-            if ($level->level = $levelId) {
+            if ($level->level == $levelId) {
                 return $level;
             }
         }
