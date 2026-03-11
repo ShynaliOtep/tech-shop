@@ -69,6 +69,13 @@ class GoodListScreen extends Screen
                 ->method('applyDiscountToAll'),
 
 
+            ModalToggle::make('Удалить скидку')
+                ->modal('removeDiscountModal')
+                ->icon('x-circle')
+                ->method('removeDiscount')
+                ->async('asyncGetSelectedProducts'),
+
+
             Button::make('Удалить скидку на все') // ✅ Кнопка для сброса скидок
             ->icon('x-circle')
                 ->confirm('Вы уверены, что хотите удалить скидки у всех товаров?')
@@ -103,6 +110,16 @@ class GoodListScreen extends Screen
                         ->required(),
                 ]),
             ])->title('Применить скидку')->applyButton('Применить'),
+            Layout::modal('removeDiscountModal', [
+                Layout::rows([
+                    Select::make('selected')
+                        ->fromModel(Good::class, 'name_ru', 'id')
+                        ->multiple()
+                        ->searchable() // Добавляет поиск
+                        ->title('Выберите товары')
+                        ->required(),
+                ]),
+            ])->title('Удалить скидку')->applyButton('Удалить'),
             Layout::modal('applyDiscountToAllModal', [
                 Layout::rows([
                     Input::make('discount')
@@ -144,6 +161,32 @@ class GoodListScreen extends Screen
         }
 
         Toast::success("Скидка {$discount}% успешно применена!");
+    }
+
+    public function removeDiscount(Request $request)
+    {
+        $discount = (int) $request->input('discount');
+        $productIds = $request->input('selected', []);
+
+        if (empty($productIds)) {
+            Toast::warning('Выберите хотя бы один товар.');
+            return;
+        }
+
+        // Получаем товары
+        $goods = Good::whereIn('id', $productIds)->get();
+
+        foreach ($goods as $good) {
+            $good->discount_cost = null;
+            $price = $good->platformPrice();
+            if (!$price) {
+               continue;
+            }
+            $price->discount_cost = null;
+            $price->save();
+        }
+
+        Toast::success("Скидка {$discount}% успешно удалено!");
     }
 
     public function applyDiscountToAll(Request $request)
