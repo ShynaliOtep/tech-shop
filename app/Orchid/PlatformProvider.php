@@ -97,8 +97,10 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.carousel.list'),
              Menu::make('Быстрое оформление заказа')
                  ->icon('bar-chart')
-                 ->route('platform.quick-order-client')
-
+                 ->route('platform.quick-order-client'),
+            Menu::make('Иконки')
+                ->icon('grid')
+                ->route('platform.icons'),
 
         ];
     }
