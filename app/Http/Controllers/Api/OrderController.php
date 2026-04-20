@@ -294,6 +294,29 @@ class OrderController extends Controller
 
         Log::info('settleOrder', [$client, ['order' => $order->convertArray()]]);
 
+        $deliveryText = '';
+        if ($order->delivery) {
+            $deliveryText = "🚚 Доставка:\n";
+            $deliveryText .= "Улица: {$delivery->street}\n";
+            $deliveryText .= "Дом: {$delivery->house}\n";
+
+            if (!empty($delivery->apartment)) {
+                $deliveryText .= "Квартира: {$delivery->apartment}\n";
+            }
+
+            if (!empty($delivery->entrance)) {
+                $deliveryText .= "Подъезд: {$delivery->entrance}\n";
+            }
+
+            if (!empty($delivery->floor)) {
+                $deliveryText .= "Этаж: {$delivery->floor}\n";
+            }
+
+            if (!empty($delivery->comment)) {
+                $deliveryText .= "Комментарий: {$delivery->comment}\n";
+            }
+        }
+
         $response = sendTelegramMessage(
             "*НОВЫЙ ЗАКАЗ* $order->id
 Покупатель: [$client->phone](https://wa.me/$client->phone)
@@ -319,6 +342,7 @@ class OrderController extends Controller
 Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
 //Скидка: $client->discount процентов
 "Общая сумма: $totalSum тг
+$deliveryText
 
 Список товаров слишком большой для отображения в боте.", $order->city_id);
         }
