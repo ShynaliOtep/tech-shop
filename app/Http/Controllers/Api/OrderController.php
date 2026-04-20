@@ -327,7 +327,7 @@ class OrderController extends Controller
 Инстаграм: [$client->instagram](https://www.instagram.com/$client->instagram/)" .
 //Скидка: $client->discount процентов
 "Общая сумма: $totalSum тг
-
+$deliveryText
 Список товаров:
 ".$orderItemMessageData, $order->city_id);
 
