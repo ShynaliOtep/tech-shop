@@ -6,10 +6,11 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\BonusController;
 use App\Http\Controllers\CityController;
-use App\Models\City;
 use App\Models\GoodType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Models\CartItem;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,17 +99,6 @@ Route::prefix('/profile')->group(function () {
     Route::post('/withdraw', [HttpControllers\ProfileController::class, 'requestWithdraw'])->name('withdraw.request');
 
 });
-//
-//Route::get('/set-city', function (Request $request) {
-//    $city = $request->city;
-//    if (City::where('id', $city)->exists()) {
-//        session(['city_id' => $city]);
-//    }
-//    return back();
-//})->name('select.city');
-
-use Illuminate\Http\Request;
-use App\Models\CartItem;
 
 Route::post('/cart/update-quantity', function (Request $request) {
     $item = CartItem::where('id', $request->product_id)->first();

@@ -12,6 +12,8 @@ use App\Orchid\Screens\Good\GoodEditScreen;
 use App\Orchid\Screens\Good\GoodListScreen;
 use App\Orchid\Screens\GoodType\GoodTypeEditScreen;
 use App\Orchid\Screens\GoodType\GoodTypeListScreen;
+use App\Orchid\Screens\GoodType\IconListScreen;
+use App\Orchid\Screens\GoodType\IconEditScreen;
 use App\Orchid\Screens\Item\ItemEditScreen;
 use App\Orchid\Screens\Item\ItemListScreen;
 use App\Orchid\Screens\Order\OrderEditScreen;
@@ -294,4 +296,13 @@ Route::screen('sets', SetListScreen::class)
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Наборы'), route('platform.sets.list')));
+
+Route::screen('icons', IconListScreen::class)
+    ->name('platform.icons');
+
+Route::screen('icons/create', IconEditScreen::class)
+    ->name('platform.icons.create');
+
+Route::screen('icons/{icon}/edit', IconEditScreen::class)
+    ->name('platform.icons.edit');
 

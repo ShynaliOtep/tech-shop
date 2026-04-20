@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $goodOptions = $this->getGoodOptionsWithAttachments();
         View::share('cartCount', $this->countCartCookie());
-        View::share('goodTypes', GoodType::all());
+        View::share('goodTypes', GoodType::whereNull('parent_id')->get());
         View::share('goodOptions', $goodOptions);
     }
 

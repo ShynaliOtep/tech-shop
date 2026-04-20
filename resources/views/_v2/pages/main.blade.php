@@ -40,7 +40,7 @@
     @isset($viewedGoodTypes)
         @foreach($viewedGoodTypes as $goodType)
             <div class="row">
-                <h5 class="page-type-title">{{__('translations.' . $goodType->code)}}</h5>
+                <h5 class="page-type-title">{{__($goodType->name)}}</h5>
                 @if(count($goodType->goods) != 0)
                     <div class="items">
                         @foreach($goodType->goods as $good)

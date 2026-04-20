@@ -7,7 +7,8 @@
                     '_v2.components.menu.menu-item',
                     [
                         'code' => $goodType->code,
-                        'icon' => '/img/types/' . $goodType->icon . '.svg'
+                         'name' => $goodType->name,
+                        'icon' => $goodType->iconO?->svg
                     ]
                 )
             @endforeach

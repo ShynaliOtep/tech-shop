@@ -69,20 +69,77 @@ class GoodController extends Controller
     {
         $cityId = session()->get('select_city');
         $cityId = $cityId ?: City::DEFAULT;
-        $viewedGoodTypes = GoodType::query()->where('code', '=', $goodTypeCode)
-            ->with([
-                'goods' => function ($query) use ($cityId) {
-                    $query->whereHas('items', function ($itemQuery) use ($cityId) {
-                        $itemQuery->where('status', 'available')
-                            ->where('city_id', $cityId);
-                    });
-                },
-                'goods.attachment'
-            ])
+
+        $goodType = GoodType::where('code', $goodTypeCode)->first();
+
+        $typeIds = $request->types;
+        if ($typeIds) {
+            $types = GoodType::query()
+                ->whereIn('id', $typeIds)
+                ->pluck('id');
+        } else {
+            $types = GoodType::query()
+                ->where('id', $goodType->id)
+                ->orWhere('parent_id', $goodType->id)
+                ->pluck('id');
+        }
+        $viewedGoodTypes = GoodType::query()
+            ->where('code', $goodTypeCode)
             ->get();
 
+//        $goods = Good::query()
+//            ->whereHas('items', function ($q) use ($cityId) {
+//                $q->where('status', 'available')
+//                    ->where('city_id', $cityId);
+//            })
+//            ->when(!empty($types), function ($q) use ($types) {
+//                $q->whereIn('good_type_id', $types);
+//            })
+//            ->with('attachment')
+//
+//            ->get();
 
-        return view('_v2.pages.good.goods', compact('viewedGoodTypes'));
+        $sort = $request->get('sort');
+
+        $goods = Good::query()
+            ->whereHas('items', function ($q) use ($cityId) {
+                $q->where('status', 'available')
+                    ->where('city_id', $cityId);
+            })
+            ->when(!empty($types), function ($q) use ($types) {
+                $q->whereIn('good_type_id', $types);
+            })
+            ->when($sort === 'cheap', function ($q) {
+                $q->orderBy('cost', 'asc');
+            })
+            ->when($sort === 'expensive', function ($q) {
+                $q->orderBy('cost', 'desc');
+            })
+            ->when($sort === 'popular', function ($q) {
+                $q->orderBy('order_count', 'desc'); // или нужное поле
+            })
+            ->when($sort === null, function ($q) {
+                $q->orderBy('created_at', 'desc'); // или нужное поле
+            })
+            ->with('attachment')
+            ->get();
+
+//        $viewedGoodTypes = GoodType::query()->where('code', '=', $goodTypeCode)
+//            ->with([
+//                'goods' => function ($query) use ($cityId, $types) {
+//                    $query->whereHas('items', function ($itemQuery) use ($cityId) {
+//                        $itemQuery->where('status', 'available')
+//                            ->where('city_id', $cityId);
+//                    })
+//                    ->whereIn('good_type_id', $types);
+//                },
+//                'goods.attachment'
+//            ])
+//            ->get();
+
+        $subTypes= GoodType::where('parent_id', $goodType->id)->get();
+
+        return view('_v2.pages.good.goods', compact('viewedGoodTypes', 'goods', 'subTypes', 'typeIds'));
     }
 
     public function autofill(string $goodName)

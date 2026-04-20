@@ -7,9 +7,9 @@
 <a href="{{route('goodList', $goodType->code, false)}}" class="menu-item
 @if(Request::is('category/' . $goodType->code))  menu-item-active @endif
 ">
-    {!! file_get_contents(public_path($icon)) !!}
+    {!!$icon!!}
 {{--    <img class="menu-icon" src="{{$icon}}" alt="">--}}
-   <span class="menu-text">{{__( 'translations.'. $code)}}</span>
+   <span class="menu-text">{{__($name)}}</span>
 </a>
 
 <style>

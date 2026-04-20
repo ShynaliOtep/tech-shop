@@ -3,6 +3,7 @@
 namespace App\Orchid\Layouts\GoodType;
 
 use App\Models\GoodType;
+use App\Models\Icon;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Components\Cells\DateTimeSplit;
 use Orchid\Screen\Fields\Input;
@@ -46,11 +47,22 @@ class GoodTypeListLayout extends Table
                     return $goodType->description;
                 }),
 
+            TD::make('parent_id', 'Родитель')
+                ->render(fn($c) => $c->parent?->name ?? '—'),
+
+
             TD::make('icon', __('translations.Icon'))
-                ->sort()
-                ->filter(Input::make())
                 ->render(function (GoodType $goodType) {
-                    return $goodType->icon;
+                    if (!$goodType->iconO) {
+                        return '-';
+                    }
+                    $path = storage_path('app/public/icons/' . $goodType->iconO->file);
+
+                    if (!file_exists($path)) {
+                        return '-';
+                    }
+
+                    return file_get_contents($path);
                 }),
 
             TD::make('code', __('translations.Route'))

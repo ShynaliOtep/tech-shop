@@ -59,4 +59,21 @@ class GoodType extends Model
     {
         return $this->hasMany(Good::class)->orderByDesc('priority');
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(GoodType::class, 'parent_id');
+    }
+
+    public function iconO()
+    {
+        return $this->belongsTo(Icon::class, 'icon');
+    }
+
+
+
+    public function children()
+    {
+        return $this->hasMany(GoodType::class, 'parent_id');
+    }
 }

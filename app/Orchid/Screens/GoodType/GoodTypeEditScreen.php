@@ -3,9 +3,11 @@
 namespace App\Orchid\Screens\GoodType;
 
 use App\Models\GoodType;
+use App\Models\Icon;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Relation;
 use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Alert;
@@ -83,10 +85,10 @@ class GoodTypeEditScreen extends Screen
                     ->required()
                     ->help(__('translations.GoodType code help')),
 
-                Input::make('goodType.icon')
-                    ->title(__('translations.Icon'))
-                    ->required()
-                    ->help(__('translations.GoodType icon help')),
+                Relation::make('goodType.icon')
+                    ->fromModel(Icon::class, 'name') // показываем name
+                    ->title('Иконка')
+                    ->empty('Без иконки'),
 
                 TextArea::make('goodType.description')
                     ->title(__('translations.Description'))
@@ -94,16 +96,24 @@ class GoodTypeEditScreen extends Screen
                     ->rows(3)
                     ->maxlength(200)
                     ->required(),
+                Relation::make('goodType.parent_id')
+                    ->fromModel(GoodType::class, 'name')
+                    ->title('Родитель')
+                    ->allowEmpty(),
+
             ]),
         ];
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function createOrUpdate(GoodType $goodType, Request $request)
     {
-        $goodType->fill($request->get('goodType'))->save();
+        $data = $request->input('goodType', []);
+
+        if (empty($data['icon'])) {
+            $data['icon'] = 'NULL'; // ⚠️ именно null, не 'NULL'
+        }
+
+        $goodType->fill($data)->save();
 
         Alert::info('You have successfully created a good type.');
 
