@@ -23,9 +23,11 @@
                 </div>
                 <input type="hidden" name="ref" value="{{ request('ref') }}">
                 <div>
-                    <input name="phone" id="phone" type="tel" maxlength="12"
-                           placeholder="+7__________"
+                    <input name="phone" id="phone" type="tel"
+                           placeholder="+7 (___) ___-__-__"
                            class="p-input grey-s-text mb-20"
+                           autocomplete="off"
+                           inputmode="numeric"
                            required>
                 </div>
                 <div>
@@ -88,18 +90,62 @@
             </div>
         </div>
     </div>
+    <script src="https://unpkg.com/libphonenumber-js@1.11.7/bundle/libphonenumber-js.min.js"></script>
     <script>
         const input = document.getElementById('phone');
+        const hidden = document.getElementById('phone_hidden');
 
-        input.addEventListener('input', function () {
-            let value = input.value.replace(/[^\d]/g, ''); // убираем всё, кроме цифр
+        function formatPhone(digits) {
 
-            if (!value.startsWith('7')) {
-                value = '7' + value.slice(0, 10); // всегда +7
-            } else {
-                value = value.slice(0, 11); // максимум 11 цифр после +
+            if (!digits.startsWith('7')) {
+                digits = '7' + digits;
             }
 
-            input.value = '+' + value;
+            if (digits.length > 1 && digits[1] !== '7') {
+                digits = '77' + digits.slice(2);
+            }
+
+            digits = digits.substring(0, 11);
+
+            let result = '+7';
+
+            if (digits.length > 1) result += ' (' + digits.slice(1,4);
+            if (digits.length >= 4) result += ') ' + digits.slice(4,7);
+            if (digits.length >= 7) result += '-' + digits.slice(7,9);
+            if (digits.length >= 9) result += '-' + digits.slice(9,11);
+
+            return result;
+        }
+
+        input.addEventListener('input', () => {
+
+            let digits = input.value.replace(/\D/g, '');
+
+            if (digits.length === 0) {
+                input.value = '';
+                hidden.value = '';
+                return;
+            }
+
+            input.value = formatPhone(digits);
+            hidden.value = '+' + digits;
         });
+
+        input.addEventListener('keydown', (e) => {
+
+            if (e.key === 'Backspace') {
+
+                let digits = input.value.replace(/\D/g, '');
+
+                if (digits.length > 1) {
+                    digits = digits.slice(0, -1);
+                }
+
+                input.value = formatPhone(digits);
+                hidden.value = '+' + digits;
+
+                e.preventDefault();
+            }
+        });
+    </script>
 @endsection
