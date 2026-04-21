@@ -74,6 +74,9 @@ class AuthController extends Controller
 
     public function storeUser(Request $request): \Illuminate\Foundation\Application|Redirector|RedirectResponse|Application
     {
+        $request->merge([
+            'phone' => '+' . ltrim(preg_replace('/\D+/', '', $request->input('phone')), '+')
+        ]);
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:15|unique:clients',
