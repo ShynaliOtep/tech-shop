@@ -306,7 +306,7 @@
                         </span>
                     <span class="option-text">Самовывоз</span>
                 </div>
-                <div v-if="clientData.order_count > 1" :class="{'select-time-option': true, 'selected-option': isDelivery}" @click="() => {isDelivery = true}">
+                <div  :class="{'select-time-option': true, 'selected-option': isDelivery}" @click="() => {isDelivery = true}">
                         <span class="option-circle">
                             <span class="option-circle-in"></span>
                         </span>
