@@ -148,8 +148,6 @@ class OrderEditScreen extends Screen
 
         $order->fill($request->except('order.attachment')['order']);
 
-        $order->amount_paid = 0;
-
         $order->save();
 
         $order->attachment()->syncWithoutDetaching(
