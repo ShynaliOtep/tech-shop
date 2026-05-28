@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 /storage/app/public
 /storage/framework/views
+.DS_Store
+**/.DS_Store
