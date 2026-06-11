@@ -90,13 +90,8 @@ class OrderController extends Controller
             $orderItemMessageData = $orderItemMessageData.'Товар: '.str_replace(")", "", str_replace("(", "", $good->name_ru)).'
 ';
 
-            if ($good->discount_cost) {
-                $orderItemMessageData = $orderItemMessageData.'Цена: '.$good->discount_cost.'(скидка)
-';
-            } else {
-                $orderItemMessageData = $orderItemMessageData.'Цена: '.$good->cost.'
-';
-            }
+            $clientPrice = $good->getPriceForClient($client);
+            $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $clientPrice . ($clientPrice < $good->cost ? '(скидка)' : '') . "\n";
 
             $orderItemMessageData = $orderItemMessageData.'Дата начала аренды: *'.$dateObj1->format('d/m/Y H:i').'*
 ';
@@ -104,7 +99,7 @@ class OrderController extends Controller
 ';
             $orderItemMessageData = $orderItemMessageData.'Количество дней: *'.$diffInDays.'*
 ';
-            $currentItemCost = $diffInDays * ($good->discount_cost ?? $good->cost);
+            $currentItemCost = $diffInDays * $clientPrice;
             $orderItemMessageData = $orderItemMessageData.'Общая сумма за товар: *'.$currentItemCost.'*
 ';
             $orderItemMessageData = $orderItemMessageData.'Дополнения к товару:
@@ -126,11 +121,12 @@ class OrderController extends Controller
             foreach ($cartData[$itemKey] as $additionalId) {
                 $additional = Item::query()->find($additionalId)->load('good');
 
+                $additionalCost = $additional->good->getAdditionalPriceForClient($client) * $diffInDays;
+
                 $orderItemMessageData = $orderItemMessageData.'   Наименование: '.$additional->good->name_ru.'
 ';
-                $orderItemMessageData = $orderItemMessageData.'       Цена: '.(($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost).'
+                $orderItemMessageData = $orderItemMessageData.'       Цена: '.$additional->good->getAdditionalPriceForClient($client).'
 ';
-                $additionalCost = (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) * $diffInDays;
 
                 $totalSum += $additionalCost;
 
@@ -142,7 +138,7 @@ class OrderController extends Controller
                     'amount_of_days' => $diffInDays,
                     'is_additional' => true,
                     'additionals' => [],
-                    'amount_paid' => $additionalCost / 100 * (100 - $client->discount),
+                    'amount_paid' => $additionalCost,
                     'rent_start_date' => $dateObj1->format('Y-m-d'),
                     'rent_start_time' => $dateObj1->format('H:i:s'),
                     'rent_end_date' => $dateObj2->format('Y-m-d'),
@@ -153,10 +149,6 @@ class OrderController extends Controller
             $totalSum += $currentItemCost;
 
         }
-
-//        if ($client->discount) {
-//            $totalSum = $totalSum / 100 * (100 - $client->discount);
-//        }
 
         $order->amount_paid = $totalSum;
         $order->save();
@@ -276,13 +268,8 @@ class OrderController extends Controller
             $orderItemMessageData = $orderItemMessageData.'Товар: '.str_replace(")", "", str_replace("(", "", $good->name_ru)).'
 ';
 
-            if ($good->discount_cost) {
-                $orderItemMessageData = $orderItemMessageData.'Цена: '.$good->discount_cost.'(скидка)
-';
-            } else {
-                $orderItemMessageData = $orderItemMessageData.'Цена: '.$good->cost.'
-';
-            }
+            $clientPrice = $good->getPriceForClient($client);
+            $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $clientPrice . ($clientPrice < $good->cost ? '(скидка)' : '') . "\n";
 
             $orderItemMessageData = $orderItemMessageData.'Дата начала аренды: *'.$dateObj1->format('d/m/Y H:i').'*
 ';
@@ -290,7 +277,7 @@ class OrderController extends Controller
 ';
             $orderItemMessageData = $orderItemMessageData.'Количество дней: *'.$diffInDays.'*
 ';
-            $currentItemCost = $diffInDays * ($good->discount_cost ?? $good->cost);
+            $currentItemCost = $diffInDays * $clientPrice;
             $orderItemMessageData = $orderItemMessageData.'Общая сумма за товар: *'.$currentItemCost.'*
 ';
             $orderItemMessageData = $orderItemMessageData.'Дополнения к товару:
@@ -312,11 +299,12 @@ class OrderController extends Controller
             foreach ($cartData[$itemKey] as $additionalId) {
                 $additional = Item::query()->find($additionalId)->load('good');
 
+                $additionalCost = $additional->good->getAdditionalPriceForClient($client) * $diffInDays;
+
                 $orderItemMessageData = $orderItemMessageData.'   Наименование: '.$additional->good->name_ru.'
 ';
-                $orderItemMessageData = $orderItemMessageData.'       Цена: '.(($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost).'
+                $orderItemMessageData = $orderItemMessageData.'       Цена: '.$additional->good->getAdditionalPriceForClient($client).'
 ';
-                $additionalCost = (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) * $diffInDays;
 
                 $totalSum += $additionalCost;
 
@@ -328,7 +316,7 @@ class OrderController extends Controller
                     'amount_of_days' => $diffInDays,
                     'is_additional' => true,
                     'additionals' => [],
-                    'amount_paid' => $additionalCost / 100 * (100 - $client->discount),
+                    'amount_paid' => $additionalCost,
                     'rent_start_date' => $dateObj1->format('Y-m-d'),
                     'rent_start_time' => $dateObj1->format('H:i:s'),
                     'rent_end_date' => $dateObj2->format('Y-m-d'),
@@ -339,10 +327,6 @@ class OrderController extends Controller
             $totalSum += $currentItemCost;
 
         }
-
-//        if ($client->discount) {
-//            $totalSum = $totalSum / 100 * (100 - $client->discount);
-//        }
 
         $order->amount_paid = $totalSum;
 

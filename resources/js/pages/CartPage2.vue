@@ -18,10 +18,10 @@
                                 </p>
                                 <div class="cart-cost">
                                 <span class="cart-cost-1">
-                                    {{(good.discount_cost && good.discount_cost !== 0 ) ? good.discount_cost * good.quantity :  good.cost * good.quantity}}₸
+                                    {{ good.client_price * good.quantity }}₸
                                 </span>
                                     <span class="cart-cost-2">
-                                    {{good.quantity}}шт х {{(good.discount_cost && good.discount_cost !== 0 ) ? good.discount_cost :  good.cost}}₸/сутки
+                                    {{good.quantity}}шт х {{ good.client_price }}₸/сутки
                                 </span>
                                 </div>
                             </div>
@@ -492,7 +492,7 @@ export default {
                 item.availableItems = null
                 item.additions = []
                 item.addedAdditions = []
-                item.sumCost = item.discount_cost ? item.discount_cost * item.quantity : item.cost * item.quantity
+                item.sumCost = item.client_price * item.quantity
                 item.sumPrice = 0
                 item.date = {
                     open: false,
@@ -718,7 +718,7 @@ export default {
         calc(index) {
             let cartItem = this.cart[index]
             console.log(cartItem.quantity)
-            let sumCost = cartItem.discount_cost ? cartItem.discount_cost * cartItem.quantity : cartItem.cost * cartItem.quantity
+            let sumCost = cartItem.client_price * cartItem.quantity
             cartItem.additions.forEach(addition => {
                 if (addition.added === true) {
                     sumCost = sumCost + (addition.good.additional_cost * addition.quantity)

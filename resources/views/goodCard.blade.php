@@ -40,16 +40,27 @@
             <span class="card-title black-text">
                 {{$good['name_' . session()->get('locale', 'ru')]}}
             </span>
-            @if($good->discount_cost)
+            @php
+                $authClient = Auth::guard('clients')->check()
+                    ? App\Models\Client::query()->find(Auth::guard('clients')->id())
+                    : null;
+                $displayPrice = $authClient
+                    ? $good->getPriceForClient($authClient)
+                    : ($good->getDiscountCost() ?? $good->cost);
+            @endphp
+            @if($displayPrice < $good->cost)
                 <span class="cost-label">
                     <span class="chip small">
                         <s>{{$good->cost}}</s>
                     </span>
                     <span class="chip red white-text large">
-                        <b>{{$good->discount_cost}}</b>
+                        <b>{{$displayPrice}}</b>
                     </span>
                 {{__('translations.Tenge per day')}}
                 </span>
+                <a class="btn-floating discount-btn waves-effect waves-light red darken-4">
+                    <i class="medium material-icons white-text">money_off</i>
+                </a>
             @else
                 <span class="cost-label black-text">
                     <span class="chip">
@@ -57,11 +68,6 @@
                     </span>
                 {{__('translations.Tenge per day')}}
                 </span>
-            @endif
-            @if($good->discount_cost)
-                <a class="btn-floating discount-btn waves-effect waves-light red darken-4">
-                    <i class="medium material-icons white-text">money_off</i>
-                </a>
             @endif
         </div>
         </a>

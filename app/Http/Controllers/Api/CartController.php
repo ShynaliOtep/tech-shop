@@ -43,9 +43,16 @@ class CartController extends Controller
     {
         $itemIds = $request->get('items');
 
+        $client = Auth::guard('clients')->check()
+            ? Client::query()->find(Auth::guard('clients')->id())
+            : null;
+
         $items = Good::query()->whereIn('id', $itemIds)->with('attachment')->get();
         foreach ($items as $item) {
             $item->discount_cost = $item->getDiscountCost();
+            $item->client_price = $client
+                ? $item->getPriceForClient($client)
+                : ($item->getDiscountCost() ?? $item->cost);
         }
 
         return response()->json([

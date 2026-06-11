@@ -171,6 +171,54 @@ class Good extends Model
     }
 
     /**
+     * Итоговая цена основного товара для конкретного клиента.
+     *
+     * Правило: скидки не суммируются — берётся наиболее выгодная цена:
+     *   - собственная скидка товара (getDiscountCost)
+     *   - персональная скидка клиента (getDiscountPercent) от базовой цены
+     */
+    public function getPriceForClient(Client $client, string $platform = 'site'): int
+    {
+        $basePrice        = $this->cost;
+        $goodDiscountPrice = $this->getDiscountCost($platform);
+        $clientPercent    = $client->getDiscountPercent();
+
+        $clientPrice = $clientPercent > 0
+            ? (int) round($basePrice * (1 - $clientPercent / 100))
+            : null;
+
+        $candidates = array_filter(
+            [$goodDiscountPrice, $clientPrice, $basePrice],
+            fn($p) => $p !== null,
+        );
+
+        return min($candidates);
+    }
+
+    /**
+     * Итоговая цена дополнительного товара для конкретного клиента.
+     *
+     * Использует additional_cost (если задан) или cost как базу,
+     * применяет ту же логику приоритетов, что и getPriceForClient.
+     */
+    public function getAdditionalPriceForClient(Client $client): int
+    {
+        $basePrice     = $this->additional_cost > 0 ? $this->additional_cost : $this->cost;
+        $clientPercent = $client->getDiscountPercent();
+
+        $clientPrice = $clientPercent > 0
+            ? (int) round($basePrice * (1 - $clientPercent / 100))
+            : null;
+
+        $candidates = array_filter(
+            [$clientPrice, $basePrice],
+            fn($p) => $p !== null,
+        );
+
+        return min($candidates);
+    }
+
+    /**
      * @param Builder $query
      *
      * @return Builder

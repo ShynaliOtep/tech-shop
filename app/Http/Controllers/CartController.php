@@ -88,7 +88,7 @@ class CartController extends Controller
         $items = Item::query()->whereIn('id', $itemIds)->get();
 
         $client = Auth::guard('clients')->check()
-            ? Client::query()->find(Auth::guard('clients')->id())->toArray()
+            ? Client::query()->find(Auth::guard('clients')->id())
             : null;
 
         return response(view('cart', compact('items', 'cartData', 'client', 'counts')))
@@ -237,13 +237,18 @@ class CartController extends Controller
             ->cookie('cart', json_encode($cartData), 60 * 24 * 30);
     }
 
-    public function countCostWithAdditionals($item, $cartData)
+    public function countCostWithAdditionals($item, $cartData, ?Client $client = null)
     {
-        $cost = $item->good->discount_cost ?? $item->good->cost;
+        $cost = $client
+            ? $item->good->getPriceForClient($client)
+            : ($item->good->getDiscountCost() ?? $item->good->cost);
+
         if ($item->good->additionals != '[]') {
             foreach ($item->good->getAdditionals() as $additional) {
                 if (in_array($additional->id, $cartData[$item->good->id.'pixelrental'.$item->id])) {
-                    $cost += $additional->additional_cost ?? $additional->cost;
+                    $cost += $client
+                        ? $additional->getAdditionalPriceForClient($client)
+                        : ($additional->additional_cost ?? $additional->cost);
                 }
             }
         }

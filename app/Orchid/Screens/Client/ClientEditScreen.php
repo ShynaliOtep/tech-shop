@@ -103,7 +103,9 @@ class ClientEditScreen extends Screen
 
                 Input::make('client.bonus_percent')
                     ->title('Процент бонуса')
-                    ->type('number'),
+                    ->type('number')
+                    ->value(0)
+                    ->required(),
 
                 Select::make('client.bonus.level')
                     ->options($bonusOptions)

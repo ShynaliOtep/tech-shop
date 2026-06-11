@@ -22,22 +22,30 @@
                 <span class="flow-text">{{__('translations.Description')}}:</span>
                     <p>{{$good->desc}}</p>
                 @endif
-                @if($good->discount_cost)
+                @php
+                    $authClient = Auth::guard('clients')->check()
+                        ? App\Models\Client::query()->find(Auth::guard('clients')->id())
+                        : null;
+                    $displayPrice = $authClient
+                        ? $good->getPriceForClient($authClient)
+                        : ($good->getDiscountCost() ?? $good->cost);
+                @endphp
+                @if($displayPrice < $good->cost)
                     <span class="right">
                         <span class="chip small item-cost-holder">
                             <s>{{$good->cost}}</s>
                         </span>
-                    <span class="chip red white-text large item-cost-holder">
-                        {{$good->discount_cost}}
+                        <span class="chip red white-text large item-cost-holder">
+                            {{$displayPrice}}
+                        </span>
+                        {{__('translations.Tenge per day')}}
                     </span>
-                {{__('translations.Tenge per day')}}
-                </span>
                 @else
                     <span class="right">
                         <span class="chip item-cost-holder">
                             {{$good->cost}}
                         </span>
-                    {{__('translations.Tenge per day')}}
+                        {{__('translations.Tenge per day')}}
                     </span>
                 @endif
             </div>
@@ -49,7 +57,7 @@
                             <label>
                                 <input type="checkbox" class="orange-text"
                                        data-additional-id="{{$additional->id}}"/>
-                                <span>{{$additional['name_' . session()->get('locale', 'ru')]}} <span class="white-text">(+ {{$additional->additional_cost ?? $additional->cost}}тг)</span></span>
+                                <span>{{$additional['name_' . session()->get('locale', 'ru')]}} <span class="white-text">(+ {{$authClient ? $additional->getAdditionalPriceForClient($authClient) : ($additional->additional_cost ?? $additional->cost)}}тг)</span></span>
                             </label>
                         </p>
                     @endforeach

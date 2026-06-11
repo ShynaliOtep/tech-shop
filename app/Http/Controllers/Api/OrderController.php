@@ -89,7 +89,7 @@ class OrderController extends Controller
         foreach ($requestData['cart'] as $index => $item) {
             $set = Set::query()->where('good_id', $item['id'])->first();
             if ($set) {
-                $cost = $set->good->getDiscountCost() ? $set->good->getDiscountCost() : $set->good->cost;
+                $cost = $set->good->getPriceForClient($client);
                 foreach ($set->goods as $good) {
                     $item['id'] = $good->id;
                     $item['set_good_id'] = $set->good_id;
@@ -183,15 +183,10 @@ class OrderController extends Controller
                     $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $item['cost'] . '(из набора  ' . $item['set_good_name'] . ')
                 ';
                 } else {
-                    if ($good->getDiscountCost()) {
-                        $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $good->getDiscountCost() . '(скидка)
+                    $clientPrice = $good->getPriceForClient($client);
+                    $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $clientPrice . ($clientPrice < $good->cost ? '(скидка)' : '') . '
                 ';
-                    } else {
-                        $orderItemMessageData = $orderItemMessageData . 'Цена: ' . $good->cost . '
-                ';
-                    }
                 }
-
 
                 $orderItemMessageData = $orderItemMessageData . 'Дата начала аренды: *' . $dateObj1->format('d/m/Y H:i') . '*
                 ';
@@ -200,7 +195,7 @@ class OrderController extends Controller
                 $orderItemMessageData = $orderItemMessageData . 'Количество дней: *' . $diffInDays . '*
                 ';
 
-                $currentItemCost = $diffInDays * ($item['cost'] ?? ($good->getDiscountCost() ?? $good->cost));
+                $currentItemCost = $diffInDays * ($item['cost'] ?? $good->getPriceForClient($client));
                 $orderItemMessageData = $orderItemMessageData . 'Общая сумма за товар: *' . $currentItemCost . '*
                 ';
 
@@ -239,10 +234,10 @@ class OrderController extends Controller
                         $orderItemMessageData = $orderItemMessageData . '   Наименование: ' . $additional->good->name_ru . '
                     ';
 
-                        $orderItemMessageData = $orderItemMessageData . '       Цена: ' . (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) . '
-                    ';
+                        $additionalCost = $additional->good->getAdditionalPriceForClient($client) * $diffInDays;
 
-                        $additionalCost = (($additional->good->additional_cost !== null && $additional->good->additional_cost > 0) ? $additional->good->additional_cost : $additional->good->cost) * $diffInDays;
+                        $orderItemMessageData = $orderItemMessageData . '       Цена: ' . $additional->good->getAdditionalPriceForClient($client) . '
+                    ';
 
                         $totalSum += $additionalCost;
 
@@ -268,10 +263,6 @@ class OrderController extends Controller
                 $itemCount++;
              }
         }
-
-//        if ($client->discount) {
-//            $totalSum = $totalSum / 100 * (100 - $client->discount);
-//        }
 
         $order->amount_paid = $totalSum;
         $order->save();

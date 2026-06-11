@@ -11,6 +11,13 @@ if ($good->attachment()?->first()?->url()) {
 
 $auth = (bool) Auth::guard('clients')->id();
 
+$authClient = Auth::guard('clients')->check()
+    ? App\Models\Client::query()->find(Auth::guard('clients')->id())
+    : null;
+$displayPrice = $authClient
+    ? $good->getPriceForClient($authClient)
+    : ($good->getDiscountCost() ?? $good->cost);
+
 @endphp
 
 <a href="/{{$good->id}}" style="text-decoration: none">
@@ -18,9 +25,9 @@ $auth = (bool) Auth::guard('clients')->id();
         <p class="good-title">
             {{$good['name_' . session()->get('locale', 'ru')]}}
         </p>
-        @if($good->getDiscountCost())
+        @if($displayPrice < $good->cost)
             <p class="good-price cost-is-discount hide-m">
-                {{$good->getDiscountCost()}}   {{__('translations.Tenge per day')}}
+                {{$displayPrice}}   {{__('translations.Tenge per day')}}
             </p>
             <p class="good-price cost-has-discount hide-m">
                 {{$good->cost}}   {{__('translations.Tenge per day')}}
@@ -33,9 +40,9 @@ $auth = (bool) Auth::guard('clients')->id();
 
         <img loading="lazy" src="{{$imageUrl}}" class="good-card-image" alt="">
 
-        @if($good->getDiscountCost())
+        @if($displayPrice < $good->cost)
             <p class="good-price cost-is-discount show-m">
-                {{$good->getDiscountCost()}}   {{__('translations.Tenge per day')}}
+                {{$displayPrice}}   {{__('translations.Tenge per day')}}
             </p>
             <p class="good-price cost-has-discount show-m">
                 {{$good->cost}}   {{__('translations.Tenge per day')}}
@@ -140,7 +147,7 @@ $auth = (bool) Auth::guard('clients')->id();
                     <span>NEW</span>
                 </div>
                 @endif
-                @if(!isset($isNew) && $good->getDiscountCost())
+                @if(!isset($isNew) && $displayPrice < $good->cost)
 {{--                    <div class="percent-good-bookmark hide-m"--}}
 {{--                         data-product-id="{{$good->id}}">--}}
 {{--                        <span>%</span>--}}

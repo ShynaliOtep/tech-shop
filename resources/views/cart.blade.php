@@ -73,7 +73,7 @@
                 </ul>
             </form>
         </div>
-        <div class="row client-discount-holder hide" @if($client) data-discount-percent="{{$client['discount']}}" @endif>
+        <div class="row client-discount-holder hide" @if($client) data-discount-percent="{{$client->getDiscountPercent()}}" @endif>
             <div class="col s12 m3 additional-info white-text hide-on-med-and-up hide">
                 <span class="grey-text"><u>{{__('translations.Select rental periods for goods')}}</u></span>
                 <p>{{__('translations.All items that you have added to your cart are listed here.')}}</p>
@@ -93,7 +93,7 @@
                     @foreach($items as $item)
                         <div class="row no-margin good-wrapper" data-good-id="{{$item->good->id}}"
                              data-good-item-id="{{$item->id}}"
-                             data-good-cost="{{$item->good->discount_cost ?? $item->good->cost}}">
+                             data-good-cost="{{$client ? $item->good->getPriceForClient($client) : ($item->good->getDiscountCost() ?? $item->good->cost)}}">
                             <a href="#" class="cancel-btn"
                                data-product-id="{{$item->good->id . 'pixelrental' . $item->id}}">
                                 <i class="material-icons white-text ">clear</i>
@@ -106,12 +106,13 @@
                                 <p>{{__('translations.Name')}}: <a href="/{{$item->good->id}}"><b
                                             class="orange-text text-darken-4">{{$item->good['name_' . session()->get('locale', 'ru')]}}</b></a>
                                 </p>
-                                @if($item->good->discount_cost && $item->good->discount_cost != 0)
+                                @php $itemPrice = $client ? $item->good->getPriceForClient($client) : ($item->good->getDiscountCost() ?? $item->good->cost) @endphp
+                                @if($itemPrice < $item->good->cost)
                                     <p>{{__('translations.Cost for day')}}: <s>{{$item->good->cost}}</s> <b
-                                            class="orange-text text-darken-4">{{$item->good->discount_cost}}</b>
+                                            class="orange-text text-darken-4">{{$itemPrice}}</b>
                                     </p>
                                 @else
-                                    <p>{{__('translations.Cost for day')}}: <b class="orange-text text-darken-4">{{$item->good->cost}}</b></p>
+                                    <p>{{__('translations.Cost for day')}}: <b class="orange-text text-darken-4">{{$itemPrice}}</b></p>
                                 @endif
                                 <td>
                                     <button class="quantity-btn minus" data-product-id="{{ $item->id }}">-</button>
@@ -170,36 +171,14 @@
                                         </div>
                                     </li>
                                 </ul>
-                                @php $clientDiscount = isset($client) ? $client['discount'] : 0 @endphp
-                                <div class="control-sum right"
-                                     data-good-cost="{{$item->good->discount_cost ?? $item->good->cost}}">
+                                @php $itemPrice = $client ? $item->good->getPriceForClient($client) : ($item->good->getDiscountCost() ?? $item->good->cost) @endphp
+                                <div class="control-sum right" data-good-cost="{{$itemPrice}}">
                                     <h5 class="inline">{{__('translations.Total')}}:
-                                        @if($item->good->discount_cost && $item->good->discount_cost != 0)
-                                            <span
-                                                class="good-cost-holder orange-text text-darken-4">{{$item->good->discount_cost / 100 * (100 - $clientDiscount)}}
-                                            </span>
-                                            {{__('translations.KZT')}}
-                                            @if(Auth::guard('clients')->id() && $client['discount'])
-                                                <br>
-                                                <span>({{__('translations.With mention of personal discount')}}): {{$client['discount']}}%</span>
-                                            @endif
-                                        @else
-                                            @auth('clients')
-                                                <span
-                                                    class="good-cost-holder">{{$item->good->cost / 100 * (100 - $client['discount'])}}
-                                                </span>
-                                                {{__('translations.KZT')}}
-                                                @if(Auth::guard('clients')->id() && $client['discount'])
-                                                    <br>
-                                                    <span>({{__('translations.With mention of personal discount')}}): {{$client['discount']}}%</span>
-                                                @endif
-                                            @endauth
-                                            @guest('clients')
-                                                <span
-                                                    class="good-cost-holder">{{$item->good->discount_cost ?? $item->good->cost}}
-                                                </span>
-                                                {{__('translations.KZT')}}
-                                            @endguest
+                                        <span class="good-cost-holder orange-text text-darken-4">{{$itemPrice}}</span>
+                                        {{__('translations.KZT')}}
+                                        @if($client && $client->getDiscountPercent() > 0)
+                                            <br>
+                                            <span>({{__('translations.With mention of personal discount')}}): {{$client->getDiscountPercent()}}%</span>
                                         @endif
                                     </h5>
                                 </div>
@@ -223,12 +202,8 @@
         </div>
         <div class="col s12 right-align hide" id="total-sum-of-items" >
             <h5 class="white-text">Итого: <span class="total-cost-holder">0</span> {{__('translations.KZT')}}</h5>
-            @php
-            $bonusPercent = $client ? \App\Models\Client::getBonusLevelPercent($client['id']) : 0
-             @endphp
-            @if($bonusPercent > 0)
-                <span id="client_bonus_level" class="hide">{{ $bonusPercent}}</span>
-                <p class="white-text">Бонус после покупки: <span class="bonus-holder">0</span> {{__('translations.KZT')}}</p>
+            @if($client && $client->getDiscountPercent() > 0)
+                <p class="white-text">Скидка: {{ $client->getDiscountPercent() }}%</p>
             @endif
         </div>
         @auth('clients')

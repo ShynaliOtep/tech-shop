@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Bonus\BonusLevels;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -25,6 +26,7 @@ use Orchid\Screen\AsSource;
  * @property string $name
  * @property string $phone
  * @property int $discount
+ * @property int $bonus_percent
  * @property string $email
  * @property string $iin
  * @property string $instagram
@@ -179,5 +181,25 @@ class Client extends Authenticatable
     public function getOrderCount(): int
     {
         return Order::query()->where('client_id', $this->id)->count();
+    }
+
+    /**
+     * Возвращает процент скидки клиента по приоритету:
+     * 1. Ручная персональная скидка (bonus_percent)
+     * 2. Скидка по уровню лояльности
+     * 3. 0 — скидки нет
+     */
+    public function getDiscountPercent(): int
+    {
+        if (!empty($this->bonus_percent) && $this->bonus_percent > 0) {
+            return (int) $this->bonus_percent;
+        }
+
+        $bonus = $this->bonus;
+        if ($bonus) {
+            return (int) BonusLevels::levelMatch($bonus->level)->percent;
+        }
+
+        return 0;
     }
 }
