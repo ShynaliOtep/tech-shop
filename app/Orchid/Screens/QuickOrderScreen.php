@@ -346,7 +346,7 @@ class QuickOrderScreen extends Screen
 
         $items = [];
         if ($startDate && $startTime && $endDate && $endTime) {
-            $items = new GoodService()->getAllAvailableItems(
+            $items = (new GoodService())->getAllAvailableItems(
                 $startDate,
                 $startTime,
                 $endDate,
