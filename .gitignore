@@ -21,3 +21,4 @@ yarn-error.log
 /storage/framework/views
 .DS_Store
 **/.DS_Store
+stoge/logs/laravel.log
