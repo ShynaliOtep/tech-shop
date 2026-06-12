@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Orchid\Attachment\Attachable;
+use App\Orchid\Filters\WhereNotEmpty;
 use Orchid\Filters\Filterable;
+use Orchid\Filters\Types\Like;
 use Orchid\Filters\Types\Where;
 use Orchid\Filters\Types\WhereDateStartEnd;
 use Orchid\Filters\Types\WhereMaxMin;
@@ -50,7 +52,10 @@ class Order extends Model
         'client_id' => Where::class,
         'agreement_id' => Where::class,
         'amount_paid' => WhereMaxMin::class,
-        'status' => Where::class,
+        'amount_unpaid' => WhereMaxMin::class,
+        'comment' => Like::class,
+        'status' => WhereNotEmpty::class,
+        'paid_status' => WhereNotEmpty::class,
         'created_at' => WhereDateStartEnd::class,
         'updated_at' => WhereDateStartEnd::class,
         'deleted_at' => WhereDateStartEnd::class,
