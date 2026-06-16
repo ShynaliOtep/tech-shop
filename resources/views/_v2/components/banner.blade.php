@@ -2,7 +2,7 @@
     <div class="banner">
         <div class="banner-text-block">
             <h4 class="banner-text-1">
-                КЭШБЭК
+                СКИДКИ
             </h4>
             <h4 class="banner-text-2">
                 ДО <span>30%</span>

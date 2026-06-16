@@ -52,10 +52,11 @@
         </div>
         @if ($order->orderItems()->where('status', '=', 'in_rent')->count() === 0)
             <div class="center">
-                <a href="#order-canceling-modal" class="orange-btn mb-20 mini-btn">Отменить заказ</a>
+                <a class="orange-btn mb-20 mini-btn" style="cursor: pointer;"
+                   onclick="document.getElementById('order-canceling-modal').style.display='block'">Отменить заказ</a>
             </div>
         @endif
-        @include('confirmModal', [
+        @include('_v2.components.confirmModal', [
             'modalClass' => 'order-canceling-modal',
             'title' => __('translations.Are you sure you want to cancel the order?'),
             'subTitle' => null,

@@ -31,7 +31,7 @@
                 FAQ
             </a>
             <a href="/bonus" class="footer-link">
-                Кэшбэк
+                Скидки
             </a>
             <a href="/bonus" class="footer-link">
                 Условия аренды
