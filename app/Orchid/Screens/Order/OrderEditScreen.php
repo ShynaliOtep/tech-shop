@@ -68,6 +68,7 @@ class OrderEditScreen extends Screen
             Button::make(__('translations.Delete'))
                 ->icon('trash')
                 ->method('remove')
+                ->confirm('Вы действительно хотите удалить этот заказ? Это действие необратимо.')
                 ->canSee($this->order->exists),
         ];
     }
