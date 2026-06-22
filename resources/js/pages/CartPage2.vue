@@ -641,7 +641,7 @@
                         />
                     </svg>
 
-                    {{ pickupPoint.label + "." }}</a
+                    {{ pickupPoint.label }}</a
                 >
             </div>
 
@@ -757,7 +757,7 @@ export default {
 
             return {
                 link: "https://2gis.kz/almaty/firm/70000001069136996",
-                label: this.$t("translations.Tole BI street, 176"),
+                label: this.$t("translations.Tole BI street, 176") + ".",
             };
         },
     },
