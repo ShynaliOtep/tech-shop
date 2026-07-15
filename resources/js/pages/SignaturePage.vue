@@ -4,12 +4,21 @@
             ref="canvas"
             width="400"
             height="200"
-            style="border:1px solid #000; border-radius: 6px;">
+            style="border: 1px solid #000; border-radius: 6px"
+        >
         </canvas>
 
         <div class="buttons">
-            <button class="auth-main-btn mb-20" @click="clearSignature">🧹 Очистить</button>
-            <button  class="auth-main-btn mb-20" style="background: #FF962E; color: #fff" @click="saveSignature">💾 Сохранить</button>
+            <button class="auth-main-btn mb-20" @click="clearSignature">
+                🧹 Очистить
+            </button>
+            <button
+                class="auth-main-btn mb-20"
+                style="background: #ff962e; color: #fff"
+                @click="saveSignature"
+            >
+                💾 Сохранить
+            </button>
         </div>
     </div>
 </template>
@@ -29,7 +38,7 @@ export default {
         const canvas = this.$refs.canvas;
         this.signaturePad = new SignaturePad(canvas, {
             backgroundColor: "rgb(255,255,255)", // белый фон, чтобы PNG был чистым
-            penColor: "rgb(65,105,225)",              // цвет ручки (чёрный)
+            penColor: "rgb(65,105,225)", // цвет ручки (чёрный)
         });
     },
     methods: {
@@ -43,19 +52,20 @@ export default {
             }
 
             const dataUrl = this.signaturePad.toDataURL("image/png");
-            const params = new URLSearchParams(window.location.search)
-            const orderId = params.get('id')
+            const params = new URLSearchParams(window.location.search);
+            const orderId = params.get("id");
             const response = await axios.request({
-                method: 'POST',
-                url: '/api/order/signature',
+                method: "POST",
+                url: "/api/order/signature",
                 data: {
                     signature: dataUrl,
-                    order_id: orderId
-                }
-            })
+                    order_id: orderId,
+                },
+            });
 
             if (response.status === 200) {
-                window.location.href = '/order/agreement?id=' + orderId + '&state=1'
+                window.location.href =
+                    "/order/agreement?id=" + orderId + "&state=1";
             }
 
             // // Отправляем на Laravel backend

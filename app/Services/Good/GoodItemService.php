@@ -2,7 +2,6 @@
 
 namespace App\Services\Good;
 
-use App\Models\City;
 use App\Models\Good;
 use App\Models\Item;
 use App\Services\City\CityService;
@@ -52,7 +51,34 @@ class GoodItemService
     private function sqlQuery(TimeRange $timeRange, int $goodId, $excludeOrderItems = []): array
     {
         $good = Good::query()->find($goodId);
-        $cityId = City::getSiteCity();
+        // Город определяем тем же способом, что и при выборке доступных экземпляров ниже,
+        // иначе при пустой сессии (select_city не выбран) подзапрос конфликтов сравнивает
+        // city_id с NULL, не находит занятых броней и товар считается полностью доступным.
+        $cityId = CityService::city();
+
+        $bindings = [
+            'good_id' => $good->id,
+            'city_id' => $cityId,
+            'start_date' => $timeRange->start->format('Y-m-d'),
+            'start_date_v2' =>  $timeRange->start->format('Y-m-d'),
+            'start_time' => $timeRange->start->format('H:i:s'),
+            'end_date' =>  $timeRange->end->format('Y-m-d'),
+            'end_date_v2' =>  $timeRange->end->format('Y-m-d'),
+            'end_time' => $timeRange->end->format('H:i:s'),
+        ];
+
+        // Корректный биндинг списка исключаемых order_items: каждый id — отдельный плейсхолдер.
+        $excludeClause = '';
+        $excludeOrderItems = array_values(array_filter($excludeOrderItems));
+        if (! empty($excludeOrderItems)) {
+            $placeholders = [];
+            foreach ($excludeOrderItems as $i => $excludeId) {
+                $key = 'exclude_' . $i;
+                $placeholders[] = ':' . $key;
+                $bindings[$key] = $excludeId;
+            }
+            $excludeClause = 'AND order_items.id NOT IN (' . implode(', ', $placeholders) . ')';
+        }
 
         $conflictingItemIds = DB::select("
     SELECT order_items.item_id
@@ -60,24 +86,14 @@ class GoodItemService
     JOIN items ON order_items.item_id = items.id
     WHERE items.good_id = :good_id
     AND items.city_id = :city_id
-    AND order_items.id NOT IN (:exclude_order_items)
+    $excludeClause
     AND order_items.status IN ('in_rent', 'waiting', 'confirmed')
     AND (
         (order_items.rent_start_date < :end_date OR (order_items.rent_start_date = :end_date_v2 AND order_items.rent_start_time <= :end_time))
         AND
         (order_items.rent_end_date > :start_date OR (order_items.rent_end_date = :start_date_v2 AND order_items.rent_end_time >= :start_time))
     )
-", [
-            'good_id' => $good->id,
-            'start_date' => $timeRange->start->format('Y-m-d'),
-            'start_date_v2' =>  $timeRange->start->format('Y-m-d'),
-            'start_time' => $timeRange->start->format('H:i:s'),
-            'end_date' =>  $timeRange->end->format('Y-m-d'),
-            'end_date_v2' =>  $timeRange->end->format('Y-m-d'),
-            'end_time' => $timeRange->end->format('H:i:s'),
-            'exclude_order_items' => implode("','", $excludeOrderItems),
-            'city_id' => $cityId
-        ]);
+", $bindings);
         $conflictingItemIds = array_map(function ($item) {
             return $item->item_id;
         }, $conflictingItemIds);

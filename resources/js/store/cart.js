@@ -33,25 +33,26 @@ const Cart = {
             }
             localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
         }
-       //setTimeout(sendCartData, 1000);
+        //setTimeout(sendCartData, 1000);
     },
 
     getTotalItems() {
-        return Object.values(this.getCart()).reduce((sum, item) => sum + item.quantity, 0);
+        return Object.values(this.getCart()).reduce(
+            (sum, item) => sum + item.quantity,
+            0,
+        );
     },
 
     getQuantity(productId) {
         let cart = this.getCart();
         if (cart[productId]) {
-           return cart[productId].quantity;
+            return cart[productId].quantity;
         }
         return 0;
     },
     clearCart() {
         localStorage.removeItem(this.CART_KEY);
-    }
+    },
 };
-
-
 
 export default Cart;

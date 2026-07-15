@@ -10,7 +10,7 @@
     color: #404040;
 }
 
-.cart-item-img img{
+.cart-item-img img {
     width: 90px;
 }
 .icon-button-grey-text span {
@@ -42,7 +42,7 @@
 .page-title {
     font-weight: 500;
     font-size: 40px;
-    color: #FFFFFF;
+    color: #ffffff;
     margin-bottom: 30px;
 }
 
@@ -53,7 +53,6 @@
     font-weight: 300;
     padding: 30px 10px;
 }
-
 
 .auth-form-element {
     font-weight: 400;
@@ -77,25 +76,24 @@
 }
 
 .status-red {
-    color: #D43F3A;
+    color: #d43f3a;
 }
 
 .status-green {
-    color: #5DD4A2;
+    color: #5dd4a2;
 }
 
 .red-dates .cart-date {
-    color: #D43F3A !important;
-    border-color: #D43F3A !important;
+    color: #d43f3a !important;
+    border-color: #d43f3a !important;
 }
 
 .red-dates .cart-time {
-    color: #D43F3A !important;
-    border-color: #D43F3A !important;
+    color: #d43f3a !important;
+    border-color: #d43f3a !important;
 }
 
-
-    /**
+/**
      * ** * * * * *
                 goods
     * * * * * * * * *
@@ -124,7 +122,6 @@
     }
 }
 
-
 .good-card {
     border-radius: 30px;
     padding: 25px 30px;
@@ -145,8 +142,6 @@
     height: 60px;
 }
 
-
-
 .good-price {
     font-size: 16px;
     font-weight: 500;
@@ -166,7 +161,9 @@
     justify-content: space-between;
     margin-top: 30px;
 }
-.good-add-to-favorites, .good-remove-to-favorites, .good-open-btn {
+.good-add-to-favorites,
+.good-remove-to-favorites,
+.good-open-btn {
     border-radius: 20px;
     height: 50px;
     text-decoration: none;
@@ -178,14 +175,16 @@
     color: #fff;
 }
 
-.good-add-to-favorites span, .good-remove-to-favorites span, .good-open-btn span{
+.good-add-to-favorites span,
+.good-remove-to-favorites span,
+.good-open-btn span {
     font-weight: 400;
     font-size: 16px;
     margin-left: 20px;
 }
 
 .good-remove-to-favorites {
-   color: #FF962E;
+    color: #ff962e;
 }
 
 .good-open-btn {
@@ -213,16 +212,10 @@
     height: 115px;
     top: -10px;
     left: -15px;
-    background-color: #FF962E;
+    background-color: #ff962e;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    clip-path: polygon(
-        0 0,
-        100% 0,
-        100% 100%,
-        50% 85%,
-        0 100%
-    );
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
 }
 .new-good-bookmark span {
     color: #ffffff;
@@ -239,16 +232,10 @@
     height: 115px;
     top: -10px;
     left: -15px;
-    background-color: #FF962E;
+    background-color: #ff962e;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    clip-path: polygon(
-        0 0,
-        100% 0,
-        100% 100%,
-        50% 85%,
-        0 100%
-    );
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
 }
 .percent-good-bookmark span {
     color: #ffffff;
@@ -257,9 +244,6 @@
     font-weight: 600;
     font-size: 18px;
 }
-
-
-
 
 /**  = = = = = = AUTH  = = = = = = = ==   */
 
@@ -274,7 +258,6 @@
     margin: 50px auto;
     width: 520px;
 }
-
 
 /** texts ------------- */
 
@@ -300,7 +283,6 @@
     text-decoration: none;
 }
 
-
 .white-s-text {
     font-weight: 400;
     font-size: 16px;
@@ -312,9 +294,6 @@
     margin-bottom: 10px;
 }
 
-
-
-
 .auth-back-btn svg {
     margin-right: 10px;
     width: 15px;
@@ -322,7 +301,7 @@
 
 .p-input {
     background-color: #191919;
-    border-radius:15px;
+    border-radius: 15px;
     border: 1px solid #404040;
     width: 100%;
     height: 60px;
@@ -333,7 +312,7 @@
 }
 .auth-main-btn {
     border-radius: 15px;
-    border: 1px solid #FF962E;
+    border: 1px solid #ff962e;
     color: #ffffff;
     background-color: #191919;
     display: flex;
@@ -378,16 +357,15 @@
 .orange-s-link {
     font-size: 16px;
     font-weight: 500;
-    color: #FF962E;
+    color: #ff962e;
     text-decoration: none;
 }
 
-
-
-
 /** card buttons **/
 
-.good-add-to-favorites, .good-remove-to-favorites, .good-open-btn {
+.good-add-to-favorites,
+.good-remove-to-favorites,
+.good-open-btn {
     border-radius: 20px;
     height: 50px;
     text-decoration: none;
@@ -395,14 +373,16 @@
     display: flex;
 }
 
-.good-add-to-favorites span, .good-remove-to-favorites span, .good-open-btn span{
+.good-add-to-favorites span,
+.good-remove-to-favorites span,
+.good-open-btn span {
     font-weight: 400;
     font-size: 16px;
     margin-left: 20px;
 }
 
 .good-add-to-card {
-    border: 1px solid #FF962E;
+    border: 1px solid #ff962e;
     color: #fff;
     border-radius: 20px;
     height: 50px;
@@ -413,7 +393,7 @@
     width: 160px;
     justify-content: space-between;
     cursor: pointer;
-    background-color: #FF962E;
+    background-color: #ff962e;
     align-items: center;
 }
 
@@ -429,10 +409,10 @@
 .add-to-cart-btn-delete {
     width: 48px;
     color: #ffffff;
-    padding:0 15px;
+    padding: 0 15px;
 }
 
-.add-to-cart-btn-text{
+.add-to-cart-btn-text {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -445,8 +425,6 @@
     justify-content: space-between;
     align-items: center;
 }
-
-
 
 /** Vue Cart ***/
 
@@ -489,7 +467,7 @@
     background: #ffffff;
     font-weight: 700;
     font-size: 14px;
-    color: #FF962E;
+    color: #ff962e;
     display: flex;
     text-align: center;
     align-items: center;
@@ -511,27 +489,25 @@
     gap: 10px;
 }
 
-.cio-before{
-    content: '';
+.cio-before {
+    content: "";
     width: 24px;
     height: 24px;
     z-index: 1;
     border: 1px solid #404040;
     border-radius: 5px;
     margin-top: 3px;
-    -webkit-transition: .2s;
-    transition: .2s;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
     position: relative;
 }
 
 .cio-in input:checked + .cio-before {
-    background-color: #FF962E;
+    background-color: #ff962e;
     border: 3px solid #ffffff;
 }
 
-
 .cart-item-addition-checkbox {
-
 }
 
 .cia-title {
@@ -546,7 +522,6 @@
     color: #ffffff;
 }
 
-
 .cart-page {
     display: flex;
     justify-content: space-between;
@@ -559,7 +534,6 @@
 .cart-actions {
     flex: 2;
 }
-
 
 .white-m-text {
     font-size: 24px;
@@ -637,15 +611,15 @@
     font-weight: 400;
 }
 .cart-time-btn:hover {
-    color: #FF962E;
+    color: #ff962e;
 }
 .filled {
     color: #ffffff;
-    background-color: #FF962E;
+    background-color: #ff962e;
 }
 .filled:hover {
     color: #ffffff;
-    background-color: #FF962E;
+    background-color: #ff962e;
 }
 
 .date-ind {
@@ -674,7 +648,8 @@
     height: 56px;
 }
 
-.quantity-btn-minus, .quantity-btn-plus{
+.quantity-btn-minus,
+.quantity-btn-plus {
     font-size: 24px;
     padding: 12px 25px;
 }
@@ -724,7 +699,7 @@
 
 .option-circle-in {
     display: none;
-    background-color: #FF962E;
+    background-color: #ff962e;
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -734,11 +709,11 @@
     background-color: #191919;
 }
 .selected-option .option-text {
-    color: #FF962E;
+    color: #ff962e;
 }
 
 .selected-option .option-circle {
-    border-color: #FF962E;
+    border-color: #ff962e;
 }
 
 .selected-option .option-circle-in {
@@ -764,7 +739,7 @@
 }
 
 .cart-clear-btn {
-    color: #FF962E;
+    color: #ff962e;
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
@@ -781,7 +756,7 @@
     font-weight: 600;
     font-size: 24px;
     color: #ffffffff;
-    background-color: #FF962E;
+    background-color: #ff962e;
     border-radius: 20px;
     text-align: center;
     justify-content: center;
@@ -823,7 +798,6 @@
     max-width: 450px;
     margin: 0 auto;
 }
-
 
 .cart-dates {
     display: flex;
@@ -869,7 +843,6 @@
     cursor: pointer;
 }
 
-
 .autocomplete-content {
     border-radius: 25px !important;
     background: #191919;
@@ -890,18 +863,18 @@
     align-items: center;
 }
 
-.autocomplete-content li img{
+.autocomplete-content li img {
     width: 40px;
     margin-right: 10px;
 }
 
 .autocomplete-content li:hover {
-    border: 1px solid #FF962E;
+    border: 1px solid #ff962e;
 }
 
-
 .b-level-list {
-    display: flex;justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
     gap: 10px;
     align-items: flex-start;
     flex-wrap: wrap;
@@ -942,7 +915,6 @@
     z-index: 5;
     width: 100%;
     padding: 30px;
-
 }
 .b-price-in {
     background-color: var(--box-color);
@@ -969,7 +941,7 @@
 .b-info-title {
     font-weight: 400;
     font-size: 16px;
-     color: var(--box-color);
+    color: var(--box-color);
 }
 .b-info-dec {
     font-weight: 400;
@@ -991,7 +963,7 @@
     border-radius: 15px;
 }
 
-.b-btn-active{
+.b-btn-active {
     width: 100%;
     height: 70px;
     display: flex;
@@ -1025,7 +997,7 @@
 }
 .arrow.open {
     transform: rotate(180deg);
-    color: #FF962E;
+    color: #ff962e;
 }
 
 .faq-answer {
@@ -1037,14 +1009,16 @@
 }
 
 .faq-question.open {
-    color: #FF962E !important;
+    color: #ff962e !important;
 }
 
 /* Анимация */
-.faq-enter-active, .faq-leave-active {
+.faq-enter-active,
+.faq-leave-active {
     transition: all 0.3s ease;
 }
-.faq-enter-from, .faq-leave-to {
+.faq-enter-from,
+.faq-leave-to {
     opacity: 0;
     transform: translateY(-5px);
 }
@@ -1081,14 +1055,14 @@
     z-index: 1000;
 
     overflow-y: hidden; /* важно */
-    padding: 20px;    /* чтобы не прилипал к краям */
+    padding: 20px; /* чтобы не прилипал к краям */
 }
 
 .modal-block {
     position: relative;
     width: 520px;
-    max-height: 90vh;   /* ключевой момент */
-    overflow-y: auto;   /* скролл внутри */
+    max-height: 90vh; /* ключевой момент */
+    overflow-y: auto; /* скролл внутри */
 }
 
 .close {
@@ -1107,14 +1081,15 @@
 }
 
 .cart-address {
-    color: #FF962E;
+    color: #ff962e;
     text-decoration: none;
     margin-bottom: 20px;
     text-align: center;
     display: block;
 }
 
-html, body {
+html,
+body {
     background-color: #151515; /* или любой другой */
 }
 
@@ -1148,14 +1123,15 @@ html, body {
     margin: 30px 0;
 }
 
-.collection-table th, .collection-table td {
+.collection-table th,
+.collection-table td {
     border: 1px solid #404040;
     padding: 15px;
     color: #fff;
 }
 
 .orange-text {
-    color: #FF962E;
+    color: #ff962e;
 }
 
 .order-main-block {
@@ -1201,7 +1177,7 @@ html, body {
     text-decoration: line-through;
 }
 .cost-is-discount {
-    color: #FF962E;
+    color: #ff962e;
     font-size: 18px;
 }
 
@@ -1214,11 +1190,10 @@ html, body {
     .good-open-btn span {
         display: none;
     }
-
 }
 
 @media (max-width: 992px) {
-    .autocomplete-content li img{
+    .autocomplete-content li img {
         width: 40px;
     }
     .autocomplete-content {
@@ -1228,7 +1203,8 @@ html, body {
         height: 100%;
         padding: 14px 15px;
     }
-    .collection-table th, .collection-table td {
+    .collection-table th,
+    .collection-table td {
         padding: 10px;
         font-weight: 300;
         font-size: 12px;
@@ -1329,7 +1305,8 @@ html, body {
         border-radius: 7px;
         height: 30px;
     }
-    .quantity-btn-minus, .quantity-btn-plus {
+    .quantity-btn-minus,
+    .quantity-btn-plus {
         font-size: 16px;
         padding: 0 10px;
     }
@@ -1379,7 +1356,7 @@ html, body {
         position: absolute;
         top: -5px;
         left: calc(50% - 25px);
-        background-color: #FF962E;
+        background-color: #ff962e;
         width: 50px;
         height: 16px;
         border-radius: 100px;
@@ -1387,7 +1364,7 @@ html, body {
         align-items: center;
         justify-content: center;
     }
-    .new-good-bookmark-m span{
+    .new-good-bookmark-m span {
         display: block;
         font-weight: 600;
         font-size: 8px;
@@ -1409,7 +1386,7 @@ html, body {
         align-items: center;
         justify-content: center;
     }
-    .percent-good-bookmark-m span{
+    .percent-good-bookmark-m span {
         display: block;
         font-weight: 600;
         font-size: 14px;
@@ -1441,7 +1418,8 @@ html, body {
     .good-btn-block {
         height: 50px;
     }
-    .good-add-to-favorites, .good-remove-to-favorites {
+    .good-add-to-favorites,
+    .good-remove-to-favorites {
         width: 50%;
         display: flex;
         align-items: center;
@@ -1450,7 +1428,8 @@ html, body {
         left: 0;
         bottom: 0;
     }
-    .good-add-to-favorites svg, .good-remove-to-favorites svg {
+    .good-add-to-favorites svg,
+    .good-remove-to-favorites svg {
         width: 26px;
     }
     .good-add-to-card-m {
@@ -1503,7 +1482,7 @@ html, body {
     }
 
     .date-ind-el {
-        width: 100%
+        width: 100%;
     }
     .cart-time-btn span {
         display: none;
@@ -1523,11 +1502,11 @@ html, body {
     }
     .filled {
         color: #ffffff;
-        background-color: #FF962E;
+        background-color: #ff962e;
     }
     .filled:hover {
         color: #ffffff;
-        background-color: #FF962E;
+        background-color: #ff962e;
     }
 
     .cost-is-discount {

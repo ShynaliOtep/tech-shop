@@ -15,8 +15,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script:
-              cd tech-shop
+          script: cd tech-shop
             && sudo rm -rf storage/app/public/2024
             && sudo docker exec pixelrental-php-1 php artisan migrate:fresh
             && sudo docker exec pixelrental-php-1 php artisan db:seed

@@ -1,26 +1,50 @@
 <template>
     <div class="pdf-page">
         <!-- PDF -->
-<!--        <iframe-->
-<!--            :src="url"-->
-<!--            class="frame-agreement"-->
-<!--            style="border: none;"-->
-<!--        ></iframe>-->
+        <!--        <iframe-->
+        <!--            :src="url"-->
+        <!--            class="frame-agreement"-->
+        <!--            style="border: none;"-->
+        <!--        ></iframe>-->
 
-        <object
-            :data="url"
-            type="application/pdf"
-            width="100%"
-            height="200%">
-            <p>Ваш браузер не поддерживает PDF. <a :href="url">Скачать PDF</a></p>
+        <object :data="url" type="application/pdf" width="100%" height="200%">
+            <p>
+                Ваш браузер не поддерживает PDF. <a :href="url">Скачать PDF</a>
+            </p>
         </object>
 
-<!--        <PdfViewer v-if="url" :pdf-url="url" />-->
+        <!--        <PdfViewer v-if="url" :pdf-url="url" />-->
 
         <!-- Кнопка -->
-        <div class="actions" style="margin-top: 20px; text-align: center;">
-            <a v-if="state === 1" class="auth-main-btn mb-20" style="background: #FF962E; color: #fff; width: 200px; margin: 0 auto; display: block; text-decoration: none; padding-top: 20px" href="/admin/orders">Список заказов</a>
-            <button v-if="state === 0" @click="signPdf"  class="auth-main-btn mb-20" style="background: #FF962E; color: #fff; width: 200px; margin: 0 auto" >Подписать</button>
+        <div class="actions" style="margin-top: 20px; text-align: center">
+            <a
+                v-if="state === 1"
+                class="auth-main-btn mb-20"
+                style="
+                    background: #ff962e;
+                    color: #fff;
+                    width: 200px;
+                    margin: 0 auto;
+                    display: block;
+                    text-decoration: none;
+                    padding-top: 20px;
+                "
+                href="/admin/orders"
+                >Список заказов</a
+            >
+            <button
+                v-if="state === 0"
+                @click="signPdf"
+                class="auth-main-btn mb-20"
+                style="
+                    background: #ff962e;
+                    color: #fff;
+                    width: 200px;
+                    margin: 0 auto;
+                "
+            >
+                Подписать
+            </button>
         </div>
     </div>
 </template>
@@ -32,37 +56,37 @@ import PdfViewer from "./PdfViewer.vue";
 
 export default {
     name: "PdfPage",
-    components: {PdfViewer},
+    components: { PdfViewer },
     data() {
         return {
-            url: '',
-            state: 0
-        }
+            url: "",
+            state: 0,
+        };
     },
     mounted() {
-        this.getAgreement()
-        const params = new URLSearchParams(window.location.search)
-        if (params.get('state')) {
-            this.state = 1
+        this.getAgreement();
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("state")) {
+            this.state = 1;
         }
     },
     methods: {
         signPdf() {
-            const params = new URLSearchParams(window.location.search)
-            const orderId = params.get('id')
-            window.location.href = '/order/signature?id=' + orderId
+            const params = new URLSearchParams(window.location.search);
+            const orderId = params.get("id");
+            window.location.href = "/order/signature?id=" + orderId;
         },
         async getAgreement() {
-            const params = new URLSearchParams(window.location.search)
-            const orderId = params.get('id')
+            const params = new URLSearchParams(window.location.search);
+            const orderId = params.get("id");
             const response = await axios.request({
-                method: 'GET',
-                url: '/api/order/agreement/' + orderId,
-            })
-            this.url = response.data.attachment.url
+                method: "GET",
+                url: "/api/order/agreement/" + orderId,
+            });
+            this.url = response.data.attachment.url;
         },
-    }
-}
+    },
+};
 </script>
 
 <style>
@@ -82,12 +106,12 @@ export default {
 }
 .frame-agreement {
     width: 100%;
-    height: 1000px
+    height: 1000px;
 }
 @media (max-width: 1024px) {
     .frame-agreement {
         width: 100%;
-        height: 100vh
+        height: 100vh;
     }
 }
 

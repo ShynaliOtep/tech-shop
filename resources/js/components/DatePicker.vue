@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import DatePicker from 'vue-datepicker-next'
-import ru from 'vue-datepicker-next/locale/ru'
+import DatePicker from "vue-datepicker-next";
+import ru from "vue-datepicker-next/locale/ru";
 
 export default {
     components: { DatePicker },
@@ -37,9 +37,9 @@ export default {
         return {
             selectedDate: null,
             ru,
-        }
+        };
     },
-}
+};
 </script>
 
 <style>

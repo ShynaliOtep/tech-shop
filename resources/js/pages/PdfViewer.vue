@@ -4,33 +4,35 @@
         <div v-if="loading" class="pdf-status">Loading PDF...</div>
 
         <!-- Error state -->
-        <div v-if="error" class="pdf-error">
-            ❌ {{ error }}
-        </div>
+        <div v-if="error" class="pdf-error">❌ {{ error }}</div>
 
         <!-- Canvas -->
         <canvas ref="canvas" v-show="!loading && !error"></canvas>
 
         <!-- Controls -->
         <div class="pdf-controls" v-if="numPages > 1">
-            <button @click="prevPage" :disabled="pageNumber === 1">Назад</button>
+            <button @click="prevPage" :disabled="pageNumber === 1">
+                Назад
+            </button>
             <span>{{ pageNumber }} / {{ numPages }}</span>
-            <button @click="nextPage" :disabled="pageNumber === numPages">Вперед</button>
+            <button @click="nextPage" :disabled="pageNumber === numPages">
+                Вперед
+            </button>
         </div>
     </div>
 </template>
 
 <script>
-import * as pdfjsLib from 'pdfjs-dist/build/pdf';
+import * as pdfjsLib from "pdfjs-dist/build/pdf";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.mjs',
-    import.meta.url
+    "pdfjs-dist/build/pdf.worker.min.mjs",
+    import.meta.url,
 ).toString();
 
 export default {
     props: {
-        pdfUrl: { type: String, required: true }
+        pdfUrl: { type: String, required: true },
     },
     data() {
         return {
@@ -39,16 +41,16 @@ export default {
             numPages: 0,
             scale: 1.0,
             loading: false,
-            error: null
+            error: null,
         };
     },
     async mounted() {
         if (!this.pdfUrl) return;
         await this.loadPdf();
-        window.addEventListener('resize', this.renderPage);
+        window.addEventListener("resize", this.renderPage);
     },
     beforeUnmount() {
-        window.removeEventListener('resize', this.renderPage);
+        window.removeEventListener("resize", this.renderPage);
         if (this.pdf) this.pdf.destroy();
     },
     watch: {
@@ -57,7 +59,7 @@ export default {
                 this.pageNumber = 1;
                 this.loadPdf();
             }
-        }
+        },
     },
     methods: {
         async loadPdf() {
@@ -81,14 +83,16 @@ export default {
                 console.log(`PDF loaded: ${this.numPages} pages`);
                 await this.renderPage();
             } catch (err) {
-                console.error('PDF load error:', err);
+                console.error("PDF load error:", err);
 
-                if (err.name === 'MissingPDFException') {
-                    this.error = 'File not found (404). Check if the URL is correct.';
-                } else if (err.name === 'UnexpectedResponseException') {
+                if (err.name === "MissingPDFException") {
+                    this.error =
+                        "File not found (404). Check if the URL is correct.";
+                } else if (err.name === "UnexpectedResponseException") {
                     this.error = `Server error: ${err.message}. Possibly CORS or wrong URL.`;
-                } else if (err.message?.includes('CORS')) {
-                    this.error = 'CORS error: The server must allow cross-origin requests.';
+                } else if (err.message?.includes("CORS")) {
+                    this.error =
+                        "CORS error: The server must allow cross-origin requests.";
                 } else {
                     this.error = `Error: ${err.message || err.name}`;
                 }
@@ -108,16 +112,16 @@ export default {
 
                 const canvas = this.$refs.canvas;
                 if (!canvas) return;
-                const context = canvas.getContext('2d');
+                const context = canvas.getContext("2d");
                 canvas.width = scaledViewport.width;
                 canvas.height = scaledViewport.height;
 
                 await page.render({
                     canvasContext: context,
-                    viewport: scaledViewport
+                    viewport: scaledViewport,
                 }).promise;
             } catch (err) {
-                console.error('Render error:', err);
+                console.error("Render error:", err);
                 this.error = `Render error: ${err.message}`;
             }
         },
@@ -133,8 +137,8 @@ export default {
                 this.pageNumber--;
                 await this.renderPage();
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

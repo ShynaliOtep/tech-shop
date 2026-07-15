@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
-import axios from 'axios'
+import { defineStore } from "pinia";
+import axios from "axios";
 
-export const useTimeStore = defineStore('time', {
+export const useTimeStore = defineStore("time", {
     state: () => ({
         timeItems: [] as string[],
     }),
@@ -9,11 +9,11 @@ export const useTimeStore = defineStore('time', {
     actions: {
         async getDefaultTimeItems() {
             try {
-                const response = await axios.post('/item/get-default-times')
-                this.timeItems = response.data.availableTimes
+                const response = await axios.post("/item/get-default-times");
+                this.timeItems = response.data.availableTimes;
             } catch (error) {
-                console.error('Ошибка при получении времени:', error)
+                console.error("Ошибка при получении времени:", error);
             }
         },
     },
-})
+});

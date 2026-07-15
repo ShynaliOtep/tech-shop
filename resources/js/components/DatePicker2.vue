@@ -10,17 +10,23 @@
                 class="custom-date picker"
                 @click.stop
             />
-            <svg class="calendar-icon" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.3636 9.09091H1.81818V17.2727C1.81818 17.7748 2.2252 18.1818 2.72727 18.1818H15.4545C15.9566 18.1818 16.3636 17.7748 16.3636 17.2727V9.09091ZM11.8182 4.54545V3.63636H6.36364V4.54545C6.36364 5.04753 5.95662 5.45455 5.45455 5.45455C4.95247 5.45455 4.54545 5.04753 4.54545 4.54545V3.63636H2.72727C2.2252 3.63636 1.81818 4.04338 1.81818 4.54545V7.27273H16.3636V4.54545C16.3636 4.04338 15.9566 3.63636 15.4545 3.63636H13.6364V4.54545C13.6364 5.04753 13.2294 5.45455 12.7273 5.45455C12.2252 5.45455 11.8182 5.04753 11.8182 4.54545ZM18.1818 17.2727C18.1818 18.779 16.9608 20 15.4545 20H2.72727C1.22104 20 0 18.779 0 17.2727V4.54545C0 3.03922 1.22104 1.81818 2.72727 1.81818H4.54545V0.909091C4.54545 0.407014 4.95247 0 5.45455 0C5.95662 0 6.36364 0.407014 6.36364 0.909091V1.81818H11.8182V0.909091C11.8182 0.407014 12.2252 0 12.7273 0C13.2294 0 13.6364 0.407014 13.6364 0.909091V1.81818H15.4545C16.9608 1.81818 18.1818 3.03922 18.1818 4.54545V17.2727Z" fill="#404040"/>
-            </svg>
-            <div
-                v-if="error"
-                class="tooltip-error"
+            <svg
+                class="calendar-icon"
+                width="19"
+                height="20"
+                viewBox="0 0 19 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
             >
-                 Дата должна быть не раньше {{ minDate }}
+                <path
+                    d="M16.3636 9.09091H1.81818V17.2727C1.81818 17.7748 2.2252 18.1818 2.72727 18.1818H15.4545C15.9566 18.1818 16.3636 17.7748 16.3636 17.2727V9.09091ZM11.8182 4.54545V3.63636H6.36364V4.54545C6.36364 5.04753 5.95662 5.45455 5.45455 5.45455C4.95247 5.45455 4.54545 5.04753 4.54545 4.54545V3.63636H2.72727C2.2252 3.63636 1.81818 4.04338 1.81818 4.54545V7.27273H16.3636V4.54545C16.3636 4.04338 15.9566 3.63636 15.4545 3.63636H13.6364V4.54545C13.6364 5.04753 13.2294 5.45455 12.7273 5.45455C12.2252 5.45455 11.8182 5.04753 11.8182 4.54545ZM18.1818 17.2727C18.1818 18.779 16.9608 20 15.4545 20H2.72727C1.22104 20 0 18.779 0 17.2727V4.54545C0 3.03922 1.22104 1.81818 2.72727 1.81818H4.54545V0.909091C4.54545 0.407014 4.95247 0 5.45455 0C5.95662 0 6.36364 0.407014 6.36364 0.909091V1.81818H11.8182V0.909091C11.8182 0.407014 12.2252 0 12.7273 0C13.2294 0 13.6364 0.407014 13.6364 0.909091V1.81818H15.4545C16.9608 1.81818 18.1818 3.03922 18.1818 4.54545V17.2727Z"
+                    fill="#404040"
+                />
+            </svg>
+            <div v-if="error" class="tooltip-error">
+                Дата должна быть не раньше {{ minDate }}
                 <span class="tooltip-arrow"></span>
             </div>
-
         </div>
     </div>
 </template>
@@ -30,12 +36,12 @@ export default {
     name: "CustomDatePicker",
     props: {
         modelValue: String,
-        minDate: String // 👈 минимальная дата как пропс
+        minDate: String, // 👈 минимальная дата как пропс
     },
     data() {
         return {
             selectedDate: this.modelValue || null,
-            error: false
+            error: false,
         };
     },
     watch: {
@@ -44,7 +50,7 @@ export default {
         },
         selectedDate(val) {
             this.$emit("update:modelValue", val);
-        }
+        },
     },
     methods: {
         focusInput() {
@@ -53,16 +59,16 @@ export default {
             }
         },
         validateDate(e) {
-            console.log('eee')
-            const value = e.target.value
+            console.log("eee");
+            const value = e.target.value;
 
             if (value < this.minDate) {
-                this.error = true
-                this.selectedDate = "" // сбросить дату
+                this.error = true;
+                this.selectedDate = ""; // сбросить дату
             } else {
-                this.error = false
+                this.error = false;
             }
-        }
+        },
     },
 };
 </script>
@@ -79,7 +85,7 @@ export default {
     border-radius: 6px;
     font-size: 12px;
     white-space: nowrap;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     animation: fadeIn 0.2s ease-in-out;
 }
 
@@ -95,8 +101,14 @@ export default {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 .datepicker-wrapper {
     display: flex;

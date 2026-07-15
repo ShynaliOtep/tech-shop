@@ -20,7 +20,6 @@ services:
       - "${COMPOSE_APP_DIR}/.development/docker/php/php.ini:/usr/local/etc/php/php.ini"
       - "${COMPOSE_APP_DIR}/.development/docker/php/docker-entrypoint.sh:/docker-entrypoint.sh"
 
-
   nginx:
     image: nginx:1.23
     restart: always

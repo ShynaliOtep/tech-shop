@@ -15,7 +15,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script:
-              cd tech-shop
+          script: cd tech-shop
             && sudo docker compose down
             && sudo docker compose -f deployment-docker-compose.yml up -d

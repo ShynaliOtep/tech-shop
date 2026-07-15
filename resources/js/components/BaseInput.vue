@@ -22,15 +22,14 @@ export default {
         placeholder: String,
         type: {
             type: String,
-            default: 'text'
+            default: "text",
         },
-        error: String
-    }
-}
+        error: String,
+    },
+};
 </script>
 
 <style scoped>
-
 .custom-input {
     width: 100%;
     border: 1px solid #404040;
@@ -49,7 +48,7 @@ export default {
 }
 
 .custom-input:focus {
-    border-color: #FF962E;
+    border-color: #ff962e;
 }
 
 .custom-input-error {
@@ -68,5 +67,4 @@ export default {
     resize: none;
     min-height: 100px;
 }
-
 </style>
