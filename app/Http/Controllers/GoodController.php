@@ -24,18 +24,29 @@ class GoodController extends Controller
     {
         $cityId = session()->get('select_city');
         $cityId = $cityId ?: City::DEFAULT;
+        $availableGoods = function ($query) use ($cityId) {
+            $query->whereHas('items', function ($itemQuery) use ($cityId) {
+                $itemQuery->where('status', 'available')
+                    ->where('city_id', $cityId);
+            });
+            $query->where('is_set', '=', 0);
+        };
+
         $viewedGoodTypes = GoodType::query()
+            ->whereNull('parent_id')
             ->with([
-                'goods' => function ($query) use ($cityId) {
-                    $query->whereHas('items', function ($itemQuery) use ($cityId) {
-                        $itemQuery->where('status', 'available')
-                            ->where('city_id', $cityId);
-                    });
-                    $query->where('is_set', '=', 0);
-                },
-                'goods.attachment'
+                'goods' => $availableGoods,
+                'goods.attachment',
+                'children.goods' => $availableGoods,
+                'children.goods.attachment',
             ])
-            ->get();
+            ->get()
+            ->each(function (GoodType $goodType) {
+                $goodType->setRelation(
+                    'goods',
+                    $goodType->goods->concat($goodType->children->flatMap->goods)
+                );
+            });
 
         $news = Good::query()
             ->whereHas('items', function ($itemQuery) use ($cityId) {
