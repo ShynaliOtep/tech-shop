@@ -6,8 +6,11 @@ use App\Models\City;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\Good\GoodItemService;
+use App\Services\Good\TimeRange;
 use App\Services\Order\OrderService;
 use DateTime;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
@@ -75,7 +78,17 @@ class OrderItemEditScreen extends Screen
     {
         $cityId = session()->get('selected_city');
         $cityId = $cityId ?: City::DEFAULT;
-        $itemOptions = Item::where('city_id', $cityId)->get()->pluck('name', 'id')->toArray();
+        // Только рабочие экземпляры; при редактировании оставляем в списке и текущий,
+        // даже если его статус уже сменился — иначе поле окажется пустым.
+        $itemOptions = Item::query()
+            ->where(function ($query) use ($cityId) {
+                $query->where('city_id', $cityId)
+                    ->where('status', 'available');
+            })
+            ->when($this->orderItem->exists, function ($query) {
+                $query->orWhere('id', $this->orderItem->item_id);
+            })
+            ->get()->pluck('name', 'id')->toArray();
 
         return [
 
@@ -166,6 +179,40 @@ class OrderItemEditScreen extends Screen
 
         $order = Order::find($orderId);
 
+        $timeRange = new TimeRange(
+            Carbon::parse($request->input('orderItem.rent_start_date').' '.$request->input('orderItem.rent_start_time')),
+            Carbon::parse($request->input('orderItem.rent_end_date').' '.$request->input('orderItem.rent_end_time')),
+        );
+
+        // При редактировании не считаем конфликтом саму позицию и её дополнения —
+        // дополнения ниже удаляются и создаются заново.
+        $excludeOrderItems = [];
+        if ($orderItem->exists) {
+            $excludeOrderItems = OrderItem::query()
+                ->where('id', $orderItem->id)
+                ->orWhere('parent_order_item_id', $orderItem->id)
+                ->pluck('id')
+                ->all();
+        }
+
+        $goodItemService = new GoodItemService();
+
+        $unavailableNames = [];
+        if (! $goodItemService->isItemAvailableByTime($timeRange, $item, $excludeOrderItems)) {
+            $unavailableNames[] = $item->name;
+        }
+        foreach ($request->input('orderItem.additionals', []) as $additionalId) {
+            $additional = Item::find($additionalId);
+            if ($additional && ! $goodItemService->isItemAvailableByTime($timeRange, $additional, $excludeOrderItems)) {
+                $unavailableNames[] = $additional->name;
+            }
+        }
+
+        if (count($unavailableNames) != 0) {
+            Alert::error('Товар недоступен на выбранные даты: '.implode(', ', $unavailableNames));
+
+            return redirect()->back();
+        }
 
         $orderItem->fill($request->input('orderItem'));
 

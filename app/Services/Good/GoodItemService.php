@@ -4,6 +4,7 @@ namespace App\Services\Good;
 
 use App\Models\Good;
 use App\Models\Item;
+use App\Models\OrderItem;
 use App\Services\City\CityService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -33,6 +34,51 @@ class GoodItemService
     {
         $items = $this->sqlQuery($timeRange, $goodId, $excludeOrderItems);
         return count($items) >= $quantity;
+    }
+
+    /**
+     * Доступен ли конкретный экземпляр на период: сам экземпляр рабочий (status = available)
+     * и не занят другими бронями в этом диапазоне. Город не важен — экземпляр уже привязан к городу.
+     *
+     * @param int[] $excludeOrderItems id позиций заказа, которые не считать конфликтом
+     *                                 (при редактировании — сама позиция и её дополнения)
+     */
+    public function isItemAvailableByTime(TimeRange $timeRange, Item $item, array $excludeOrderItems = []): bool
+    {
+        if ($item->status !== 'available') {
+            return false;
+        }
+
+        $startDate = $timeRange->start->format('Y-m-d');
+        $startTime = $timeRange->start->format('H:i:s');
+        $endDate = $timeRange->end->format('Y-m-d');
+        $endTime = $timeRange->end->format('H:i:s');
+
+        $excludeOrderItems = array_values(array_filter($excludeOrderItems));
+
+        $hasConflict = OrderItem::query()
+            ->where('item_id', $item->id)
+            ->whereIn('status', ['in_rent', 'waiting', 'confirmed'])
+            ->when(! empty($excludeOrderItems), function ($query) use ($excludeOrderItems) {
+                $query->whereNotIn('id', $excludeOrderItems);
+            })
+            ->where(function ($query) use ($endDate, $endTime) {
+                $query->where('rent_start_date', '<', $endDate)
+                    ->orWhere(function ($query) use ($endDate, $endTime) {
+                        $query->where('rent_start_date', $endDate)
+                            ->where('rent_start_time', '<=', $endTime);
+                    });
+            })
+            ->where(function ($query) use ($startDate, $startTime) {
+                $query->where('rent_end_date', '>', $startDate)
+                    ->orWhere(function ($query) use ($startDate, $startTime) {
+                        $query->where('rent_end_date', $startDate)
+                            ->where('rent_end_time', '>=', $startTime);
+                    });
+            })
+            ->exists();
+
+        return ! $hasConflict;
     }
 
     public function getAvailableCountByTime(TimeRange $timeRange, int $goodId): int
