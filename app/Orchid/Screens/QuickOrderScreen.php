@@ -653,8 +653,6 @@ class QuickOrderScreen extends Screen
 
         $items = $good
             ->items()
-            ->where("city_id", $cityId)
-            ->where("status", "available")
             ->whereNotIn("id", $conflictingItemIds)
             ->with("good")
             ->get();

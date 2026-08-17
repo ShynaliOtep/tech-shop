@@ -78,17 +78,7 @@ class OrderItemEditScreen extends Screen
     {
         $cityId = session()->get('selected_city');
         $cityId = $cityId ?: City::DEFAULT;
-        // Только рабочие экземпляры; при редактировании оставляем в списке и текущий,
-        // даже если его статус уже сменился — иначе поле окажется пустым.
-        $itemOptions = Item::query()
-            ->where(function ($query) use ($cityId) {
-                $query->where('city_id', $cityId)
-                    ->where('status', 'available');
-            })
-            ->when($this->orderItem->exists, function ($query) {
-                $query->orWhere('id', $this->orderItem->item_id);
-            })
-            ->get()->pluck('name', 'id')->toArray();
+        $itemOptions = Item::where('city_id', $cityId)->get()->pluck('name', 'id')->toArray();
 
         return [
 
@@ -197,6 +187,7 @@ class OrderItemEditScreen extends Screen
 
         $goodItemService = new GoodItemService();
 
+        // Занятость не запрещает сохранение — менеджер решает сам, мы только предупреждаем.
         $unavailableNames = [];
         if (! $goodItemService->isItemAvailableByTime($timeRange, $item, $excludeOrderItems)) {
             $unavailableNames[] = $item->name;
@@ -206,12 +197,6 @@ class OrderItemEditScreen extends Screen
             if ($additional && ! $goodItemService->isItemAvailableByTime($timeRange, $additional, $excludeOrderItems)) {
                 $unavailableNames[] = $additional->name;
             }
-        }
-
-        if (count($unavailableNames) != 0) {
-            Alert::error('Товар недоступен на выбранные даты: '.implode(', ', $unavailableNames));
-
-            return redirect()->back();
         }
 
         $orderItem->fill($request->input('orderItem'));
@@ -270,7 +255,11 @@ class OrderItemEditScreen extends Screen
         OrderService::calculateRentDates($order);
         OrderService::calculateTotalSum($order);
 
-        Alert::info('You have successfully created a orderItem.');
+        if (count($unavailableNames) != 0) {
+            Alert::warning('Сохранено. Обратите внимание: товар занят на выбранные даты — '.implode(', ', $unavailableNames));
+        } else {
+            Alert::info('You have successfully created a orderItem.');
+        }
 
         return redirect()->route('platform.orderItems.list', ["filter[order_id]" => $orderItem->order->id]);
     }
