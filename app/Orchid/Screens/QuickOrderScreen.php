@@ -9,6 +9,8 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Services\Bonus\GoodService;
+use App\Services\Good\GoodItemService;
+use App\Services\Good\TimeRange;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -385,6 +387,7 @@ class QuickOrderScreen extends Screen
             $startTime,
             $endDate,
             $endTime,
+            $this->draftReservedItemIds($startDate, $startTime, $endDate, $endTime),
         );
 
         if (!$itemId) {
@@ -496,6 +499,36 @@ class QuickOrderScreen extends Screen
         $items = session()->get("quick_order_items", []);
         $totalSum = 0;
 
+        // Черновик мог пролежать долго — за это время экземпляр могли занять другим заказом.
+        // Сохранение не блокируем, но перечисляем занятое в уведомлении менеджеру.
+        $goodItemService = new GoodItemService();
+        $conflictNames = [];
+
+        foreach ($items as $item) {
+            $draftRange = new TimeRange(
+                Carbon::parse($item["rent_start_date"] . " " . $item["rent_start_time"]),
+                Carbon::parse($item["rent_end_date"] . " " . $item["rent_end_time"]),
+            );
+
+            $checkIds = array_merge(
+                [$item["item_id"]],
+                $item["additionals"] ?? [],
+            );
+
+            foreach ($checkIds as $checkId) {
+                $checkItem = Item::query()->find($checkId);
+
+                if (
+                    $checkItem &&
+                    ! $goodItemService->isItemAvailableByTime($draftRange, $checkItem)
+                ) {
+                    $conflictNames[] = $checkItem->name;
+                }
+            }
+        }
+
+        $conflictNames = array_values(array_unique($conflictNames));
+
         foreach ($items as $item) {
             $itemObj = Item::query()->find($item["item_id"])->load("good");
 
@@ -594,7 +627,15 @@ class QuickOrderScreen extends Screen
         session()->forget("quick_order_items");
         session()->forget("total_cost");
         session()->forget("quick_order_global_dates");
-        Toast::success("Заказ успешно оформлен!");
+
+        if (count($conflictNames) != 0) {
+            Toast::warning(
+                "Заказ оформлен. Обратите внимание: за время оформления товар заняли — " .
+                    implode(", ", $conflictNames),
+            );
+        } else {
+            Toast::success("Заказ успешно оформлен!");
+        }
     }
 
     public function generateTimeSpans()
@@ -612,12 +653,80 @@ class QuickOrderScreen extends Screen
         return $arr;
     }
 
+    /**
+     * Экземпляры, уже занятые текущим черновиком заказа на пересекающийся период.
+     * В базе их ещё нет, поэтому подбор свободного экземпляра обязан учитывать их отдельно,
+     * иначе на каждое нажатие «добавить» возвращается один и тот же первый свободный экземпляр.
+     *
+     * @return int[]
+     */
+    private function draftReservedItemIds(
+        $startDate,
+        $startTime,
+        $endDate,
+        $endTime,
+    ): array {
+        $reserved = [];
+
+        foreach (session()->get("quick_order_items", []) as $draftItem) {
+            if (empty($draftItem["item_id"])) {
+                continue;
+            }
+
+            if (
+                ! $this->periodsOverlap(
+                    $draftItem["rent_start_date"],
+                    $draftItem["rent_start_time"],
+                    $draftItem["rent_end_date"],
+                    $draftItem["rent_end_time"],
+                    $startDate,
+                    $startTime,
+                    $endDate,
+                    $endTime,
+                )
+            ) {
+                continue;
+            }
+
+            $reserved[] = (int) $draftItem["item_id"];
+
+            foreach ($draftItem["additionals"] ?? [] as $additionalId) {
+                $reserved[] = (int) $additionalId;
+            }
+        }
+
+        return array_values(array_unique($reserved));
+    }
+
+    /**
+     * Пересекаются ли два периода аренды. Границы считаются занятыми —
+     * то же правило, что в SQL-проверке конфликтов.
+     */
+    private function periodsOverlap(
+        $aStartDate,
+        $aStartTime,
+        $aEndDate,
+        $aEndTime,
+        $bStartDate,
+        $bStartTime,
+        $bEndDate,
+        $bEndTime,
+    ): bool {
+        $aStart = Carbon::parse("$aStartDate $aStartTime");
+        $aEnd = Carbon::parse("$aEndDate $aEndTime");
+        $bStart = Carbon::parse("$bStartDate $bStartTime");
+        $bEnd = Carbon::parse("$bEndDate $bEndTime");
+
+        return $aStart <= $bEnd && $aEnd >= $bStart;
+    }
+
     public function getAvailableItemsByTime(
         int $id,
         $startDate,
         $startTime,
         $endDate,
         $endTime,
+        array $excludeItemIds = [],
     ) {
         $good = Good::query()->find($id);
         $cityId = City::getPlatformCity();
@@ -653,7 +762,9 @@ class QuickOrderScreen extends Screen
 
         $items = $good
             ->items()
+            ->where("status", "available")
             ->whereNotIn("id", $conflictingItemIds)
+            ->whereNotIn("id", $excludeItemIds)
             ->with("good")
             ->get();
 
