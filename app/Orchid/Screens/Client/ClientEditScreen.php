@@ -35,6 +35,10 @@ class ClientEditScreen extends Screen
         $client->load('bonus');
         $client->load('attachment');
 
+        if (! $client->exists) {
+            $client->blocked = 0;
+        }
+
         return [
             'client' => $client,
         ];
