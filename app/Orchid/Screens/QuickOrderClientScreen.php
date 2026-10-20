@@ -39,6 +39,9 @@ class QuickOrderClientScreen extends Screen
 
     public function next(Request $request)
     {
+        // Новое оформление начинается с чистого черновика.
+        QuickOrderScreen::forgetDraft();
+
         return redirect()->route("platform.quick-order-client-data", [
             "client_type" => $request->get("client_type"),
             "time_type" => $request->get("time_type"),

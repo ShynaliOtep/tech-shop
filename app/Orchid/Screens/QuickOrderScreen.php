@@ -11,6 +11,7 @@ use App\Models\OrderItem;
 use App\Services\Bonus\GoodService;
 use App\Services\Good\GoodItemService;
 use App\Services\Good\TimeRange;
+use App\Services\Order\BookingLock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -95,7 +96,7 @@ class QuickOrderScreen extends Screen
         }
         if ($startTime) {
             $forms[] = Label::make("order.rent_start_time")
-                ->title("Дата начала аренды")
+                ->title("Время начала аренды")
                 ->value($this->query()["rent_start_time"]);
             $forms[] = Input::make("order.rent_start_time")
                 ->value($this->query()["rent_start_time"])
@@ -103,7 +104,7 @@ class QuickOrderScreen extends Screen
         }
         if ($endDate) {
             $forms[] = Label::make("order.rent_end_date")
-                ->title("Дата начала аренды")
+                ->title("Дата конца аренды")
                 ->value($this->query()["rent_end_date"]);
             $forms[] = Input::make("order.rent_end_date")
                 ->value($this->query()["rent_end_date"])
@@ -111,7 +112,7 @@ class QuickOrderScreen extends Screen
         }
         if ($endTime) {
             $forms[] = Label::make("order.rent_end_time")
-                ->title("Дата начала аренды")
+                ->title("Время конца аренды")
                 ->value($this->query()["rent_end_time"]);
             $forms[] = Input::make("order.rent_end_time")
                 ->value($this->query()["rent_end_time"])
@@ -122,7 +123,7 @@ class QuickOrderScreen extends Screen
             "paid" => __("Оплачен"),
             "unpaid" => __("Не оплачен"),
         ];
-        $paidStatus = $statuses[$this->query()["paid_status"]];
+        $paidStatus = $statuses[$this->query()["paid_status"]] ?? "—";
 
         $itemForms = [];
         if (!$startDate) {
@@ -185,7 +186,7 @@ class QuickOrderScreen extends Screen
 
             Layout::legend("order_info", [
                 Sight::make("total_cost", "Итого")->render(
-                    fn() => session()->get("total_cost", 0),
+                    fn() => $this->draftTotal(),
                 ),
             ]),
 
@@ -400,22 +401,41 @@ class QuickOrderScreen extends Screen
          */
         $item = Item::query()->where("id", $itemId)->first();
 
-        $diffInDays = max(Carbon::parse($startDate)->diffInDays(Carbon::parse($endDate)), 1);
+        $diffInDays = $this->rentDays($startDate, $startTime, $endDate, $endTime);
 
-        $cost = $diffInDays * ($item->good->getDiscountCost("platform") ?? $item->good->cost);
+        $cost = $this->mainItemCost($item->good, $diffInDays);
 
+        // В селекте дополнений — товары (Good). Бронируем конкретные свободные экземпляры,
+        // исключая уже занятые черновиком и только что подобранный основной экземпляр.
+        $excludeItemIds = array_merge(
+            $this->draftReservedItemIds($startDate, $startTime, $endDate, $endTime),
+            [$itemId],
+        );
+        $additionalItemIds = [];
         $addNames = [];
-        if (isset($data["orderItem"]["additionals"])) {
-            foreach ($data["orderItem"]["additionals"] as $additionalId) {
-                $additional = Item::query()->find($additionalId)->load("good");
-                $addNames[] = $additional->good->name_ru;
-                $additionalCost =
-                    ($additional->good->additional_cost !== null &&
-                    $additional->good->additional_cost > 0
-                        ? $additional->good->additional_cost
-                        : $additional->good->cost) * $diffInDays;
-                $cost += $additionalCost;
+        foreach ($data["orderItem"]["additionals"] ?? [] as $additionalGoodId) {
+            $additionalItemId = $this->getAvailableItemsByTime(
+                $additionalGoodId,
+                $startDate,
+                $startTime,
+                $endDate,
+                $endTime,
+                $excludeItemIds,
+            );
+
+            if (!$additionalItemId) {
+                $additionalGood = Good::query()->find($additionalGoodId);
+                Toast::error(
+                    "Дополнение «" . ($additionalGood->name_ru ?? $additionalGoodId) . "» недоступно на это время!",
+                );
+                return;
             }
+
+            $additional = Item::query()->with("good")->find($additionalItemId);
+            $additionalItemIds[] = $additional->id;
+            $excludeItemIds[] = $additional->id;
+            $addNames[] = $additional->good->name_ru;
+            $cost += $this->additionalItemCost($additional->good, $diffInDays);
         }
 
         $items = session()->get("quick_order_items", []);
@@ -426,8 +446,8 @@ class QuickOrderScreen extends Screen
             "rent_end_date" => $endDate,
             "rent_end_time" => $endTime,
             "item_id" => $itemId,
-            "additionals" => $data["orderItem"]["additionals"] ?? null,
-            "is_additional" => $data["orderItem"]["is_additional"],
+            "additionals" => $additionalItemIds,
+            "is_additional" => $data["orderItem"]["is_additional"] ?? false,
             "name" => $item->good->name_ru,
             "add_names" => implode(", ", $addNames),
             "cost" => $cost,
@@ -435,34 +455,17 @@ class QuickOrderScreen extends Screen
 
         session()->put("quick_order_items", $items);
 
-        session()->put("total_cost", session()->get("total_cost", 0) + $cost);
-
         Toast::info("Товар добавлен!");
     }
 
     // ✅ Удаление товара из списка
     public function removeItem(Request $request)
     {
-        $items = session()->get("quick_order_items", []);
-
-        foreach ($items as $item) {
-            if ($item["id"] == $request->input("id")) {
-                $totalCost = session()->get("total_cost", 0);
-                $totalCost = $totalCost - $item["cost"];
-                session()->put("total_cost", $totalCost);
-                break;
-            }
-        }
-
         $items = array_filter(
-            $items,
+            session()->get("quick_order_items", []),
             fn($item) => $item["id"] !== $request->input("id"),
         );
         session()->put("quick_order_items", array_values($items));
-
-        if (!$items || empty($items)) {
-            session()->put("total_cost", 0);
-        }
 
         Toast::info("Товар удалён!");
     }
@@ -470,121 +473,121 @@ class QuickOrderScreen extends Screen
     public function saveOrder(Request $request)
     {
         $requestOrderData = $request->input("order");
-        if ($requestOrderData["client_type"] == "client") {
-            $clientId = $requestOrderData["client_id"];
-        } else {
-            $id = rand(1000000, 10000000);
-            $client = Client::query()->create([
-                "name" => "Guest" . $id,
-                "phone" => $requestOrderData["phone"],
-                "instagram" => $requestOrderData["instagram"],
-                "discount" => 0,
-                "email" => "guest" . $id . "@mail.com",
-                "iin" => $id,
-                "confirmation_code" => "1111",
-                "email_confirmed" => 1,
-                "blocked" => 0,
-                "password" => bcrypt($id),
-            ]);
-            $clientId = $client->id;
+        $items = session()->get("quick_order_items", []);
+
+        if (empty($items)) {
+            Toast::error("Добавьте хотя бы один товар в заказ");
+            return;
         }
 
-        $order = Order::query()->create([
-            "status" => $requestOrderData["status"],
-            "paid_status" => $requestOrderData["paid_status"],
-            "amount_unpaid" => $requestOrderData["amount_unpaid"],
-            "client_id" => $clientId,
-        ]);
+        if (
+            $requestOrderData["client_type"] == "client" &&
+            ! Client::query()->find($requestOrderData["client_id"] ?? null)
+        ) {
+            Toast::error("Клиент не найден");
+            return;
+        }
 
-        $items = session()->get("quick_order_items", []);
-        $totalSum = 0;
-
-        // Черновик мог пролежать долго — за это время экземпляр могли занять другим заказом.
-        // Сохранение не блокируем, но перечисляем занятое в уведомлении менеджеру.
         $goodItemService = new GoodItemService();
-        $conflictNames = [];
 
-        foreach ($items as $item) {
-            $draftRange = new TimeRange(
-                Carbon::parse($item["rent_start_date"] . " " . $item["rent_start_time"]),
-                Carbon::parse($item["rent_end_date"] . " " . $item["rent_end_time"]),
-            );
-
-            $checkIds = array_merge(
-                [$item["item_id"]],
-                $item["additionals"] ?? [],
-            );
-
-            foreach ($checkIds as $checkId) {
-                $checkItem = Item::query()->find($checkId);
-
-                if (
-                    $checkItem &&
-                    ! $goodItemService->isItemAvailableByTime($draftRange, $checkItem)
-                ) {
-                    $conflictNames[] = $checkItem->name;
+        [$order, $conflictNames] = DB::transaction(function () use ($requestOrderData, $items, $goodItemService) {
+            // Блокируем экземпляры черновика до перепроверки — иначе параллельное оформление
+            // с сайта успевает забронировать тот же экземпляр между проверкой и записью.
+            $draftItemIds = [];
+            foreach ($items as $item) {
+                $draftItemIds[] = $item["item_id"];
+                foreach ($item["additionals"] ?? [] as $additionalId) {
+                    $draftItemIds[] = $additionalId;
                 }
             }
-        }
+            BookingLock::items($draftItemIds);
 
-        $conflictNames = array_values(array_unique($conflictNames));
+            // Черновик мог пролежать долго — за это время экземпляр могли занять другим заказом.
+            // Сохранение не блокируем, но перечисляем занятое в уведомлении менеджеру.
+            $conflictNames = [];
+            foreach ($items as $item) {
+                $draftRange = new TimeRange(
+                    Carbon::parse($item["rent_start_date"] . " " . $item["rent_start_time"]),
+                    Carbon::parse($item["rent_end_date"] . " " . $item["rent_end_time"]),
+                );
 
-        foreach ($items as $item) {
-            $itemObj = Item::query()->find($item["item_id"])->load("good");
+                $checkIds = array_merge([$item["item_id"]], $item["additionals"] ?? []);
 
-            $dateObj1 = Carbon::parse(
-                $item["rent_start_date"] . " " . $item["rent_start_time"],
-            );
-            $dateObj2 = Carbon::parse(
-                $item["rent_end_date"] . " " . $item["rent_end_time"],
-            );
+                foreach ($checkIds as $checkId) {
+                    $checkItem = Item::query()->find($checkId);
 
-            $date1 = Carbon::parse($item["rent_start_date"]);
-            $date2 = Carbon::parse($item["rent_end_date"]);
+                    if (
+                        $checkItem &&
+                        ! $goodItemService->isItemAvailableByTime($draftRange, $checkItem)
+                    ) {
+                        $conflictNames[] = $checkItem->name;
+                    }
+                }
+            }
 
-            $diffInSeconds =
-                $dateObj2->getTimestamp() - $dateObj1->getTimestamp();
+            if ($requestOrderData["client_type"] == "client") {
+                $clientId = $requestOrderData["client_id"];
+            } else {
+                $id = random_int(1000000, 99999999);
+                $client = Client::query()->create([
+                    "name" => "Guest" . $id,
+                    "phone" => $requestOrderData["phone"],
+                    "instagram" => $requestOrderData["instagram"],
+                    "discount" => 0,
+                    "email" => "guest" . $id . "@mail.com",
+                    "iin" => $id,
+                    "confirmation_code" => "1111",
+                    "email_confirmed" => 1,
+                    "blocked" => 0,
+                    "password" => bcrypt(\Illuminate\Support\Str::random(32)),
+                ]);
+                $clientId = $client->id;
+            }
 
-            $diffInDays = ceil($diffInSeconds / (60 * 60 * 24));
-
-            $diffInDays = max(1, $diffInDays);
-            /**
-             * @var Good $good
-             */
-            $good = $itemObj->good;
-            $currentItemCost =
-                $diffInDays *
-                ($good->getDiscountCost("platform") ?? $good->cost);
-
-            $parentOrderItem = OrderItem::query()->create([
-                "item_id" => $itemObj->id,
-                "status" => $order->status,
-                "amount_of_days" => $diffInDays,
-                "order_id" => $order->id,
-                "is_additional" => $item["is_additional"] ? 1 : 0,
-                "additionals" => $item["additionals"] ?? [],
-                "amount_paid" => $currentItemCost,
-                "rent_start_date" => $item["rent_start_date"],
-                "rent_start_time" => $item["rent_start_time"],
-                "rent_end_date" => $item["rent_end_date"],
-                "rent_end_time" => $item["rent_end_time"],
+            $order = Order::query()->create([
+                "status" => $requestOrderData["status"],
+                "paid_status" => $requestOrderData["paid_status"],
+                "amount_unpaid" => $requestOrderData["amount_unpaid"],
+                "client_id" => $clientId,
             ]);
-            if ($item["additionals"]) {
-                foreach ($item["additionals"] as $additionalId) {
-                    $additional = Item::query()
-                        ->find($additionalId)
-                        ->load("good");
 
-                    $additionalCost =
-                        ($additional->good->additional_cost !== null &&
-                        $additional->good->additional_cost > 0
-                            ? $additional->good->additional_cost
-                            : $additional->good->cost) * $diffInDays;
+            $totalSum = 0;
+
+            foreach ($items as $item) {
+                $itemObj = Item::query()->find($item["item_id"])->load("good");
+
+                $diffInDays = $this->rentDays(
+                    $item["rent_start_date"],
+                    $item["rent_start_time"],
+                    $item["rent_end_date"],
+                    $item["rent_end_time"],
+                );
+
+                $currentItemCost = $this->mainItemCost($itemObj->good, $diffInDays);
+
+                $parentOrderItem = OrderItem::query()->create([
+                    "item_id" => $itemObj->id,
+                    "status" => $order->status,
+                    "amount_of_days" => $diffInDays,
+                    "order_id" => $order->id,
+                    "is_additional" => $item["is_additional"] ? 1 : 0,
+                    "additionals" => $item["additionals"] ?? [],
+                    "amount_paid" => $currentItemCost,
+                    "rent_start_date" => $item["rent_start_date"],
+                    "rent_start_time" => $item["rent_start_time"],
+                    "rent_end_date" => $item["rent_end_date"],
+                    "rent_end_time" => $item["rent_end_time"],
+                ]);
+
+                foreach ($item["additionals"] ?? [] as $additionalId) {
+                    $additional = Item::query()->find($additionalId)->load("good");
+
+                    $additionalCost = $this->additionalItemCost($additional->good, $diffInDays);
 
                     $totalSum += $additionalCost;
 
                     OrderItem::query()->create([
-                        "item_id" => $additionalId,
+                        "item_id" => $additional->id,
                         "order_id" => $order->id,
                         "parent_order_item_id" => $parentOrderItem->id,
                         "status" => "waiting",
@@ -598,13 +601,19 @@ class QuickOrderScreen extends Screen
                         "rent_end_time" => $item["rent_end_time"],
                     ]);
                 }
+
+                $totalSum += $currentItemCost;
             }
 
-            $totalSum += $currentItemCost;
-        }
+            $order->amount_paid = $totalSum;
+            $order->rent_end_date = $order->orderItems()->max("rent_end_date");
+            $order->rent_start_date = $order->orderItems()->min("rent_start_date");
+            $order->city_id = City::getPlatformCity();
+            $order->manager_id = Auth::user()->id;
+            $order->save();
 
-        $order->amount_paid = $totalSum;
-        $order->save();
+            return [$order, array_values(array_unique($conflictNames))];
+        });
 
         if ($requestOrderData["client_type"] == "client") {
             $aggreementFile = makeOrderAgreement(
@@ -613,20 +622,10 @@ class QuickOrderScreen extends Screen
 
             $order->attachment()->syncWithoutDetaching($aggreementFile->id);
             $order->agreement_id = $order->id;
+            $order->save();
         }
 
-        $order->rent_end_date = $order->orderItems()->max("rent_end_date");
-        $order->rent_start_date = $order->orderItems()->min("rent_start_date");
-
-        $cityId = session()->get("selected_city");
-        $cityId = $cityId ?: City::DEFAULT;
-        $order->city_id = $cityId;
-        $order->manager_id = Auth::user()->id;
-        $order->save();
-
-        session()->forget("quick_order_items");
-        session()->forget("total_cost");
-        session()->forget("quick_order_global_dates");
+        self::forgetDraft();
 
         if (count($conflictNames) != 0) {
             Toast::warning(
@@ -636,6 +635,53 @@ class QuickOrderScreen extends Screen
         } else {
             Toast::success("Заказ успешно оформлен!");
         }
+
+        // Уходим со страницы черновика: повторное нажатие «Оформить» не должно создавать дубль.
+        return redirect()->route("platform.orders.edit", $order);
+    }
+
+    /**
+     * Сбросить черновик быстрого заказа. Вызывается при старте нового оформления
+     * и после сохранения, чтобы позиции прошлого заказа не попали в следующий.
+     */
+    public static function forgetDraft(): void
+    {
+        session()->forget([
+            "quick_order_items",
+            "total_cost",
+            "quick_order_global_dates",
+        ]);
+    }
+
+    private function draftTotal(): int|float
+    {
+        return array_sum(array_column(session()->get("quick_order_items", []), "cost"));
+    }
+
+    /**
+     * Количество суток аренды — по тому же правилу, что на сайте и в Api\OrderController:
+     * неполные сутки округляются вверх, минимум одни.
+     */
+    private function rentDays($startDate, $startTime, $endDate, $endTime): int
+    {
+        $start = Carbon::parse("$startDate $startTime");
+        $end = Carbon::parse("$endDate $endTime");
+
+        return (int) max(1, ceil(($end->getTimestamp() - $start->getTimestamp()) / 86400));
+    }
+
+    private function mainItemCost(Good $good, int $days): int|float
+    {
+        return $days * ($good->getDiscountCost("platform") ?? $good->cost);
+    }
+
+    private function additionalItemCost(Good $good, int $days): int|float
+    {
+        $price = $good->additional_cost !== null && $good->additional_cost > 0
+            ? $good->additional_cost
+            : $good->cost;
+
+        return $days * $price;
     }
 
     public function generateTimeSpans()
@@ -762,6 +808,7 @@ class QuickOrderScreen extends Screen
 
         $items = $good
             ->items()
+            ->where("city_id", $cityId)
             ->where("status", "available")
             ->whereNotIn("id", $conflictingItemIds)
             ->whereNotIn("id", $excludeItemIds)
