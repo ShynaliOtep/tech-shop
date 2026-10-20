@@ -30,6 +30,16 @@ class GoodItemService
         return  count($items) == $quantity ? $items : array_slice($items, 0, $quantity);
     }
 
+    /**
+     * Все свободные рабочие экземпляры товара в текущем городе на период.
+     *
+     * @return Item[]
+     */
+    public function getFreeItems(TimeRange $timeRange, int $goodId): array
+    {
+        return $this->sqlQuery($timeRange, $goodId);
+    }
+
     public function isAvailableByTime(TimeRange $timeRange, int $goodId, int $quantity, $excludeOrderItems = []): bool
     {
         $items = $this->sqlQuery($timeRange, $goodId, $excludeOrderItems);

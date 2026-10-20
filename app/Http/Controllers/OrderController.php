@@ -11,6 +11,11 @@ use App\Models\OrderItem;
 use App\Models\Wanted;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Services\Good\GoodItemService;
+use App\Services\Good\TimeRange;
+use App\Services\Order\BookingLock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -61,6 +66,22 @@ class OrderController extends Controller
             }
         }
         $cartData = $uniqueCartData;
+
+        // Экземпляры в старой корзине выбраны заранее и лежат в cookie — к моменту оформления
+        // их могли занять. Проверяем и бронируем под блокировкой, иначе получаем двойную бронь.
+        DB::beginTransaction();
+
+        $busyNames = $this->busyItemNames($cartData, fn () => [
+            Carbon::createFromFormat('d/m/Y H:i', $requestData['rent_start_date'].' '.$requestData['start_time']),
+            Carbon::createFromFormat('d/m/Y H:i', $requestData['rent_end_date'].' '.$requestData['end_time']),
+        ]);
+
+        if ($busyNames) {
+            DB::rollBack();
+            Cache::forget($client->id);
+
+            return redirect()->back()->withErrors(['cart' => 'На выбранные даты уже занято: '.implode(', ', $busyNames)]);
+        }
 
         $totalSum = 0;
 
@@ -153,6 +174,8 @@ class OrderController extends Controller
         $order->amount_paid = $totalSum;
         $order->save();
 
+        DB::commit();
+
         $aggreementFile = makeOrderAgreement($order->fresh(['orderItems', 'owner']));
 
         $order->attachment()->syncWithoutDetaching($aggreementFile->id);
@@ -237,6 +260,21 @@ class OrderController extends Controller
             }
         }
         $cartData = $uniqueCartData;
+
+        // См. settleOrderAll: проверка и бронирование под одной блокировкой.
+        DB::beginTransaction();
+
+        $busyNames = $this->busyItemNames($cartData, fn ($itemKey) => [
+            Carbon::createFromFormat('d/m/Y H:i', $requestData[$itemKey]['rent_start_date'].' '.$requestData[$itemKey]['start_time']),
+            Carbon::createFromFormat('d/m/Y H:i', $requestData[$itemKey]['rent_end_date'].' '.$requestData[$itemKey]['end_time']),
+        ]);
+
+        if ($busyNames) {
+            DB::rollBack();
+            Cache::forget($client->id);
+
+            return redirect()->back()->withErrors(['cart' => 'На выбранные даты уже занято: '.implode(', ', $busyNames)]);
+        }
 
         $totalSum = 0;
 
@@ -336,6 +374,8 @@ class OrderController extends Controller
 
         $order->save();
 
+        DB::commit();
+
         $aggreementFile = makeOrderAgreement($order->fresh(['orderItems', 'owner']));
 
         $order->attachment()->syncWithoutDetaching($aggreementFile->id);
@@ -381,6 +421,44 @@ class OrderController extends Controller
 
 
         return redirect(route('confirmOrder'));
+    }
+
+    /**
+     * Названия экземпляров из cookie-корзины, которые уже заняты на нужный период.
+     * Вызывать внутри транзакции: перед проверкой экземпляры блокируются.
+     *
+     * @param callable $period fn(string $itemKey): array{0: Carbon, 1: Carbon}
+     * @return string[]
+     */
+    private function busyItemNames(array $cartData, callable $period): array
+    {
+        $itemIdsByKey = [];
+        foreach ($cartData as $itemKey => $additionalIds) {
+            $itemIdsByKey[$itemKey] = array_merge(
+                [explode('pixelrental', $itemKey)[1] ?? null],
+                (array) $additionalIds,
+            );
+        }
+
+        BookingLock::items(array_merge(...array_values($itemIdsByKey)));
+
+        $service = new GoodItemService();
+        $busy = [];
+
+        foreach ($itemIdsByKey as $itemKey => $itemIds) {
+            [$start, $end] = $period($itemKey);
+            $timeRange = new TimeRange($start, $end);
+
+            foreach ($itemIds as $itemId) {
+                $item = Item::query()->with('good')->find($itemId);
+
+                if ($item && ! $service->isItemAvailableByTime($timeRange, $item)) {
+                    $busy[] = $item->good->name_ru ?? $item->name;
+                }
+            }
+        }
+
+        return array_values(array_unique($busy));
     }
 
     public function countDistinctKeys($array)
