@@ -130,6 +130,13 @@ class CartController extends Controller
         }
         $additionalItemsIds = Item::query()->whereIn('good_id', $additionalIds)->pluck('id')->toArray();
 
+        if (empty($additionalItemsIds)) {
+            return response()->json([
+                'success' => true,
+                'additionals' => [],
+            ]);
+        }
+
         $startDateTime = Carbon::parse($startDateTimeString);
 
         $startDate = $startDateTime->toDateString();
@@ -181,8 +188,17 @@ class CartController extends Controller
             ->with('good')
             ->get();
 
-        $availableGoods->each(function ($availableGood) use ($unavailableAdditionalIds) {
+        $client = Auth::guard('clients')->check()
+            ? Client::query()->find(Auth::guard('clients')->id())
+            : null;
+
+        $availableGoods->each(function ($availableGood) use ($unavailableAdditionalIds, $client) {
             $availableGood->available = ! in_array($availableGood->good_id, $unavailableAdditionalIds);
+            // Та же цена, что возьмёт Api\OrderController при оформлении.
+            $additionalGood = $availableGood->good;
+            $additionalGood->client_additional_price = $client
+                ? $additionalGood->getAdditionalPriceForClient($client)
+                : ($additionalGood->additional_cost > 0 ? $additionalGood->additional_cost : $additionalGood->cost);
         });
 
 //        foreach ($availableGoods as $good) {
@@ -200,4 +216,24 @@ class CartController extends Controller
     }
 
 
+
+    /**
+     * Дни, когда все экземпляры товара заняты, — для подсветки в календаре.
+     */
+    public function busyDays(Good $good, Request $request)
+    {
+        $request->validate([
+            'from' => 'nullable|date_format:Y-m-d',
+            'days' => 'nullable|integer|min:1|max:120',
+        ]);
+
+        $from = $request->filled('from')
+            ? \Illuminate\Support\Carbon::createFromFormat('Y-m-d', $request->input('from'))->startOfDay()
+            : now('Asia/Almaty')->startOfDay();
+        $to = $from->copy()->addDays((int) $request->input('days', 62))->endOfDay();
+
+        return response()->json([
+            'busyDays' => \App\Services\Good\GoodAvailability::busyDays($good, $from, $to),
+        ]);
+    }
 }

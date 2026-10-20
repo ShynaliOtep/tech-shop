@@ -57,3 +57,23 @@ if (! function_exists('makeOrderAgreement')) {
         return $attachment;
     }
 }
+
+if (! function_exists('format_price')) {
+    /**
+     * «5000» → «5 000 ₸». Неразрывный пробел, чтобы цена не переносилась по разрядам.
+     */
+    function format_price($amount): string
+    {
+        return number_format((float) $amount, 0, '', "\u{00A0}") . "\u{00A0}₸";
+    }
+}
+
+if (! function_exists('format_day_price')) {
+    /**
+     * «5000» → «5 000 ₸/сутки» (или «/day» на английском).
+     */
+    function format_day_price($amount): string
+    {
+        return format_price($amount) . '/' . __('translations.per day');
+    }
+}

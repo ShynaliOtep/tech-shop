@@ -13,6 +13,15 @@
         <div>
             <h5 class="page-type-title">{{__('translations.news block')}}</h5>
             <div class="items horizontal-scrolling-news" id="carousel">
+                @php
+                    // Бейджи наличия на главной: одним расчётом для всех карточек.
+                    \App\Services\Good\GoodAvailability::warm(
+                        collect($news)
+                            ->merge(collect($sets)->pluck('good'))
+                            ->merge(collect($viewedGoodTypes ?? [])->flatMap(fn ($type) => $type->goods))
+                            ->filter()
+                    );
+                @endphp
                 @foreach($news as $good)
                     <div class="item">
                         @include('_v2.components.good.goodCard', ['good' => $good, 'isNew' => true])

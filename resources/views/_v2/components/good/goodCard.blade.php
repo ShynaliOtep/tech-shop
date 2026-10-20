@@ -18,38 +18,48 @@ $displayPrice = $authClient
     ? $good->getPriceForClient($authClient)
     : ($good->getDiscountCost() ?? $good->cost);
 
+// Сколько экземпляров свободно прямо сейчас в выбранном городе (см. GoodAvailability::warm).
+$freeNow = \App\Services\Good\GoodAvailability::freeNow($good);
+
 @endphp
 
 <a href="/{{$good->id}}" style="text-decoration: none">
     <div class="good-card">
+        @if($freeNow > 1)
+            <span class="good-stock good-stock-ok">{{ __('translations.Available now') }}</span>
+        @elseif($freeNow === 1)
+            <span class="good-stock good-stock-low">{{ __('translations.Only one left') }}</span>
+        @else
+            <span class="good-stock good-stock-busy">{{ __('translations.Busy now') }}</span>
+        @endif
         <p class="good-title">
             {{$good['name_' . session()->get('locale', 'ru')]}}
         </p>
         @if($displayPrice < $good->cost)
             <p class="good-price cost-is-discount hide-m">
-                {{$displayPrice}}   {{__('translations.Tenge per day')}}
+                {{ format_day_price($displayPrice) }}
             </p>
             <p class="good-price cost-has-discount hide-m">
-                {{$good->cost}}   {{__('translations.Tenge per day')}}
+                {{ format_day_price($good->cost) }}
             </p>
         @else
             <p class="good-price hide-m">
-                {{$good->cost}}   {{__('translations.Tenge per day')}}
+                {{ format_day_price($good->cost) }}
             </p>
         @endif
 
-        <img loading="lazy" src="{{$imageUrl}}" class="good-card-image" alt="">
+        <img loading="lazy" src="{{$imageUrl}}" class="good-card-image" alt="{{ $good['name_' . session()->get('locale', 'ru')] }}">
 
         @if($displayPrice < $good->cost)
             <p class="good-price cost-is-discount show-m">
-                {{$displayPrice}}   {{__('translations.Tenge per day')}}
+                {{ format_day_price($displayPrice) }}
             </p>
             <p class="good-price cost-has-discount show-m">
-                {{$good->cost}}   {{__('translations.Tenge per day')}}
+                {{ format_day_price($good->cost) }}
             </p>
         @else
             <p class="good-price show-m">
-                {{$good->cost}}   {{__('translations.Tenge per day')}}
+                {{ format_day_price($good->cost) }}
             </p>
         @endif
 
@@ -98,7 +108,7 @@ $displayPrice = $authClient
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4.49129 18.1792C4.49149 17.1778 5.30081 16.3592 6.30769 16.3592L6.49412 16.369C7.41244 16.4628 8.12389 17.2405 8.12409 18.1792C8.12409 19.1806 7.31454 19.9998 6.30769 20C5.30068 20 4.49129 19.1807 4.49129 18.1792ZM14.4708 18.1792C14.471 17.1778 15.2804 16.3593 16.2872 16.3592L16.4737 16.369C17.3922 16.4626 18.1034 17.2404 18.1036 18.1792C18.1036 19.1807 17.2942 20 16.2872 20C15.2803 19.9999 14.4708 19.1807 14.4708 18.1792ZM2.72371 0L2.80361 0.00355114C3.19788 0.0381376 3.52837 0.326075 3.61238 0.719105L4.43092 4.557H19.0909C19.3664 4.557 19.6268 4.68215 19.7993 4.89702C19.9718 5.11188 20.0381 5.39322 19.9786 5.66229L18.4818 12.4334L18.4809 12.4325C18.348 13.0386 18.0135 13.5817 17.531 13.9719C17.0484 14.3623 16.4473 14.5763 15.8265 14.5774H6.95133V14.5765C6.32402 14.5858 5.71276 14.3781 5.22104 13.9879C4.72427 13.5936 4.38052 13.0385 4.24803 12.4183V12.4174L1.98774 1.81818H0V0H2.72371ZM6.02626 12.0384L6.04579 12.1156C6.09997 12.2927 6.20658 12.4491 6.35119 12.5639C6.51642 12.695 6.72157 12.7638 6.93091 12.7592H15.8229C16.0279 12.7589 16.2279 12.6885 16.3884 12.5586C16.549 12.4287 16.6616 12.2467 16.7063 12.0428V12.041L17.9589 6.37518H4.81888L6.02626 12.0384Z" fill="white"/>
                             </svg>
-                            <span class="good-add-to-card-text">Добавить</span>
+                            <span class="good-add-to-card-text">{{ __('translations.Add') }}</span>
                         </span>
                 <span class="cart-controls" style="display: none;">
                             <svg class="add-to-cart-btn-delete" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -132,7 +142,7 @@ $displayPrice = $authClient
                     <path d="M18.1818 10C18.1818 5.48131 14.5187 1.81818 10 1.81818C5.48131 1.81818 1.81818 5.48131 1.81818 10C1.81818 14.5187 5.48131 18.1818 10 18.1818C14.5187 18.1818 18.1818 14.5187 18.1818 10ZM9.09091 13.6364V10C9.09091 9.49792 9.49792 9.09091 10 9.09091C10.5021 9.09091 10.9091 9.49792 10.9091 10V13.6364C10.9091 14.1384 10.5021 14.5455 10 14.5455C9.49792 14.5455 9.09091 14.1384 9.09091 13.6364ZM10.0089 5.45455L10.1021 5.45898C10.5605 5.50555 10.918 5.89295 10.918 6.36364C10.918 6.83432 10.5605 7.22172 10.1021 7.26829L10.0089 7.27273H10C9.49792 7.27273 9.09091 6.86571 9.09091 6.36364C9.09091 5.86156 9.49792 5.45455 10 5.45455H10.0089ZM20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10Z" fill="white"/>
                 </svg>
                 <span>
-                    Подробнее
+                    {{ __('translations.More') }}
                 </span>
             </a>
                 @if(isset($isNew) && $isNew)
@@ -160,3 +170,48 @@ $displayPrice = $authClient
         </div>
     </div>
 </a>
+
+@once
+    <style>
+        .good-stock {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.4;
+            z-index: 2;
+        }
+        .good-stock-ok {
+            background: rgba(76, 208, 125, 0.15);
+            color: #4cd07d;
+        }
+        .good-stock-low {
+            background: rgba(255, 150, 46, 0.15);
+            color: #ff962e;
+        }
+        .good-stock-busy {
+            background: rgba(255, 255, 255, 0.06);
+            color: #8a8a8a;
+        }
+        /* Название было #404040 на #191919 — контраст около 1.6:1, не читалось */
+        .good-title {
+            color: #b8b8b8;
+        }
+        @media (max-width: 1440px) {
+            .good-title {
+                margin-top: 18px;
+            }
+        }
+        @media (max-width: 992px) {
+            .good-stock {
+                top: 8px;
+                left: 8px;
+                padding: 2px 8px;
+                font-size: 11px;
+            }
+        }
+    </style>
+@endonce

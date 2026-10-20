@@ -7,6 +7,37 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="format-detection" content="telephone=no">
     <title>PixelRental</title>
+    @php
+        $pixelCityId = (int) \App\Services\City\CityService::city();
+        $pixelCity = config('pixel.cities.' . $pixelCityId) ?? config('pixel.cities.1');
+        $pixelInfo = [
+            'cityId' => $pixelCityId,
+            'whatsappUrl' => config('pixel.whatsapp_url'),
+            'pickup' => [
+                'address' => __($pixelCity['address']),
+                'hours' => __($pixelCity['hours']),
+                'mapUrl' => $pixelCity['map_url'],
+            ],
+            'terms' => [
+                __('translations.Terms: account with ID'),
+                __('translations.Terms: agreement'),
+                __('translations.Terms: day is 24 hours'),
+                __('translations.Terms: damage'),
+                __('translations.Terms: late payment'),
+            ],
+            'labels' => [
+                'title' => __('translations.Rental terms'),
+                'pickup' => __('translations.Pickup point'),
+                'delivery' => __('translations.Delivery by arrangement with the manager'),
+                'whatsapp' => __('translations.Ask in WhatsApp'),
+            ],
+        ];
+    @endphp
+    <script>
+        window.PIXEL_CITY_ID = {{ $pixelCityId }};
+        // Условия аренды и пункт выдачи для Vue-компонентов (RentTerms).
+        window.PIXEL_INFO = {!! json_encode($pixelInfo, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!};
+    </script>
     @stack('styles')
 {{--    <link rel="stylesheet" href="{{asset('css/materialize.css')}}">--}}
 {{--    <link href="{{asset('css/material-icons.css')}}" rel="stylesheet">--}}

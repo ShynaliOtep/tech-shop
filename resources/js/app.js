@@ -9,6 +9,7 @@ import CartPage2 from "./pages/CartPage2.vue";
 import "vue-datepicker-next/index.css";
 import SignaturePage from "./pages/SignaturePage.vue";
 import AgreementPage from "./pages/Agreement.vue";
+import RentBooking from "./pages/RentBooking.vue";
 
 const pinia = createPinia();
 
@@ -20,16 +21,18 @@ const components = {
     "bonus-page-new": BonusPageNew,
     "signature-page": SignaturePage,
     "agreement-page": AgreementPage,
+    "rent-booking": RentBooking,
 };
 
 document.addEventListener("DOMContentLoaded", () => {
     Object.keys(components).forEach((selector) => {
         document.querySelectorAll(selector).forEach((el) => {
-            const app = createApp(components[selector]);
+            // Пропсы из Blade передаются JSON-ом в data-props.
+            const props = el.dataset.props ? JSON.parse(el.dataset.props) : {};
+            const app = createApp(components[selector], props);
             app.use(i18n); // Подключаем i18n
             app.use(pinia);
             app.mount(el);
-            console.log(`Vue смонтирован на ${selector}`);
         });
     });
 });

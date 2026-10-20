@@ -141,6 +141,7 @@ Route::prefix('/api')->group(function () {
     Route::get('/carousels', [CarouselController::class, 'list']);
 
     Route::post('/get-available-count/{id}', [CartController::class, 'getAvailableItemsByCount']);
+    Route::get('/good/{good}/busy-days', [CartController::class, 'busyDays']);
 
     Route::get('/order/agreement/{orderId}', [HttpControllers\Api\OrderController::class, 'getAgreement']);
     Route::post('/order/signature', [HttpControllers\Api\OrderController::class, 'saveSignature']);

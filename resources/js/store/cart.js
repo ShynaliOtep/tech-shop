@@ -13,14 +13,14 @@ const Cart = {
             cart[productId].quantity += 1;
         }
         localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
-        // setTimeout(sendCartData, 1000);
+        this.notify();
     },
 
     removeFromCart(productId) {
         let cart = this.getCart();
         delete cart[productId];
         localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
-        //setTimeout(sendCartData, 1000);
+        this.notify();
     },
 
     decreaseQuantity(productId) {
@@ -33,7 +33,7 @@ const Cart = {
             }
             localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
         }
-        //setTimeout(sendCartData, 1000);
+        this.notify();
     },
 
     getTotalItems() {
@@ -52,6 +52,39 @@ const Cart = {
     },
     clearCart() {
         localStorage.removeItem(this.CART_KEY);
+        this.notify();
+    },
+
+    /**
+     * Положить товар с выбранным периодом (страница товара → «Забронировать на эти даты»).
+     * Количество заменяется, а не прибавляется: человек указал его явно.
+     */
+    setItem(productId, quantity, date) {
+        let cart = this.getCart();
+        cart[productId] = { quantity, date: date || null };
+        localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
+        this.notify();
+    },
+
+    getDate(productId) {
+        return this.getCart()[productId]?.date || null;
+    },
+
+    /** Запомнить период, выбранный в корзине, чтобы он не терялся при возврате на страницу. */
+    setDate(productId, date) {
+        let cart = this.getCart();
+        if (!cart[productId]) {
+            return;
+        }
+        cart[productId].date = date || null;
+        localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
+    },
+
+    /** Обновить счётчики корзины в шапке и нижнем меню (см. bottom-navbar.blade.php). */
+    notify() {
+        if (typeof window.updateCartBadges === "function") {
+            window.updateCartBadges();
+        }
     },
 };
 

@@ -63,6 +63,7 @@
                     @endforeach
                 </div>
                 @if(count($goods) != 0)
+                    @php \App\Services\Good\GoodAvailability::warm($goods); @endphp
                     <div class="items">
                         @foreach($goods as $good)
                             <div class="item">
@@ -105,6 +106,30 @@
             margin-bottom: 50px;
             margin-top: 70px;
             gap: 10px;
+        }
+        .btn-sub-type {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        @media (max-width: 992px) {
+            /* Подкатегории листаются вбок, а не уходят за край экрана */
+            .sub-types {
+                overflow-x: auto;
+                scrollbar-width: none;
+                margin-left: -15px;
+                margin-right: -15px;
+                padding: 0 15px 4px;
+                margin-bottom: 30px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .sub-types::-webkit-scrollbar {
+                display: none;
+            }
+        }
+        @media (min-width: 993px) {
+            .sub-types {
+                flex-wrap: wrap;
+            }
         }
         .btn-sub-type{
             color: #fff;

@@ -21,6 +21,12 @@ class ClientController extends Controller
             $clientData['bonusPercent'] =  Client::getBonusLevelPercent(Auth::guard('clients')->id());
             $clientData['bonus'] = $client->getBonus()->toArray();
             $clientData['order_count'] = $client->getOrderCount();
+            // Процент, по которому BonusSystem::applyBonus начислит бонусы после возврата заказа.
+            $clientData['bonusAccrualPercent'] = $client->bonus_percent > 0
+                ? (float) $client->bonus_percent
+                : ($client->bonus ? (float) \App\Services\Bonus\BonusLevels::levelMatch($client->bonus->level)->percent : 0);
+            // Пароль, коды подтверждения и токены на фронт не отдаём.
+            unset($clientData['password'], $clientData['confirmation_code'], $clientData['remember_token']);
             return response()->json([
                 'isAuthenticated' => (bool) Auth::guard('clients')->id(),
                 'clientData' => $clientData,

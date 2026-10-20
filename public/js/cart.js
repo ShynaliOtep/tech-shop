@@ -108,17 +108,9 @@ function updateCartUI(productId) {
 }
 
 function updateCartCounter() {
-    const cartCountContainer = document.querySelector(".in-cart-item-counter");
-    const headerCart = document.querySelector(".header-cart");
-    const quantity = Cart.getTotalItems();
-    console.log(quantity);
-    if (quantity) {
-        headerCart.style.color = "#ffffff";
-        cartCountContainer.style.display = "block";
-        cartCountContainer.textContent = quantity;
-        headerCart.style.backgroundColor = "#FF962E";
-    } else {
-        cartCountContainer.style.display = "none";
+    // Общая функция из bottom-navbar.blade.php обновляет и шапку, и нижнее меню.
+    if (typeof window.updateCartBadges === "function") {
+        window.updateCartBadges();
     }
 }
 
