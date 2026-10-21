@@ -22,17 +22,18 @@ class FindBrokenOrders extends Command
      *
      * @var string
      */
-    protected $description = 'Заказы с сайта, оформление которых оборвалось: нет договора, суммы и дат аренды';
+    protected $description = 'Заказы с сайта, оформление которых оборвалось: нет суммы и дат аренды';
 
     /**
-     * Оформление с сайта записывает договор и даты аренды в самом конце.
-     * Если их нет, заказ остался недооформленным: менеджер не получил
+     * Оформление с сайта записывает сумму и даты аренды в самом конце.
+     * Если дат нет, заказ остался недооформленным: менеджер не получил
      * уведомление, а позиции в статусе waiting держат технику занятой.
+     * Договор на такой заказ может появиться позже (подпись клиента
+     * в профиле, кнопка в списке заказов), поэтому по нему не фильтруем.
      */
     public function handle()
     {
         $orders = Order::query()
-            ->whereNull('agreement_id')
             ->whereNull('rent_start_date')
             ->when(! $this->option('all'), function (Builder $query) {
                 $query->whereNotIn('status', ['cancelled', 'returned']);
@@ -60,6 +61,7 @@ class FindBrokenOrders extends Command
                 $order->owner?->name ?? '—',
                 $order->owner?->phone ?? '—',
                 $order->status,
+                $order->agreement_id ? 'есть' : 'нет',
                 $items->count(),
                 $blocking->count(),
                 $items->isEmpty() ? '—' : $items->min('rent_start_date').' — '.$items->max('rent_end_date'),
@@ -68,7 +70,7 @@ class FindBrokenOrders extends Command
         });
 
         $this->table(
-            ['Заказ', 'Создан', 'Клиент', 'Телефон', 'Статус', 'Позиций', 'Держат технику', 'Даты позиций', 'Сумма позиций'],
+            ['Заказ', 'Создан', 'Клиент', 'Телефон', 'Статус', 'Договор', 'Позиций', 'Держат технику', 'Даты позиций', 'Сумма позиций'],
             $rows
         );
 
