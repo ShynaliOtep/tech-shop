@@ -362,8 +362,9 @@ export default {
 }
 .rb-book:disabled {
     background: #232323;
-    color: #5a5a5a;
-    cursor: default;
+    color: #7a7a7a;
+    box-shadow: inset 0 0 0 1px var(--line-input, #4a4a4a);
+    cursor: not-allowed;
 }
 .rb-secondary {
     text-align: center;

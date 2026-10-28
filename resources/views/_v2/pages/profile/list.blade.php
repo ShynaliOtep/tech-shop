@@ -36,7 +36,7 @@
             font-size: 24px;
             font-weight: 500;
             text-align: right;
-            color: #404040;
+            color: var(--text-muted);
             margin-bottom: 30px;
             text-decoration: none;
         }

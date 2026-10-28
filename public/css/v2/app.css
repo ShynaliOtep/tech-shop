@@ -1,13 +1,66 @@
+/* Палитра и глубина сайта. Оттенки меняются здесь, а не по файлам. */
+:root {
+    --bg: #151515;
+    --surface: #191919;
+    --surface-hover: #1f1f1f;
+    --line: #404040;
+    --line-soft: rgba(255, 255, 255, 0.06);
+    --line-input: #4a4a4a;
+
+    --text: #ffffff;
+    --text-2: #b8b8b8;
+    /* было #404040 — контраст 1.8:1 к фону, теперь около 5:1 */
+    --text-muted: #8f8f8f;
+    --text-disabled: #5a5a5a;
+
+    --accent: #ff962e;
+    --accent-hover: #ffa64d;
+    --accent-soft: rgba(255, 150, 46, 0.15);
+    --danger: #dd4447;
+
+    --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-hover: 0 14px 36px rgba(0, 0, 0, 0.5);
+    --ring: 0 0 0 3px rgba(255, 150, 46, 0.35);
+}
+
+/* Иконки в шаблонах залиты #404040 атрибутом — CSS перекрывает его без правки svg */
+path[fill="#404040"] {
+    fill: var(--text-muted);
+    transition: fill 0.2s;
+}
+svg[fill="#404040"] {
+    fill: var(--text-muted);
+}
+.icon-button-grey:hover path[fill="#404040"],
+.social-link:hover path[fill="#404040"],
+.auth-back-btn:hover path[fill="#404040"],
+.close:hover path[fill="#404040"] {
+    fill: var(--text);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+}
+
 .icon-button-grey {
     width: 50px;
     height: 50px;
-    background-color: #191919;
+    background-color: var(--surface);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    color: #404040;
+    color: var(--text-muted);
+    box-shadow: inset 0 0 0 1px var(--line-soft);
+    transition:
+        color 0.2s,
+        background-color 0.2s;
 }
 
 .cart-item-img img {
@@ -25,6 +78,7 @@
 
 .icon-button-grey:hover {
     color: #ffffff;
+    background-color: var(--surface-hover);
 }
 
 .icon-button-grey svg {
@@ -47,11 +101,11 @@
 }
 
 .page-type-title {
-    text-align: center;
-    color: #40404040;
-    font-size: 50px;
-    font-weight: 300;
-    padding: 30px 10px;
+    text-align: left;
+    color: var(--text);
+    font-size: 40px;
+    font-weight: 500;
+    padding: 10px 0 24px;
 }
 
 .auth-form-element {
@@ -125,10 +179,24 @@
 .good-card {
     border-radius: 30px;
     padding: 25px 30px;
-    background-color: #191919;
+    background-color: var(--surface);
     height: 100%;
     position: relative;
     text-decoration: none;
+    box-shadow: inset 0 0 0 1px var(--line-soft);
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        background-color 0.2s;
+}
+@media (hover: hover) {
+    .good-card:hover {
+        transform: translateY(-4px);
+        background-color: var(--surface-hover);
+        box-shadow:
+            inset 0 0 0 1px rgba(255, 150, 46, 0.35),
+            var(--shadow-hover);
+    }
 }
 
 .good-title {
@@ -136,17 +204,17 @@
     text-align: center;
     font-size: 24px;
     font-weight: 500;
-    color: #404040;
+    color: var(--text-2);
     margin-bottom: 20px;
     text-decoration: none;
     height: 60px;
 }
 
 .good-price {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 600;
     text-align: center;
-    color: #ffffff;
+    color: var(--accent);
     margin-bottom: 20px;
 }
 
@@ -184,12 +252,12 @@
 }
 
 .good-remove-to-favorites {
-    color: #ff962e;
+    color: var(--accent);
 }
 
 .good-open-btn {
     color: #ffffff;
-    background-color: #151515;
+    background-color: var(--bg);
 }
 .good-remove-to-favorites .addf-icon {
     display: none;
@@ -212,7 +280,7 @@
     height: 115px;
     top: -10px;
     left: -15px;
-    background-color: #ff962e;
+    background-color: var(--accent);
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
@@ -232,7 +300,7 @@
     height: 115px;
     top: -10px;
     left: -15px;
-    background-color: #ff962e;
+    background-color: var(--accent);
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
@@ -249,7 +317,7 @@
 
 .black-block {
     border-radius: 30px;
-    background-color: #191919;
+    background-color: var(--surface);
     padding: 25px;
 }
 
@@ -272,14 +340,14 @@
 .grey-s-text {
     font-weight: 500;
     font-size: 16px;
-    color: #404040;
+    color: var(--text-muted);
     text-decoration: none;
 }
 
 .grey-s-light-text {
     font-weight: 400;
     font-size: 16px;
-    color: #404040;
+    color: var(--text-muted);
     text-decoration: none;
 }
 
@@ -300,9 +368,9 @@
 }
 
 .p-input {
-    background-color: #191919;
+    background-color: var(--surface);
     border-radius: 15px;
-    border: 1px solid #404040;
+    border: 1px solid var(--line);
     width: 100%;
     height: 60px;
     padding: 0 15px;
@@ -312,9 +380,9 @@
 }
 .auth-main-btn {
     border-radius: 15px;
-    border: 1px solid #ff962e;
+    border: 1px solid var(--accent);
     color: #ffffff;
-    background-color: #191919;
+    background-color: var(--surface);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -328,7 +396,7 @@
 .black-btn {
     width: 100%;
     border-radius: 15px;
-    background-color: #151515;
+    background-color: var(--bg);
     height: 70px;
     display: flex;
     align-items: center;
@@ -357,7 +425,7 @@
 .orange-s-link {
     font-size: 16px;
     font-weight: 500;
-    color: #ff962e;
+    color: var(--accent);
     text-decoration: none;
 }
 
@@ -382,7 +450,7 @@
 }
 
 .good-add-to-card {
-    border: 1px solid #ff962e;
+    border: 1px solid var(--accent);
     color: #fff;
     border-radius: 20px;
     height: 50px;
@@ -393,7 +461,7 @@
     width: 160px;
     justify-content: space-between;
     cursor: pointer;
-    background-color: #ff962e;
+    background-color: var(--accent);
     align-items: center;
 }
 
@@ -467,7 +535,7 @@
     background: #ffffff;
     font-weight: 700;
     font-size: 14px;
-    color: #ff962e;
+    color: var(--accent);
     display: flex;
     text-align: center;
     align-items: center;
@@ -494,7 +562,7 @@
     width: 24px;
     height: 24px;
     z-index: 1;
-    border: 1px solid #404040;
+    border: 1px solid var(--line);
     border-radius: 5px;
     margin-top: 3px;
     -webkit-transition: 0.2s;
@@ -503,7 +571,7 @@
 }
 
 .cio-in input:checked + .cio-before {
-    background-color: #ff962e;
+    background-color: var(--accent);
     border: 3px solid #ffffff;
 }
 
@@ -513,7 +581,7 @@
 .cia-title {
     font-size: 16px;
     font-weight: 500;
-    color: #404040;
+    color: var(--text-muted);
 }
 
 .cia-price {
@@ -581,7 +649,7 @@
 .cart-cost-2 {
     font-size: 12px;
     font-weight: 400;
-    color: #404040;
+    color: var(--text-muted);
 }
 
 .cart-btns {
@@ -596,7 +664,7 @@
     width: 192px;
     height: 56px;
     border-radius: 15px;
-    background-color: #191919;
+    background-color: var(--surface);
     display: flex;
     justify-content: space-between;
     gap: 10px;
@@ -611,15 +679,15 @@
     font-weight: 400;
 }
 .cart-time-btn:hover {
-    color: #ff962e;
+    color: var(--accent);
 }
 .filled {
     color: #ffffff;
-    background-color: #ff962e;
+    background-color: var(--accent);
 }
 .filled:hover {
     color: #ffffff;
-    background-color: #ff962e;
+    background-color: var(--accent);
 }
 
 .date-ind {
@@ -643,7 +711,7 @@
     width: 160px;
     justify-content: space-between;
     cursor: pointer;
-    background-color: #191919;
+    background-color: var(--surface);
     align-items: center;
     height: 56px;
 }
@@ -670,8 +738,8 @@
 
 .select-time-option {
     height: 60px;
-    background-color: #151515;
-    border: 1px solid #191919;
+    background-color: var(--bg);
+    border: 1px solid var(--surface);
     border-radius: 20px;
     display: flex;
     align-items: center;
@@ -684,14 +752,14 @@
 .option-text {
     font-weight: 500;
     font-size: 16px;
-    color: #404040;
+    color: var(--text-muted);
 }
 
 .option-circle {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1px solid #404040;
+    border: 1px solid var(--line);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -699,21 +767,21 @@
 
 .option-circle-in {
     display: none;
-    background-color: #ff962e;
+    background-color: var(--accent);
     width: 12px;
     height: 12px;
     border-radius: 50%;
 }
 
 .selected-option {
-    background-color: #191919;
+    background-color: var(--surface);
 }
 .selected-option .option-text {
-    color: #ff962e;
+    color: var(--accent);
 }
 
 .selected-option .option-circle {
-    border-color: #ff962e;
+    border-color: var(--accent);
 }
 
 .selected-option .option-circle-in {
@@ -735,11 +803,11 @@
 .cart-end-count {
     font-weight: 500;
     font-size: 24px;
-    color: #404040;
+    color: var(--text-muted);
 }
 
 .cart-clear-btn {
-    color: #ff962e;
+    color: var(--accent);
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
@@ -755,8 +823,8 @@
     align-items: center;
     font-weight: 600;
     font-size: 24px;
-    color: #ffffffff;
-    background-color: #ff962e;
+    color: #ffffff;
+    background-color: var(--accent);
     border-radius: 20px;
     text-align: center;
     justify-content: center;
@@ -766,15 +834,15 @@
 }
 
 .end-disabled {
-    color: #404040;
-    background-color: #191919;
+    color: var(--text-disabled);
+    background-color: var(--surface);
 }
 .end-warning-text {
     font-weight: 400;
     font-size: 12px;
     text-align: center;
     margin-top: 10px;
-    color: #404040;
+    color: var(--text-muted);
 }
 
 .cart-empty {
@@ -791,7 +859,7 @@
 .cart-empty-text {
     font-size: 24px;
     font-weight: 500;
-    color: #404040;
+    color: var(--text-muted);
     text-align: center;
 }
 .cart-end-btn {
@@ -845,7 +913,7 @@
 
 .autocomplete-content {
     border-radius: 25px !important;
-    background: #191919;
+    background: var(--surface);
     width: 100%;
     padding-top: 60px !important;
     padding-bottom: 20px !important;
@@ -869,7 +937,7 @@
 }
 
 .autocomplete-content li:hover {
-    border: 1px solid #ff962e;
+    border: 1px solid var(--accent);
 }
 
 .b-level-list {
@@ -881,7 +949,7 @@
 }
 
 .b-level {
-    background: linear-gradient(to right, #252525, #191919);
+    background: linear-gradient(to right, #252525, var(--surface));
     border-radius: 20px;
     padding: 30px;
     flex: 1;
@@ -946,7 +1014,7 @@
 .b-info-dec {
     font-weight: 400;
     font-size: 16px;
-    color: #404040;
+    color: var(--text-muted);
 }
 
 .b-btn {
@@ -970,10 +1038,10 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    color: #404040;
+    color: var(--text-muted);
     font-weight: 600;
     font-size: 24px;
-    background-color: #151515;
+    background-color: var(--bg);
     text-decoration: none;
     border-radius: 15px;
 }
@@ -989,7 +1057,7 @@
     align-items: center;
     font-weight: 600;
     font-size: 24px;
-    color: #404040;
+    color: var(--text-2);
 }
 
 .arrow {
@@ -997,7 +1065,7 @@
 }
 .arrow.open {
     transform: rotate(180deg);
-    color: #ff962e;
+    color: var(--accent);
 }
 
 .faq-answer {
@@ -1009,7 +1077,7 @@
 }
 
 .faq-question.open {
-    color: #ff962e !important;
+    color: var(--accent) !important;
 }
 
 /* Анимация */
@@ -1076,12 +1144,12 @@
 }
 
 .order-disabled {
-    color: #404040;
-    background-color: #151515;
+    color: var(--text-disabled);
+    background-color: var(--bg);
 }
 
 .cart-address {
-    color: #ff962e;
+    color: var(--accent);
     text-decoration: none;
     margin-bottom: 20px;
     text-align: center;
@@ -1090,7 +1158,7 @@
 
 html,
 body {
-    background-color: #151515; /* или любой другой */
+    background-color: var(--bg); /* или любой другой */
 }
 
 .show-m {
@@ -1106,11 +1174,11 @@ body {
 
 .collection {
     border-radius: 15px;
-    border: 1px solid #404040;
+    border: 1px solid var(--line);
 }
 .collection-item {
     padding: 15px 30px;
-    border-bottom: 1px solid #404040;
+    border-bottom: 1px solid var(--line);
     font-size: 16px;
     font-weight: 400;
     color: #fff;
@@ -1118,20 +1186,20 @@ body {
 
 .collection-table {
     border-radius: 15px;
-    border: 1px solid #404040;
+    border: 1px solid var(--line);
     border-collapse: collapse;
     margin: 30px 0;
 }
 
 .collection-table th,
 .collection-table td {
-    border: 1px solid #404040;
+    border: 1px solid var(--line);
     padding: 15px;
     color: #fff;
 }
 
 .orange-text {
-    color: #ff962e;
+    color: var(--accent);
 }
 
 .order-main-block {
@@ -1151,7 +1219,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 20px 0px;
-    border-bottom: 1px solid #404040;
+    border-bottom: 1px solid var(--line);
 }
 
 .ov-texts {
@@ -1162,7 +1230,7 @@ body {
 }
 
 .order-view-wrapper {
-    border: 1px solid #404040;
+    border: 1px solid var(--line);
     padding: 20px 30px;
 }
 
@@ -1172,13 +1240,76 @@ body {
 
 .cost-has-discount {
     font-size: 12px;
-    color: #404040;
+    color: var(--text-muted);
     margin-top: -15px;
     text-decoration: line-through;
 }
 .cost-is-discount {
-    color: #ff962e;
+    color: var(--accent);
     font-size: 18px;
+}
+
+/** = = = = = = Состояния: наведение, фокус, неактивное = = = = = = */
+
+.search-header-input::placeholder {
+    color: var(--text-muted);
+}
+.search-header-input:focus {
+    border-color: var(--accent);
+}
+
+.p-input {
+    border-color: var(--line-input);
+    transition: border-color 0.2s;
+}
+.p-input:focus-within {
+    border-color: var(--accent);
+}
+
+.orange-btn,
+.good-add-to-card {
+    transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        transform 0.1s;
+}
+.orange-btn:hover,
+.good-add-to-card:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+.orange-btn:active,
+.good-add-to-card:active {
+    transform: scale(0.98);
+}
+
+.good-open-btn,
+.black-btn,
+.cart-btn,
+.cart-time-btn {
+    transition:
+        background-color 0.2s,
+        color 0.2s;
+}
+.good-open-btn:hover,
+.black-btn:hover {
+    background-color: var(--surface-hover);
+}
+
+/* Неактивная кнопка должна читаться как кнопка, а не сливаться с фоном */
+.end-disabled,
+.order-disabled {
+    cursor: not-allowed;
+    box-shadow: inset 0 0 0 1px var(--line-soft);
+}
+.end-disabled:hover {
+    background-color: var(--surface);
+}
+
+.black-block,
+.select-time-option,
+.cart-time-btn {
+    box-shadow: inset 0 0 0 1px var(--line-soft);
 }
 
 @media (max-width: 1440px) {
@@ -1263,7 +1394,7 @@ body {
 
     .cart-item {
         width: 100%;
-        background-color: #191919;
+        background-color: var(--surface);
         border-radius: 15px;
         margin-bottom: 15px;
     }
@@ -1300,7 +1431,7 @@ body {
         font-size: 12px;
     }
     .cart-btn {
-        background-color: #151515;
+        background-color: var(--bg);
         width: 100px;
         border-radius: 7px;
         height: 30px;
@@ -1346,17 +1477,17 @@ body {
         z-index: 100;
         width: 100%;
         padding: 15px;
-        background-color: #191919;
+        background-color: var(--surface);
     }
     .end-disabled {
-        background-color: #151515;
+        background-color: var(--bg);
     }
 
     .new-good-bookmark-m {
         position: absolute;
         top: -5px;
         left: calc(50% - 25px);
-        background-color: #ff962e;
+        background-color: var(--accent);
         width: 50px;
         height: 16px;
         border-radius: 100px;
@@ -1378,7 +1509,7 @@ body {
         position: absolute;
         top: -10px;
         right: -12px;
-        background-color: #dd4447;
+        background-color: var(--danger);
         width: 35px;
         height: 35px;
         border-radius: 100px;
@@ -1458,8 +1589,8 @@ body {
         left: 0;
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
-        background-color: #191919;
-        border: 1px solid #191919;
+        background-color: var(--surface);
+        border: 1px solid var(--surface);
     }
     /*.items {*/
     /*    align-items: flex-start;*/
@@ -1495,22 +1626,22 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #151515;
+        background-color: var(--bg);
     }
     .cart-time-btn svg {
         width: 11px;
     }
     .filled {
         color: #ffffff;
-        background-color: #ff962e;
+        background-color: var(--accent);
     }
     .filled:hover {
         color: #ffffff;
-        background-color: #ff962e;
+        background-color: var(--accent);
     }
 
     .cost-is-discount {
-        color: #dd4447;
+        color: var(--danger);
         font-size: 15px;
     }
 
@@ -1519,7 +1650,7 @@ body {
     /*    top: 0;*/
     /*    left: 0;*/
     /*    width: 100%;*/
-    /*    background-color: #151515;*/
+    /*    background-color: var(--bg);*/
     /*}*/
     /*.content {*/
     /*    padding-top: 100px !important;*/

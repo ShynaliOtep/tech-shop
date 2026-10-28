@@ -46,9 +46,9 @@ export default {
 .custom-input {
     font-size: 16px;
     font-weight: 400;
-    color: #404040;
+    color: var(--text-muted, #8f8f8f);
     background-color: #191919;
-    border: 1px solid #404040;
+    border: 1px solid var(--line-input, #4a4a4a);
     padding: 8px 12px;
     border-radius: 15px;
     width: 100%;
@@ -56,6 +56,6 @@ export default {
     cursor: pointer;
 }
 .mx-icon-calendar {
-    color: #404040 !important;
+    color: var(--text-muted, #8f8f8f) !important;
 }
 </style>

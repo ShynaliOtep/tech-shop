@@ -40,7 +40,7 @@
         width: 173px;
         background-color: #191919;
         border-radius: 30px;
-        color: #404040;
+        color: var(--text-muted);
         font-weight: 400;
         font-size: 16px;
         padding: 15px 15px;
@@ -78,7 +78,7 @@
         padding: 12px 16px;
         text-decoration: none;
         display: block;
-        color: #404040;
+        color: var(--text-muted);
     }
     .dropdown-content-2 a:hover {
         color: #ffffff;

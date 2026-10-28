@@ -74,19 +74,19 @@
     }
     .social-link svg {
         width: 40px;
-        color: #404040;
+        color: var(--text-muted);
     }
     .footer-link {
         font-weight: 400;
         font-size: 16px;
         display: block;
-        color: #404040;
+        color: var(--text-muted);
         margin-bottom: 20px;
         text-decoration: none;
     }
     .footer-text {
         font-size: 16px;
-        color: #404040;
+        color: var(--text-muted);
         text-align: right;
         margin-bottom: 10px;
         font-weight: 400;

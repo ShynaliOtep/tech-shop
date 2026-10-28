@@ -79,12 +79,39 @@
             flex-wrap: wrap;
             justify-content: space-between;
         }
+        /* Логотип и «Скидки» в одну строку, поиск отдельной строкой во всю ширину */
         header {
             padding: 20px 15px;
             display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px 0;
         }
-        .header-bonus-block {
-            margin-right: 70px;
+        .left-header {
+            display: contents;
+        }
+        .left-header > .show-m {
+            order: 1;
+            margin-right: auto;
+        }
+        .right-header {
+            order: 2;
+            flex: 0 0 auto;
+            /* справа поверх висит значок города (position: absolute) */
+            margin-right: 60px;
+        }
+        .left-header .search-block {
+            order: 3;
+            flex: 0 0 100%;
+            margin-top: 4px;
+        }
+        .header-bonus-block .icon-button-grey-text {
+            width: auto;
+            height: 44px;
+            padding: 0 16px;
+        }
+        .header-bonus-block .icon-button-grey-text span {
+            font-size: 15px;
         }
     }
 </style>

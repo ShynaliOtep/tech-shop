@@ -173,10 +173,11 @@ $freeNow = \App\Services\Good\GoodAvailability::freeNow($good);
 
 @once
     <style>
+        /* Справа: слева на новинках висит лента NEW и перекрывала бейдж */
         .good-stock {
             position: absolute;
             top: 14px;
-            left: 14px;
+            right: 14px;
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 12px;
@@ -206,9 +207,11 @@ $freeNow = \App\Services\Good\GoodAvailability::freeNow($good);
             }
         }
         @media (max-width: 992px) {
+            /* На телефоне справа сверху круг скидки, NEW по центру — бейдж слева */
             .good-stock {
                 top: 8px;
                 left: 8px;
+                right: auto;
                 padding: 2px 8px;
                 font-size: 11px;
             }

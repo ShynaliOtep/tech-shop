@@ -17,11 +17,26 @@
         text-decoration: none;
         display: flex;
         padding: 15px 0;
-        color: #404040;
+        color: var(--text-muted);
         align-content: center;
+        position: relative;
+        transition: color 0.2s;
     }
     .menu-item:hover {
         color: #ffffff !important;
+    }
+    .menu-item-active {
+        color: var(--accent);
+    }
+    .menu-item-active::before {
+        content: "";
+        position: absolute;
+        left: -30px;
+        top: 12px;
+        bottom: 12px;
+        width: 3px;
+        border-radius: 0 3px 3px 0;
+        background-color: var(--accent);
     }
     .menu-item svg {
         width: 30px;

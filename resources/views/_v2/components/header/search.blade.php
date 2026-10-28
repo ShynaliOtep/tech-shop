@@ -33,11 +33,11 @@
         background: url(../img/search-new.svg) 300px center / 20px no-repeat scroll,#151515;
         border-width: 2px;
         border-style: solid;
-        border-color: #191919;
+        border-color: #2a2a2a;
         border-image: initial;
         padding: 1% 20px;
         transition: 0.7ms;
-        color: #404040;
+        color: var(--text);
         font-weight: 400;
         font-size: 16px;
         position: absolute;
@@ -61,7 +61,7 @@
             width: 100%;
         }
         .search-header-input {
-            background: url(../img/search-new.svg) 320px center / 20px no-repeat scroll,#151515;
+            background: url(../img/search-new.svg) calc(100% - 20px) center / 20px no-repeat scroll,#151515;
             width: 100%;
             font-size: 12px;
         }

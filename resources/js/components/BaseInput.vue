@@ -32,7 +32,7 @@ export default {
 <style scoped>
 .custom-input {
     width: 100%;
-    border: 1px solid #404040;
+    border: 1px solid var(--line-input, #4a4a4a);
     border-radius: 15px;
     background-color: #191919;
     height: 60px;
@@ -44,7 +44,7 @@ export default {
 }
 
 .custom-input::placeholder {
-    color: #404040;
+    color: var(--text-muted, #8f8f8f);
 }
 
 .custom-input:focus {
@@ -57,7 +57,7 @@ export default {
 
 .custom-textarea {
     width: 100%;
-    border: 1px solid #404040;
+    border: 1px solid var(--line-input, #4a4a4a);
     border-radius: 15px;
     background-color: #191919;
     padding: 14px;

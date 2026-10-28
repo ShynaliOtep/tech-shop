@@ -45,7 +45,7 @@
 
 <style>
     .dropbtn {
-        color: #404040;
+        color: var(--text-muted);
         font-weight: 400;
         font-size: 16px;
         border: none;
@@ -100,7 +100,7 @@
         padding: 8px 0;
         text-decoration: none;
         display: block;
-        color: #404040;
+        color: var(--text-muted);
     }
     .city-selected {
         color: #ffffff !important;

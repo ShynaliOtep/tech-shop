@@ -333,7 +333,7 @@ export default {
 .rpp-chip {
     background: #232323;
     color: #ffffff;
-    border: 1px solid #2e2e2e;
+    border: 1px solid var(--line-input, #4a4a4a);
     border-radius: 20px;
     padding: 8px 16px;
     font: inherit;
@@ -475,7 +475,7 @@ export default {
 .rpp-time select {
     height: 50px;
     border-radius: 15px;
-    border: 1px solid #2e2e2e;
+    border: 1px solid var(--line-input, #4a4a4a);
     background: #191919;
     color: #ffffff;
     font: inherit;
