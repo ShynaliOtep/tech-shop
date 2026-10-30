@@ -1244,8 +1244,9 @@ body {
     margin-top: -15px;
     text-decoration: line-through;
 }
+/* Обычная цена оранжевая — скидочная красная, как значок «%» */
 .cost-is-discount {
-    color: var(--accent);
+    color: var(--danger);
     font-size: 18px;
 }
 

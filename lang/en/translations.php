@@ -340,6 +340,7 @@ return [
     'Terms: day is 24 hours' => 'A rental day is 24 hours from pickup; a partial day counts as a full day',
     'Terms: damage' => 'Breakage or damage is paid according to the agreement',
     'Terms: late payment' => 'Late payments under the agreement incur a 5% penalty per day',
+    'Terms: approval' => 'Approval of a request depends on your portfolio or confirmation of the intended use',
     'Pickup point' => 'Pickup point',
     'Delivery by arrangement with the manager' => 'Delivery is arranged with the manager',
     'Ask in WhatsApp' => 'Ask on WhatsApp',

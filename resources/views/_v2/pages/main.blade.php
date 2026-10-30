@@ -12,7 +12,9 @@
     @if(isset($news))
         <div>
             <h5 class="page-type-title">{{__('translations.news block')}}</h5>
-            <div class="items horizontal-scrolling-news" id="carousel">
+            <div class="h-carousel">
+            @include('_v2.components.carousel-arrows')
+            <div class="items horizontal-scrolling-news">
                 @php
                     // Бейджи наличия на главной: одним расчётом для всех карточек.
                     \App\Services\Good\GoodAvailability::warm(
@@ -28,21 +30,25 @@
                     </div>
                 @endforeach
             </div>
-            <div class="dots" id="carousel-dots"></div>
+            <div class="dots"></div>
+            </div>
         </div>
     @endif
 
     @if(isset($sets))
         <div>
             <h5 class="page-type-title">{{__('Наборы')}}</h5>
-            <div class="items horizontal-scrolling-news" id="carousel">
+            <div class="h-carousel">
+            @include('_v2.components.carousel-arrows')
+            <div class="items horizontal-scrolling-news">
                 @foreach($sets as $set)
                     <div class="item">
                         @include('_v2.components.good.goodCard', ['good' => $set->good])
                     </div>
                 @endforeach
             </div>
-            <div class="dots" id="carousel-dots"></div>
+            <div class="dots"></div>
+            </div>
         </div>
     @endif
 
@@ -90,14 +96,64 @@
     </div>
     @include('auth.modal', ['icon' => 'favorite_border', 'title' => __('translations.Authorization required'), 'content' => __('translations.To add a product to your favorites, you must be authenticated')])
     <style>
+        .h-carousel {
+            position: relative;
+        }
+        /* Слева отступ = промежутку между карточками: лента NEW (left: -15px) помещается,
+           а справа отступа нет — лента следующей карточки не торчит из-за края. */
         .horizontal-scrolling-news {
             display: flex;
             overflow-x: auto;
-            padding: 30px;
+            padding: 30px 0 30px 16px;
+            scroll-padding-left: 16px;
+            scroll-snap-type: x mandatory;
             flex-wrap: nowrap;
             align-items: stretch;
             scrollbar-width: none;         /* Firefox */
             -ms-overflow-style: none;
+        }
+        .horizontal-scrolling-news .item {
+            flex: 0 0 calc((100% - 32px) / 3);
+            min-width: 0;
+            scroll-snap-align: start;
+        }
+        .horizontal-scrolling-news.is-dragging {
+            scroll-snap-type: none;
+            cursor: grabbing;
+        }
+        .horizontal-scrolling-news.is-dragging * {
+            user-select: none;
+        }
+        .h-carousel-btn {
+            position: absolute;
+            top: 50%;
+            z-index: 5;
+            width: 48px;
+            height: 48px;
+            margin-top: -24px;
+            border: none;
+            border-radius: 50%;
+            background-color: var(--surface-hover);
+            box-shadow: inset 0 0 0 1px var(--line-soft), var(--shadow-card);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+        }
+        .h-carousel-btn:hover {
+            background-color: var(--accent);
+        }
+        .h-carousel-btn[disabled] {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .h-carousel-prev {
+            left: -20px;
+        }
+        .h-carousel-next {
+            right: -20px;
         }
         .horizontal-scrolling-news::-webkit-scrollbar {
             display: none; /* Chrome, Safari, Opera */
@@ -108,18 +164,24 @@
         }
 
         .dots button {
-            width: 10px;
-            height: 10px;
-            background: #ccc;
+            width: 8px;
+            height: 8px;
+            background: var(--line);
             border: none;
-            border-radius: 50%;
+            border-radius: 8px;
             margin: 5px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, width 0.3s;
         }
 
         .dots button.active {
-            background: #333;
+            width: 24px;
+            background: var(--accent);
+        }
+        @media (max-width: 992px) {
+            .horizontal-scrolling-news .item {
+                flex: 0 0 calc((100% - 16px) / 2);
+            }
         }
         @media (max-width: 600px) {
             .horizontal-scrolling-news .item {
@@ -138,35 +200,107 @@
         function hideModalFav() {
             document.getElementById('modal-fav').style.display = 'none'
         }
-        const carousel = document.getElementById('carousel');
-        const dotsContainer = document.getElementById('carousel-dots');
-        const items = carousel.querySelectorAll('.item');
+        // Горизонтальные карусели: стрелки, точки по страницам и перетаскивание мышью.
+        // Колёсиком без Shift такой блок не прокрутить, поэтому на компьютере нужны стрелки.
+        document.querySelectorAll('.h-carousel').forEach(function (root) {
+            const track = root.querySelector('.horizontal-scrolling-news');
+            const items = track.querySelectorAll('.item');
+            const prev = root.querySelector('.h-carousel-prev');
+            const next = root.querySelector('.h-carousel-next');
+            const dotsContainer = root.querySelector('.dots');
+            if (!items.length) return;
 
-        const groupSize = 4; // сколько элементов в одной группе
-        const totalGroups = Math.ceil(items.length / groupSize);
+            function itemStep() {
+                const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+                return items[0].offsetWidth + gap;
+            }
+            function perPage() {
+                return Math.max(1, Math.floor(track.clientWidth / itemStep()));
+            }
+            function pageStep() {
+                return perPage() * itemStep();
+            }
 
-        for (let i = 0; i < totalGroups; i++) {
-            const dot = document.createElement('button');
-            dot.addEventListener('click', () => {
-                const scrollTo = i * groupSize * items[0].offsetWidth;
-                carousel.scrollTo({
-                    left: scrollTo,
-                    behavior: 'smooth'
+            function renderDots() {
+                dotsContainer.innerHTML = '';
+                const pages = Math.ceil(items.length / perPage());
+                if (pages < 2) return;
+                for (let i = 0; i < pages; i++) {
+                    const dot = document.createElement('button');
+                    dot.type = 'button';
+                    dot.setAttribute('aria-label', String(i + 1));
+                    dot.addEventListener('click', function () {
+                        track.scrollTo({left: i * pageStep(), behavior: 'smooth'});
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            function update() {
+                const max = track.scrollWidth - track.clientWidth - 2;
+                if (prev) prev.disabled = track.scrollLeft <= 2;
+                if (next) next.disabled = track.scrollLeft >= max;
+                const dots = dotsContainer.querySelectorAll('button');
+                const index = track.scrollLeft >= max
+                    ? dots.length - 1
+                    : Math.round(track.scrollLeft / pageStep());
+                dots.forEach(function (dot, i) {
+                    dot.classList.toggle('active', i === index);
                 });
+            }
+
+            if (prev) prev.addEventListener('click', function () {
+                track.scrollBy({left: -pageStep(), behavior: 'smooth'});
             });
-            dotsContainer.appendChild(dot);
-        }
+            if (next) next.addEventListener('click', function () {
+                track.scrollBy({left: pageStep(), behavior: 'smooth'});
+            });
 
-        const dots = dotsContainer.querySelectorAll('button');
+            // Перетаскивание мышью; на телефоне листается пальцем само.
+            let startX = 0, startScroll = 0, dragging = false, moved = false;
+            track.addEventListener('pointerdown', function (e) {
+                if (e.pointerType !== 'mouse' || e.button !== 0) return;
+                dragging = true;
+                moved = false;
+                startX = e.clientX;
+                startScroll = track.scrollLeft;
+            });
+            window.addEventListener('pointermove', function (e) {
+                if (!dragging) return;
+                const dx = e.clientX - startX;
+                if (!moved && Math.abs(dx) > 5) {
+                    moved = true;
+                    track.classList.add('is-dragging');
+                }
+                if (moved) track.scrollLeft = startScroll - dx;
+            });
+            window.addEventListener('pointerup', function () {
+                if (!dragging) return;
+                dragging = false;
+                if (!moved) return;
+                track.classList.remove('is-dragging');
+                const step = itemStep();
+                track.scrollTo({left: Math.round(track.scrollLeft / step) * step, behavior: 'smooth'});
+            });
+            // Карточки — ссылки: после перетаскивания клик не должен открывать товар.
+            track.addEventListener('click', function (e) {
+                if (moved) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    moved = false;
+                }
+            }, true);
+            track.addEventListener('dragstart', function (e) {
+                e.preventDefault();
+            });
 
-        // Обновление активной точки при прокрутке
-        carousel.addEventListener('scroll', () => {
-            const index = Math.round(carousel.scrollLeft / (groupSize * items[0].offsetWidth));
-            dots.forEach(dot => dot.classList.remove('active'));
-            if (dots[index]) dots[index].classList.add('active');
+            track.addEventListener('scroll', update, {passive: true});
+            window.addEventListener('resize', function () {
+                renderDots();
+                update();
+            });
+            renderDots();
+            update();
         });
-
-        // Активировать первую точку по умолчанию
-        if (dots.length) dots[0].classList.add('active');
     </script>
 @endsection

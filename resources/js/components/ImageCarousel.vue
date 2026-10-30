@@ -2,10 +2,11 @@
     <div class="swiper-container">
         <br />
         <swiper
-            :modules="[Navigation, Autoplay]"
+            :modules="[Navigation, Pagination, Autoplay]"
             :slides-per-view="1"
             :space-between="0"
             :navigation="true"
+            :pagination="{ clickable: true }"
             :loop="true"
             :autoplay="{ delay: 3000 }"
             class="articles-slider"
@@ -93,9 +94,10 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 export default {
     components: { Swiper, SwiperSlide },
@@ -106,7 +108,6 @@ export default {
         const fetchImages = async () => {
             try {
                 const response = await axios.get("/api/carousels");
-                console.log(response.data.data);
                 images.value = response.data.data;
             } catch (error) {
                 console.error("Ошибка загрузки изображений:", error);
@@ -129,6 +130,7 @@ export default {
             openModal,
             closeModal,
             Navigation,
+            Pagination,
             Autoplay,
         };
     },
@@ -140,20 +142,24 @@ export default {
     width: 100%;
     margin: auto;
 }
+/* Одна пропорция на все слайды: высота не прыгает при смене и ничего не обрезается.
+   Подложка и обводка — чтобы тёмный баннер не сливался с чёрной страницей. */
+.articles-slider {
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: var(--surface, #191919);
+    box-shadow: inset 0 0 0 1px var(--line-soft, rgba(255, 255, 255, 0.06));
+}
 .articles-slider-slide {
-    width: 400px;
     cursor: pointer;
     overflow: hidden;
 }
 .image {
+    display: block;
     width: 100%;
-    height: 500px;
+    aspect-ratio: 2.2 / 1;
+    height: auto;
     object-fit: cover;
-    border-radius: 10px;
-    transition: transform 0.3s ease-in-out;
-}
-.image:hover {
-    transform: scale(1.05);
 }
 
 /* Модальное окно */
@@ -190,16 +196,38 @@ export default {
     color: white;
     cursor: pointer;
 }
+/* Стрелки на тёмной подложке: белые без неё терялись на светлых надписях баннера */
 .swiper-button-prev,
 .swiper-button-next {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.55);
     color: white;
     opacity: 1 !important;
-    transition: none;
+    transition:
+        background-color 0.2s,
+        color 0.2s;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-size: 18px;
+    font-weight: 700;
 }
 
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-    color: #f97316;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: var(--accent, #ff962e);
+}
+
+.articles-slider .swiper-pagination-bullet {
+    background: #ffffff;
+    opacity: 0.45;
+}
+.articles-slider .swiper-pagination-bullet-active {
+    background: var(--accent, #ff962e);
+    opacity: 1;
 }
 
 .carousel_block {
@@ -253,8 +281,17 @@ export default {
 }
 
 @media (max-width: 992px) {
-    .image {
-        height: 200px;
+    .articles-slider {
+        border-radius: 12px;
+    }
+    .swiper-button-prev,
+    .swiper-button-next {
+        width: 32px;
+        height: 32px;
+    }
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
+        font-size: 14px;
     }
 }
 </style>

@@ -17,7 +17,13 @@ class CityController extends Controller
         session()->save();
         cookie()->queue(cookie('select_city', (int)$city, 60 * 24 * 30));
 
-        return redirect()->back();
+        // Без Referer back() берёт последний URL из сессии — это бывает /api/... (JSON)
+        $previous = url()->previous();
+        if (str_contains(parse_url($previous, PHP_URL_PATH) ?? '', '/api/')) {
+            return redirect('/');
+        }
+
+        return redirect()->to($previous);
     }
 }
 
